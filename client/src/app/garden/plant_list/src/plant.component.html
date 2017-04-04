@@ -1,0 +1,76 @@
+<!--
+    Provides an interface to view and interact with all Plant specific data.
+
+    @author Iteration 1 - Team Rayquaza
+    @editor Iteration 2 - Team Omar Anwar
+-->
+
+<!DOCTYPE html>
+
+
+    <style>
+
+        /* Global References */
+        h1{
+            position: relative;
+        }
+
+        /* Class References */
+        .image{
+            position: relative;
+            width:100%;
+        }
+        .footer{
+            position: relative;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            padding: 1rem;
+            text-align: center;
+            background-color: #466a31;
+            color: white;
+            font-size: 3.75vw;
+        }
+    </style>
+
+    <a href="javascript:history.go(-1)" class="alignleft" class="btn btn-default" style="background-color: #f1f1f1"><span></span>Back</a>
+
+    <br><br>
+    <div class="image">
+        <img src="../res/wroc.jpg" width="100%"/>
+    </div>
+
+
+<p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
+<div *ngIf="plant !== null" class= "text-center" >
+    <h1 >{{plant.cultivar}}</h1>
+    <h3> Common Name: {{plant.commonName}}</h3>
+    <h3> Bed Number: {{plant.gardenLocation}}</h3>
+    <div *ngIf="!rated">
+        <a class="btn btn-default" (click)="this.rate('like')" style="background-color: #1D8214; color: white">
+            <span class="glyphicon glyphicon-thumbs-up"> </span> Like
+        </a>
+        <a class="btn btn-primary" (click)="this.rate('dislike')">
+            <span class="glyphicon glyphicon-thumbs-down"> </span> Dislike
+        </a>
+    </div>
+    <div *ngIf="rated">
+        <h3>Thanks for your feedback!</h3>
+    </div>
+    <br>
+    <div *ngIf="!commented">
+        <textarea [(ngModel)]="commentText" rows="5" wrap="on" style="width: 95%; background-color: #f1f1f1"></textarea>
+<br>
+        <a class="btn btn-default" (click)="this.comment(commentText)" style="background-color: #f1f1f1">
+            Leave a comment
+        </a>
+
+    </div>
+    <div *ngIf="commented">
+        <h3>Your comment has been submitted.</h3>
+    </div>
+    <br>
+        <div class="footer">
+            For more information, contact WCROC at 867-5309
+        </div>
+    </div>

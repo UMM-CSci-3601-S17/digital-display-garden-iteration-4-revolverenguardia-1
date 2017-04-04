@@ -6,11 +6,11 @@ import {PlantFeedback} from "./plant.feedback";
 
 @Injectable()
 export class PlantListService {
-    private plantUrl: string = API_URL + "plants";
+    private plantUrl: string = API_URL + "plant";
     constructor(private http:Http) { }
 
     getPlants(): Observable<Plant[]> {
-        return this.http.request(this.plantUrl).map(res => res.json());
+        return this.http.request(API_URL + "plants").map(res => res.json());
     }
 
     getPlantById(id: string): Observable<Plant> {
