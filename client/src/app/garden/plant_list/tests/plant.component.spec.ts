@@ -5,7 +5,6 @@ import { Observable } from "rxjs";
 import {PlantService} from "../src/plant.service";
 import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-import {isUndefined} from "util";
 
 describe("Plant component", () => {
 

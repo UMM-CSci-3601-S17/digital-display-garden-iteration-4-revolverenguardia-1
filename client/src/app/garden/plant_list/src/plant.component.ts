@@ -30,7 +30,7 @@ export class PlantComponent implements OnInit {
 
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
-
+    // private plant: Plant = new Plant();
 
     /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,

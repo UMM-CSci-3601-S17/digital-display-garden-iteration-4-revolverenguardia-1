@@ -18,7 +18,7 @@ import {PlantFilter} from "./plantfilter";
 @Injectable()
 export class PlantListService {
 
-    private readonly URL: string = API_URL + "plants";
+    private readonly URL: string = API_URL + "plant";
 
     private plantCollection: PlantCollection;
 
@@ -40,7 +40,7 @@ export class PlantListService {
      * @returns {Observable<R>} - the received Observable Plant collection
      */
     private getPlantsFromServer(): Observable<Plant[]> {
-        return this.http.request(this.URL).map(res => res.json());
+        return this.http.request(API_URL + "plants").map(res => res.json());
     }
 
     /**
@@ -72,6 +72,7 @@ export class PlantListService {
      * @returns {Observable<R>}
      */
     getPlantById(id: string): Observable<Plant> {
-        return this.http.request(API_URL + "plant/" + id).map(res => res.json());
+        console.log("Requesting: " + API_URL + "plant/" + id);
+        return this.http.request(this.URL + "/" + id).map(res => res.json());
     }
 }

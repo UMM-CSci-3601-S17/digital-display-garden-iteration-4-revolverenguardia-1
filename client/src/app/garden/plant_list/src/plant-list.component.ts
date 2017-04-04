@@ -20,7 +20,7 @@ export class PlantListComponent {
     // The list of filtered plant to display within the HTML
     private filteredPlants: Plant[] = [];
 
-    // the currently selected platn within the html
+    // the currently selected plant within the html
     private selectedPlant: Plant;
 
     // Static factory class instance variable
@@ -45,11 +45,14 @@ export class PlantListComponent {
      * @param selectedPlant - the currently selected plant
      */
     private handlePlantListClick(selectedPlant: Plant){
+        // Search the array of plants for the currently selected plant
         this.filteredPlants.forEach((plant, index) => {
             if(selectedPlant == plant){
                 this.selectedPlant = selectedPlant;
             }
         });
+
+        // Request data from the server for the selected plant
         this.plantListService.getPlantById(selectedPlant.id);
     }
 
