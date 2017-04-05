@@ -60,7 +60,7 @@ export class PlantComponent implements OnInit {
      */
     public rate(rating: string): void {
         if (!this.rated) {this.rated = false;
-            this.plantService.ratePlant(this.plant['id'], rating)
+            this.plantService.ratePlant(this.plant.id, rating)
                 .subscribe(succeeded => this.rated = succeeded);
         }
     }
@@ -73,7 +73,7 @@ export class PlantComponent implements OnInit {
     public comment(comment: string): void {
         if (!this.commented) {
             if (comment != null) {
-                this.plantService.commentPlant(this.plant['id'], comment)
+                this.plantService.commentPlant(this.plant.id, comment)
                     .subscribe(succeeded => this.commented = succeeded);
             }
         }

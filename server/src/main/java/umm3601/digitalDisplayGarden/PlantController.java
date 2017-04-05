@@ -122,7 +122,7 @@ public class PlantController {
 
             jsonPlant = plantCollection.find(and(eq("id", plantID),
                     eq("uploadId", uploadID)))
-                    .projection(fields(include("commonName", "cultivar")));
+                    .projection(fields(include("id", "commonName", "cultivar", "gardenLocation")));
 
             Iterator<Document> iterator = jsonPlant.iterator();
 
@@ -234,7 +234,7 @@ public class PlantController {
      */
 
     public boolean storePlantComment(String json, String uploadID) {
-
+        System.out.println("Storing plant comment " + json + " \n" + uploadID);
         try {
 
             Document toInsert = new Document();
