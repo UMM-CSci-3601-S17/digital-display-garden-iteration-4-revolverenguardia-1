@@ -234,7 +234,6 @@ public class PlantController {
      */
 
     public boolean storePlantComment(String json, String uploadID) {
-        System.out.println("Storing plant comment " + json + " \n" + uploadID);
         try {
 
             Document toInsert = new Document();
@@ -243,12 +242,12 @@ public class PlantController {
             if (parsedDocument.containsKey("plantId") && parsedDocument.get("plantId") instanceof String) {
 
                 FindIterable<Document> jsonPlant = plantCollection.find(and(eq("id",
-                        parsedDocument.getString("plantId")), eq("liveUploadId", uploadID)));
+                        parsedDocument.getString("plantId")), eq("uploadId", uploadID)));
 
                 Iterator<Document> iterator = jsonPlant.iterator();
 
-                if(iterator.hasNext()){//TODO: Problem here <---
-                    toInsert.put("commentOnPlant", iterator.next().getString("id"));
+                if(iterator.hasNext()){
+                    toInsert.put("commentOnPlant", iterator.next().getString("plantId"));
                 } else {
                     System.err.println("Was passed malformed storePlantComment request");
                     return false;
