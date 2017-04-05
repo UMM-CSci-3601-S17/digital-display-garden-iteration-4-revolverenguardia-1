@@ -30,7 +30,7 @@ public class TestPlantComment {
 
     @Test
     public void successfulInputOfComment() throws IOException {
-        String json = "{ plantId: \"58d1c36efb0cac4e15afd278\", comment : \"Here is our comment for this test\" }";
+        String json = "{ plantId: \"16040.0\", comment : \"Here is our comment for this test\" }";
 
         assertTrue(plantController.storePlantComment(json, "second uploadId"));
 

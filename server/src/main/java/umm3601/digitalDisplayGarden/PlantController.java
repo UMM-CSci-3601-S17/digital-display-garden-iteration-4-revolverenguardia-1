@@ -239,6 +239,8 @@ public class PlantController {
             Document toInsert = new Document();
             Document parsedDocument = Document.parse(json);
 
+            //If request contains plantId get the plant json by the plantId and current uploadID
+            //Add a comment to commentCollection with the plantId, uploadID, and
             if (parsedDocument.containsKey("plantId") && parsedDocument.get("plantId") instanceof String) {
 
                 FindIterable<Document> jsonPlant = plantCollection.find(and(eq("id",
@@ -247,12 +249,12 @@ public class PlantController {
                 Iterator<Document> iterator = jsonPlant.iterator();
 
                 if(iterator.hasNext()){
-                    toInsert.put("commentOnPlant", iterator.next().getString("plantId"));
+                    toInsert.put("commentOnPlant", iterator.next().getString("id"));
                 } else {
                     System.err.println("Was passed malformed storePlantComment request");
                     return false;
                 }
-                toInsert.put("liveUploadId", uploadID);
+//                toInsert.put("liveUploadId", uploadID);
 
             } else {
                 System.err.println("storePlantComment request does not contain plantId");
