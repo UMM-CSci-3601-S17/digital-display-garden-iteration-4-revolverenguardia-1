@@ -56,10 +56,10 @@
     <h3> Common Name: {{plant.commonName}}</h3>
     <h3> Bed Number: {{plant.gardenLocation}}</h3>
     <div *ngIf="!rated">
-        <a class="btn btn-default" (click)="this.rate('like')" style="background-color: #1D8214; color: white">
+        <a class="btn btn-default" (click)="this.rate(true)" style="background-color: #1D8214; color: white">
             <span class="glyphicon glyphicon-thumbs-up"> </span> Like
         </a>
-        <a class="btn btn-primary" (click)="this.rate('dislike')">
+        <a class="btn btn-primary" (click)="this.rate(false)">
             <span class="glyphicon glyphicon-thumbs-down"> </span> Dislike
         </a>
     </div>

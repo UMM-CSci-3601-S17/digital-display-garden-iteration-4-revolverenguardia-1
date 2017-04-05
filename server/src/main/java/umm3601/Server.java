@@ -104,6 +104,7 @@ public class Server {
         });
 
         post("api/plant/rate", (req, res) -> {
+            System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
             return plantController.addFlowerRating(req.body(), plantController.getLiveUploadId());
         });

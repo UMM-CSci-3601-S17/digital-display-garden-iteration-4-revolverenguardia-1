@@ -58,7 +58,7 @@ export class PlantComponent implements OnInit {
      * Rates the currently loaded Plant that is displayed on the PlantComponent with either a like or dislike.
      * @param rating - the rating to be provided
      */
-    public rate(rating: string): void {
+    public rate(rating: boolean): void {
         if (!this.rated) {this.rated = false;
             this.plantService.ratePlant(this.plant.id, rating)
                 .subscribe(succeeded => this.rated = succeeded);

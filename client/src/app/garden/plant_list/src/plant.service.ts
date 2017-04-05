@@ -15,7 +15,7 @@ import { Observable } from "rxjs";
 @Injectable()
 export class PlantService {
 
-    private readonly URL: string = API_URL + "plant";
+    private readonly URL: string = API_URL + "plant/";
 
     constructor(private http:Http) { }
 
@@ -25,7 +25,7 @@ export class PlantService {
      * @returns {Observable<Plant>} - upon successful respons from the server, an observable of the returned plant
      */
     getPlantById(id: string): Observable<Plant> {
-        return this.http.request(this.URL + "/" + id).map(res => res.json());
+        return this.http.request(this.URL + id).map(res => res.json());
     }
 
     /**
@@ -35,8 +35,12 @@ export class PlantService {
      * @returns {Observable<Boolean>} - true if the plant was successfully rated
      *                                - false if the plant rating failed
      */
-    ratePlant(id: string, rating: string): Observable<Boolean> {
-        return this.http.request(this.URL + "/" + id + "/" + rating).map(res => res.json());
+    ratePlant(id: string, rating: boolean): Observable<Boolean> {
+        let ratingObject = {
+            id: id,
+            like: rating
+        };
+        return this.http.post(this.URL + "rate", JSON.stringify(ratingObject)).map(res => res.json());
     }
 
     /**
@@ -51,6 +55,6 @@ export class PlantService {
             plantId: id,
             comment: comment
         };
-        return this.http.post(this.URL + "/" + "leaveComment", JSON.stringify(returnObject)).map(res => res.json());
+        return this.http.post(this.URL + "leaveComment", JSON.stringify(returnObject)).map(res => res.json());
     }
 }

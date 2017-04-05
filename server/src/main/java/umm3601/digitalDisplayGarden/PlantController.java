@@ -314,23 +314,29 @@ public class PlantController {
      */
 
     public boolean addFlowerRating(String id, boolean like, String uploadID) {
-
+        System.out.println("id=" + id + " like=" + like + " uploadId=" + uploadID);
         Document filterDoc = new Document();
 
-        ObjectId objectId;
 
-        try {
-            objectId = new ObjectId(id);
-        } catch (IllegalArgumentException e) {
+        filterDoc.append("id", id);
+        filterDoc.append("uploadId", uploadID);
+
+        Document plantOID;
+
+        Iterator<Document> itr = plantCollection.find(filterDoc).iterator();
+        if(itr.hasNext()) {
+            plantOID = itr.next();
+        }
+        else
+        {
+            System.err.println("Plant not found with plantId " + id + " for uploadId " + uploadID);
             return false;
         }
-
-        filterDoc.append("_id", new ObjectId(id));
-        filterDoc.append("uploadId", uploadID);
+        
 
         Document rating = new Document();
         rating.append("like", like);
-        rating.append("ratingOnObjectOfId", objectId);
+        rating.append("ratingOnObjectOfId", new ObjectId(plantOID.get("_id").toString()));
 
         return null != plantCollection.findOneAndUpdate(filterDoc, push("metadata.ratings", rating));
     }
