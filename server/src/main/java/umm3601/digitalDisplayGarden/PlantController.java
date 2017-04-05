@@ -242,24 +242,28 @@ public class PlantController {
 
             if (parsedDocument.containsKey("plantId") && parsedDocument.get("plantId") instanceof String) {
 
-                FindIterable<Document> jsonPlant = plantCollection.find(eq("_id",
-                        new ObjectId(parsedDocument.getString("plantId"))));
+                FindIterable<Document> jsonPlant = plantCollection.find(and(eq("id",
+                        parsedDocument.getString("plantId")), eq("liveUploadId", uploadID)));
 
                 Iterator<Document> iterator = jsonPlant.iterator();
 
-                if(iterator.hasNext()){
+                if(iterator.hasNext()){//TODO: Problem here <---
                     toInsert.put("commentOnPlant", iterator.next().getString("id"));
                 } else {
+                    System.err.println("Was passed malformed storePlantComment request");
                     return false;
                 }
+                toInsert.put("liveUploadId", uploadID);
 
             } else {
+                System.err.println("storePlantComment request does not contain plantId");
                 return false;
             }
 
             if (parsedDocument.containsKey("comment") && parsedDocument.get("comment") instanceof String) {
                 toInsert.put("comment", parsedDocument.getString("comment"));
             } else {
+                System.err.println("storePlantComment request does not contain comment");
                 return false;
             }
 
@@ -271,8 +275,10 @@ public class PlantController {
             e.printStackTrace();
             return false;
         } catch (org.bson.json.JsonParseException e){
+            e.printStackTrace();
             return false;
         } catch (IllegalArgumentException e){
+            e.printStackTrace();
             return false;
         }
 
