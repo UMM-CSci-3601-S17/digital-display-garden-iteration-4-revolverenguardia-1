@@ -122,7 +122,7 @@ public class PlantController {
 
             jsonPlant = plantCollection.find(and(eq("id", plantID),
                     eq("uploadId", uploadID)))
-                    .projection(fields(include("commonName", "cultivar")));
+                    .projection(fields(include("id", "commonName", "cultivar", "gardenLocation")));
 
             Iterator<Document> iterator = jsonPlant.iterator();
 
@@ -234,32 +234,37 @@ public class PlantController {
      */
 
     public boolean storePlantComment(String json, String uploadID) {
-
         try {
 
             Document toInsert = new Document();
             Document parsedDocument = Document.parse(json);
 
+            //If request contains plantId get the plant json by the plantId and current uploadID
+            //Add a comment to commentCollection with the plantId, uploadID, and
             if (parsedDocument.containsKey("plantId") && parsedDocument.get("plantId") instanceof String) {
 
-                FindIterable<Document> jsonPlant = plantCollection.find(eq("_id",
-                        new ObjectId(parsedDocument.getString("plantId"))));
+                FindIterable<Document> jsonPlant = plantCollection.find(and(eq("id",
+                        parsedDocument.getString("plantId")), eq("uploadId", uploadID)));
 
                 Iterator<Document> iterator = jsonPlant.iterator();
 
                 if(iterator.hasNext()){
                     toInsert.put("commentOnPlant", iterator.next().getString("id"));
                 } else {
+                    System.err.println("Was passed malformed storePlantComment request");
                     return false;
                 }
+//                toInsert.put("liveUploadId", uploadID);
 
             } else {
+                System.err.println("storePlantComment request does not contain plantId");
                 return false;
             }
 
             if (parsedDocument.containsKey("comment") && parsedDocument.get("comment") instanceof String) {
                 toInsert.put("comment", parsedDocument.getString("comment"));
             } else {
+                System.err.println("storePlantComment request does not contain comment");
                 return false;
             }
 
@@ -271,8 +276,10 @@ public class PlantController {
             e.printStackTrace();
             return false;
         } catch (org.bson.json.JsonParseException e){
+            e.printStackTrace();
             return false;
         } catch (IllegalArgumentException e){
+            e.printStackTrace();
             return false;
         }
 
@@ -309,23 +316,29 @@ public class PlantController {
      */
 
     public boolean addFlowerRating(String id, boolean like, String uploadID) {
-
+        System.out.println("id=" + id + " like=" + like + " uploadId=" + uploadID);
         Document filterDoc = new Document();
 
-        ObjectId objectId;
 
-        try {
-            objectId = new ObjectId(id);
-        } catch (IllegalArgumentException e) {
+        filterDoc.append("id", id);
+        filterDoc.append("uploadId", uploadID);
+
+        Document plantOID;
+
+        Iterator<Document> itr = plantCollection.find(filterDoc).iterator();
+        if(itr.hasNext()) {
+            plantOID = itr.next();
+        }
+        else
+        {
+            System.err.println("Plant not found with plantId " + id + " for uploadId " + uploadID);
             return false;
         }
-
-        filterDoc.append("_id", new ObjectId(id));
-        filterDoc.append("uploadId", uploadID);
+        
 
         Document rating = new Document();
         rating.append("like", like);
-        rating.append("ratingOnObjectOfId", objectId);
+        rating.append("ratingOnObjectOfId", new ObjectId(plantOID.get("_id").toString()));
 
         return null != plantCollection.findOneAndUpdate(filterDoc, push("metadata.ratings", rating));
     }

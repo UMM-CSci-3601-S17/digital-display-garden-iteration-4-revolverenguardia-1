@@ -23,7 +23,7 @@ import javax.servlet.http.Part;
 
 public class Server {
 
-    public static final String API_URL = "http://grimaldi.ddg.congrue.xyz:2538";
+    public static final String API_URL = "http://localhost:2538";
 
     public static String databaseName = "test";
 
@@ -78,14 +78,14 @@ public class Server {
         });
 
         //Get a plant
-        get("api/plants/:plantID", (req, res) -> {
+        get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
             return plantController.getPlantByPlantID(id, plantController.getLiveUploadId());
         });
 
         //Get feedback counts for a plant
-        get("api/plants/:plantID/counts", (req, res) -> {
+        get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
             return plantController.getFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
@@ -103,7 +103,8 @@ public class Server {
             return plantController.listUploadIds();
         });
 
-        post("api/plants/rate", (req, res) -> {
+        post("api/plant/rate", (req, res) -> {
+            System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
             return plantController.addFlowerRating(req.body(), plantController.getLiveUploadId());
         });
@@ -152,7 +153,7 @@ public class Server {
         });
 
         // Posting a comment
-        post("api/plants/leaveComment", (req, res) -> {
+        post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
             return plantController.storePlantComment(req.body(), plantController.getLiveUploadId());
         });
