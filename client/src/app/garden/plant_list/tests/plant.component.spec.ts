@@ -108,7 +108,7 @@ describe("Plant component", () => {
         let wasRated: Boolean = plantComponent.isRated();
         expect(wasRated).toBe(false);
 
-        plantComponent.rate(plantComponent.LIKE);
+        plantComponent.rate(true);
         wasRated = plantComponent.isRated();
         expect(wasRated).toBe(true);
 
@@ -119,7 +119,7 @@ describe("Plant component", () => {
         let wasRated: Boolean = plantComponent.isRated();
         expect(wasRated).toBe(false);
 
-        plantComponent.rate(plantComponent.DISLIKE);
+        plantComponent.rate(false);
         wasRated = plantComponent.isRated();
         expect(wasRated).toBe(true);
 
