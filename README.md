@@ -1,8 +1,11 @@
 # Digital Display Garden
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi)
-Software Design S2017, Iteration 2, Team _Grimaldi_ 
+Software Design S2017, Iteration 3, Team _Revolver en Guardia_ 
 
-This repository is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-1-claudearabo).
+This repository is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
+which is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-1-claudearabo).
+and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-omaranwar.git)
+
 
 ## Setup
 
