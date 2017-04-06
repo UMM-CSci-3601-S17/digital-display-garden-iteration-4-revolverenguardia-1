@@ -51,6 +51,19 @@ public class TestPlantComment {
     }
 
     @Test
+    public void successfulExportOfComment() throws IOException {
+
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase db = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> commentDocuments = db.getCollection("comments");
+        Iterator<Document> iter = commentDocuments.find().iterator();
+
+        //TODO:
+
+    }
+
+
+    @Test
     public void failedInputOfComment() throws IOException {
         String json = "{ plantId: \"58d1c36efb0cac4e15afd27\", comment : \"Here is our comment for this test\" }";
 
