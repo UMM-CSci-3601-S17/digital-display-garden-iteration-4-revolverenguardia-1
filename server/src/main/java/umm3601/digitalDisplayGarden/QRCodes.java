@@ -26,13 +26,7 @@ public class QRCodes {
 
     private static String qrTempPath = ".qrcode";
 
-    public static BufferedImage createQRFromBedURL(String url) throws IOException,WriterException{
 
-        Map hintMap = new HashMap();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        return createQRCode(url, "UTF-8", hintMap, 300,300);
-
-    }
 
     /**
      * Gets all beds from the Database,
@@ -48,7 +42,7 @@ public class QRCodes {
         List<BufferedImage> qrCodeImages = createBufferedImages(bedUrls);
         writeBufferedImagesToFile(qrCodeImages,bedNames,urlPrefix);
 
-        return writeZipPathForQRCodes(uploadId,qrTempPath);
+        return writeZipPathForQRCodes(uploadId, qrTempPath);
     }
 
 
@@ -103,6 +97,14 @@ public class QRCodes {
 
         return qrCodeImages;
     }
+
+    public static BufferedImage createQRFromBedURL(String url) throws IOException,WriterException{
+
+        Map hintMap = new HashMap();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        return createQRCode(url, "UTF-8", hintMap, 300,300);
+    }
+
 
 
         public static void writeBufferedImagesToFile(List<BufferedImage> bufferedImages, String[] bedNames, String path) throws IOException {
