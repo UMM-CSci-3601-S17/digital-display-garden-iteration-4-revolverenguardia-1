@@ -172,7 +172,7 @@ public class Server {
 
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
-                String id = ExcelParser.getAvailableUploadId();
+                String id = ExcelParser.generateNewUploadId();
                 parser.parseExcel(id);
 
                 return JSON.serialize(id);
@@ -183,6 +183,37 @@ public class Server {
             }
 
         });
+
+
+        // Accept an xls file
+        post("api/patch", (req, res) -> {
+
+            res.type("application/json");
+            try {
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
+                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+
+                String fileName = Long.valueOf(System.currentTimeMillis()).toString();
+                Part part = req.raw().getPart("file[]");
+
+
+
+
+                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+
+                String id = ExcelParser.generateNewUploadId();
+//                parser.parseExcel(id);
+
+                return JSON.serialize(id);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        });
+
 
         get("/*", clientRoute);
 

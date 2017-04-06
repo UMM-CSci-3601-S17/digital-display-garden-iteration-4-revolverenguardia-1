@@ -269,7 +269,7 @@ public class ExcelParser {
         configCollection.insertOne(new Document().append("liveUploadId", uploadID));
     }
 
-    public static String getAvailableUploadId(){
+    public static String generateNewUploadId(){
 
         StringBuilder sb = new StringBuilder();
         // Send all output to the Appendable object sb
