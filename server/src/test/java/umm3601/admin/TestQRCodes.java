@@ -1,13 +1,17 @@
 package umm3601.admin;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.encoder.QRCode;
+import org.junit.After;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.PlantController;
 import umm3601.digitalDisplayGarden.QRCodes;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +24,7 @@ import static umm3601.digitalDisplayGarden.QRCodes.createQRFromBedURL;
  * Created by Brian on 4/5/2017.
  */
 public class TestQRCodes {
-    private final static String databaseName = "data-for-testing-only";
-    private PlantController plantController;
-
-    String path = "test/";
+    String path = "test";
 
     @Test
     public void TestFormBedURLs() throws IOException, WriterException{
@@ -37,8 +38,8 @@ public class TestQRCodes {
 
 
         //Check to see that it makes a bed url of length 4
-        assertEquals("this should be 4",4, QRCodes.formBedURLs(bedNames,urlPrefix,this.path).length);
-        assertEquals("this should be a url to bed1","http://localhost:2538/bed/bed1", QRCodes.formBedURLs(bedNames,urlPrefix,this.path)[0]);
+        assertEquals("this should be 4",4, QRCodes.formBedURLs(bedNames,urlPrefix).length);
+        assertEquals("this should be a url to bed1","http://localhost:2538/bed/bed1", QRCodes.formBedURLs(bedNames,urlPrefix)[0]);
 
     }
 
@@ -72,16 +73,40 @@ public class TestQRCodes {
         bedURLs[2] = "http://localhost:2538/bed/bed3";
         List<BufferedImage> qrCodeImages = QRCodes.createBufferedImages(bedURLs);
 
+        assertEquals(qrCodeImages.size(), 3);
+
         QRCodes.writeBufferedImagesToFile(qrCodeImages,bedNames,this.path);
 
         String uploadId = "first uploadId";
 
-        //assertEquals("there should be three files in test path after","bed1.png",);
-        //QRCodes.writeBufferedImagesToFile(qrCodeImages,bedNames,this.path);
+        File f = new File(this.path);
+        String files[] = f.list();
+        for(int i = 0; i < files.length; i++)
+            assertEquals("File names are equal to the bed names", files[i], bedNames[i] + ".png");
+
 
         // Writes it to the right path.
         String qr = QRCodes.writeZipPathForQRCodes(uploadId,path);
         assertEquals("File output names should be the same","QR Code Export " + "first uploadId" + ".zip",qr);
+
+    }
+
+    @After
+    public void cleanFiles() throws IOException
+    {
+        //Delete temp folder holding QRCodes
+        Path tempFolderPath = Paths.get(this.path);
+        if (Files.exists(tempFolderPath))
+            Files.delete(tempFolderPath);
+
+        //Delete QRCode zip file
+        File f = new File("./");
+        String files[] = f.list();
+        for(int i = 0; i < files.length; i++)
+        {
+            if(files[i].endsWith(".zip") && files[i].startsWith("QR Code Export"))
+                Files.delete(Paths.get(files[i]));
+        }
     }
 
 

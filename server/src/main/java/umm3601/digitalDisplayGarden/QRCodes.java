@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.Buffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
@@ -38,9 +39,9 @@ public class QRCodes {
      */
 
     public static String CreateQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
-        String[] bedUrls = formBedURLs(bedNames,urlPrefix,qrTempPath);
+        String[] bedUrls = formBedURLs(bedNames,urlPrefix);
         List<BufferedImage> qrCodeImages = createBufferedImages(bedUrls);
-        writeBufferedImagesToFile(qrCodeImages,bedNames,urlPrefix);
+        writeBufferedImagesToFile(qrCodeImages,bedNames,qrTempPath);
 
         return writeZipPathForQRCodes(uploadId, qrTempPath);
     }
@@ -48,18 +49,8 @@ public class QRCodes {
 
         //Get all unique beds from Database
     //Create URLs for all unique beds
-    public static String[] formBedURLs(String bedNames[], String urlPrefix, String path) throws IOException {
-        try {
-            if (Files.notExists(Paths.get(path))) {
-                Files.createDirectory(Paths.get(path));
-            }
-        }
-        catch(IOException ioe)
-        {
-            ioe.printStackTrace();
-            System.err.println("Failed to create directory for qrcode packaging.");
-            throw ioe;
-        }
+    public static String[] formBedURLs(String bedNames[], String urlPrefix) throws IOException {
+
         final int numBeds = bedNames.length;
         String bedURLs[] = new String [numBeds];
         for(int i = 0; i < numBeds; i++) {
@@ -75,6 +66,11 @@ public class QRCodes {
     public static List<BufferedImage> createBufferedImages(String bedURLs[]) throws IOException, WriterException{
         final int numBeds = bedURLs.length;
 
+        //If there are no bedURLs to make QRCodes, return empty bufferedImage[]
+        if(bedURLs.length < 0)
+            return new ArrayList<BufferedImage>();
+
+        //Create BufferedImages from all the bed URLs
         List<BufferedImage> qrCodeImages = new ArrayList<BufferedImage>();
         for(int i = 0; i < numBeds; i++) {
 
@@ -107,20 +103,34 @@ public class QRCodes {
 
 
 
-        public static void writeBufferedImagesToFile(List<BufferedImage> bufferedImages, String[] bedNames, String path) throws IOException {
-            //WRITE IMAGES TO FILE
-            try {
-                for (int i = 0; i < bufferedImages.size(); i++) {
-                    File outputFile = new File(path + '/' + bedNames[i] + ".png");
-                    ImageIO.write(bufferedImages.get(i), "png", outputFile);
-                }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-                System.err.println("Could not write some Images to disk, exiting.");
-                throw ioe;
-            }
+    public static void writeBufferedImagesToFile(List<BufferedImage> bufferedImages, String[] bedNames, String path) throws IOException {
 
+        //If the parent folder that would house the qrCodes doesn't exist,
+        //try to make it
+        try {
+            if (Files.notExists(Paths.get(path)))
+                Files.createDirectory(Paths.get(path));
         }
+        catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+            System.err.println("Failed to create directory for qrcode packaging.");
+            throw ioe;
+        }
+
+        //WRITE IMAGES TO FILE
+        try {
+            for (int i = 0; i < bufferedImages.size(); i++) {
+                File outputFile = new File(path + '/' + bedNames[i] + ".png");
+                ImageIO.write(bufferedImages.get(i), "png", outputFile);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.err.println("Could not write some Images to disk, exiting.");
+            throw ioe;
+        }
+
+    }
 
 
         //Zip up all BufferedImages (We have to tar/zip them up because we don't want to spam the WCROC admin with QRCode file for every bed)
@@ -134,8 +144,6 @@ public class QRCodes {
         final int BUFFER_SIZE = 2048;
 
         String zipPath = "QR Code Export " + uploadId + ".zip";
-
-        System.err.println("ExportPath=" + zipPath);
 
         try {
             BufferedInputStream origin = null;
