@@ -19,6 +19,7 @@ import {AdminService} from "./app/admin/admin.service";
 import {ExportComponent} from "./app/admin/export.component";
 import {FileUploadComponent} from "./app/admin/file-upload.component";
 import {PlantService} from "./app/garden/plant_list/src/plant.service";
+import {FilterGardenSidebarComponent} from "./app/garden/filter_garden_sidebar/filter-garden-sidebar.component";
 
 
 
@@ -35,6 +36,7 @@ import {PlantService} from "./app/garden/plant_list/src/plant.service";
         AppComponent,
         NavbarComponent,
         GardenComponent,
+        FilterGardenSidebarComponent,
         PlantListComponent,
         BedListComponent,
         PlantComponent,

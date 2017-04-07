@@ -1,0 +1,70 @@
+<!--
+    Provides an interface to view and interact with all Bed specific data.
+
+    @author Iteration 2 - Team Omar Anwar
+-->
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+
+
+        /*Global References*/
+        body {
+            /*display: inline;*/
+        }
+        a {
+            font-size: 150%;
+            display: block;
+            text-decoration: none;
+            padding: 32px 0px 32px 0px;
+            text-align: center;
+            color: #48000E;
+        }
+        a.active {
+            padding: 8px 0px 8px 0px;
+            background-color: #196B1D;
+            color: white;
+        }
+        a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /*ID References*/
+        #filter-list {
+            list-style-type: none;
+            padding: 0;
+            height: 75%;
+            background-color: #f1f1f1;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+        #bed-list-view{
+            /*float: right;*/
+            width: 12%;
+            margin: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="bed-list-view">
+
+    <div id="bed-list-header">
+        <a class="active">Filter</a>
+    </div>
+
+
+    <ul id="filter-list">
+        <li><a>Bed</a></li>
+        <li><a>Common Name</a></li>
+    </ul>
+
+</div>
+
+</body>
+</html>

@@ -12,7 +12,7 @@ export class PlantFilter {
      * Title for the bed list view on the HTML Bed List Component.
      * This is used for filtering to show all plants.
      */
-    public static readonly FILTER_BY_ALL_PLANTS = "Bed";
+    public static readonly FILTER_BY_ALL_PLANTS = "Filter";
 
     /**
      * Filters the provided plant collection by the provided bed name.
