@@ -14,8 +14,21 @@ export class ImportComponent implements OnInit {
     filename:string;
     uploadAttempted:boolean = false;
 
-    handleUpload(){
-        this.fu.upload().subscribe(
+    handleUploadForImport(){
+        this.fu.uploadForImport().subscribe(
+            response => {
+                this.filename = response.json();
+                this.uploadAttempted = true;
+            },
+            err => {
+                this.uploadAttempted = true;
+            }
+
+        );
+    }
+
+    handleUploadForPatch(){
+        this.fu.uploadForPatch().subscribe(
             response => {
                 this.filename = response.json();
                 this.uploadAttempted = true;

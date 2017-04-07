@@ -74,39 +74,39 @@ public class Server {
         // List plants
         get("api/plants", (req, res) -> {
             res.type("application/json");
-            return plantController.listPlants(req.queryMap().toMap(), plantController.getLiveUploadId());
+            return plantController.listPlants(req.queryMap().toMap(), ExcelParser.getLiveUploadId());
         });
 
         //Get a plant
         get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getPlantByPlantID(id, plantController.getLiveUploadId());
+            return plantController.getPlantByPlantID(id, ExcelParser.getLiveUploadId());
         });
 
         //Get feedback counts for a plant
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
+            return plantController.getFeedbackForPlantByPlantID(id, ExcelParser.getLiveUploadId());
         });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
             res.type("application/json");
-            return plantController.getGardenLocationsAsJson(plantController.getLiveUploadId());
+            return plantController.getGardenLocationsAsJson(ExcelParser.getLiveUploadId());
         });
 
         // List all uploadIds
         get("api/uploadIds", (req, res) -> {
             res.type("application/json");
-            return plantController.listUploadIds();
+            return ExcelParser.listUploadIds();
         });
 
         post("api/plant/rate", (req, res) -> {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
-            return plantController.addFlowerRating(req.body(), plantController.getLiveUploadId());
+            return plantController.addFlowerRating(req.body(),ExcelParser.getLiveUploadId());
         });
 
         get("api/export", (req, res) -> {
@@ -122,7 +122,7 @@ public class Server {
 
         get("api/liveUploadId", (req, res) -> {
             res.type("application/json");
-            return JSON.serialize(plantController.getLiveUploadId());
+            return JSON.serialize(ExcelParser.getLiveUploadId());
         });
 
 
@@ -130,7 +130,7 @@ public class Server {
         get("api/qrcodes", (req, res) -> {
             res.type("application/zip");
 
-            String liveUploadID = plantController.getLiveUploadId();
+            String liveUploadID = ExcelParser.getLiveUploadId();
             System.err.println("liveUploadID=" + liveUploadID);
             String zipPath = QRCodes.CreateQRCodesFromAllBeds(
                     liveUploadID,
@@ -155,7 +155,7 @@ public class Server {
         // Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
-            return plantController.storePlantComment(req.body(), plantController.getLiveUploadId());
+            return plantController.storePlantComment(req.body(), ExcelParser.getLiveUploadId());
         });
 
         // Accept an xls file
@@ -173,7 +173,8 @@ public class Server {
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
                 String id = ExcelParser.generateNewUploadId();
-                parser.parseExcel(id);
+                String[][] excelFile = parser.parseExcel();
+                parser.populateDatabase(excelFile, id);
 
                 return JSON.serialize(id);
 
@@ -202,10 +203,12 @@ public class Server {
 
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
-                String id = ExcelParser.generateNewUploadId();
-//                parser.parseExcel(id);
+                String oldUploadId = ExcelParser.getLiveUploadId();
+                String newUploadId = ExcelParser.generateNewUploadId();
+                String[][] excelFile = parser.parseExcel();
+                parser.patchDatabase(excelFile, oldUploadId, newUploadId);
 
-                return JSON.serialize(id);
+                return JSON.serialize(newUploadId);
 
             } catch (Exception e) {
                 e.printStackTrace();

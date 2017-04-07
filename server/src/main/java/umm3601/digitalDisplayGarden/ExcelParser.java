@@ -1,8 +1,13 @@
 package umm3601.digitalDisplayGarden;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Sorts;
+import com.mongodb.util.JSON;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -10,10 +15,7 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.util.Date;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.exists;
 import static com.mongodb.client.model.Updates.set;
@@ -21,7 +23,10 @@ import static java.lang.Math.max;
 
 import org.bson.BsonArray;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+
+import javax.print.Doc;
 //import sun.text.normalizer.UTF16;
 
 public class ExcelParser {
@@ -39,15 +44,14 @@ public class ExcelParser {
         this.stream = stream;
     }
 
-    public void parseExcel(String uploadId) throws FileNotFoundException{
+    public String[][] parseExcel() throws FileNotFoundException{
 
         String[][] arrayRepresentation = extractFromXLSX(stream);
 
         String[][] horizontallyCollapsed = collapseHorizontally(arrayRepresentation);
         String[][] verticallyCollapsed = collapseVertically(horizontallyCollapsed);
         replaceNulls(verticallyCollapsed);
-        populateDatabase(verticallyCollapsed, uploadId);
-
+        return verticallyCollapsed;
     }
 
     /*
@@ -224,6 +228,60 @@ public class ExcelParser {
         setLiveUploadId(uploadId);
     }
 
+    public void patchDatabase(String[][] cellValues, String oldUploadId, String newUploadId){
+
+        populateDatabase(cellValues, newUploadId);
+
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase test = mongoClient.getDatabase(databaseName);
+        MongoCollection plants = test.getCollection("plants");
+        MongoCollection comments = test.getCollection("comments");
+
+        //Migrate (copy) all plants/comments of the previous uploadID and add them
+
+        Document filterByOldUploadId = new Document();
+        filterByOldUploadId.put("uploadId", oldUploadId);
+        FindIterable<Document> plantsOldId = plants.find(filterByOldUploadId);
+
+        Document filterByNewUploadId = new Document();
+        filterByNewUploadId.put("uploadId", newUploadId);
+
+        //Looop through old plants
+        for(Document oldPlant : plantsOldId)
+        {
+            //With a plant, grab its metadata and update the new plant with the old metadata
+            Document oldMetadata = ((Document)oldPlant.get("metadata"));
+            System.out.println(oldMetadata.toJson());
+
+            Document newPlantFilter = new Document(filterByNewUploadId);
+            newPlantFilter.put("id", oldPlant.getString("id"));
+
+            //Looks for a plant that has the same plantId with the new uploadId and migrates old metadata over
+            //If a plant with no such plantId can be found, it will ignore it.
+            plants.findOneAndUpdate(newPlantFilter,set("metadata", oldMetadata));
+        }
+
+        FindIterable<Document> commentsOldId = comments.find(filterByOldUploadId);
+        for(Document comment : commentsOldId)
+        {
+            //Take an old comment, change its' uploadId and objectID
+            plants.find(filterByNewUploadId);
+            comment.put("uploadId", newUploadId);
+            comment.put("_id", new ObjectId());
+
+            //Only re-upload a comment if the plant it points to still exists
+            Document newPlantFilter = new Document(filterByNewUploadId);
+            newPlantFilter.put("id", comment.get("commentOnPlant"));
+            if(plants.find(newPlantFilter).first() != null) {
+
+                comments.insertOne(comment);
+            }
+        }
+
+        setLiveUploadId(newUploadId);
+    }
+
+
     /*
     ------------------------------- UTILITIES -----------------------------------
      */
@@ -269,8 +327,7 @@ public class ExcelParser {
         configCollection.insertOne(new Document().append("liveUploadId", uploadID));
     }
 
-    public static String generateNewUploadId(){
-
+    public static String generateNewUploadId() {
         StringBuilder sb = new StringBuilder();
         // Send all output to the Appendable object sb
         Formatter formatter = new Formatter(sb);
@@ -288,6 +345,63 @@ public class ExcelParser {
         formatter.format("%d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, seconds);
         return sb.toString();
 
+    }
+
+    public static void clearUpload(String uploadId)
+    {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoCollection plantCollection = test.getCollection("plants");
+        MongoCollection commentCollection = test.getCollection("comments");
+        Document uploadIdFilter = new Document();
+        uploadIdFilter.put("uploadId", uploadId);
+
+        plantCollection.deleteMany(uploadIdFilter);
+        commentCollection.deleteMany(uploadIdFilter);
+    }
+
+    /**
+     *
+     * @return a sorted JSON array of all the distinct uploadIds in the DB
+     */
+    public static String listUploadIds() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoCollection plantCollection = test.getCollection("plants");
+
+        AggregateIterable<Document> documents
+                = plantCollection.aggregate(
+                Arrays.asList(
+                        Aggregates.group("$uploadId"),
+                        Aggregates.sort(Sorts.ascending("_id"))
+                ));
+        List<String> lst = new LinkedList<>();
+        for(Document d: documents) {
+            lst.add(d.getString("_id"));
+        }
+        return JSON.serialize(lst);
+//        return JSON.serialize(plantCollection.distinct("uploadId","".getClass()));
+    }
+
+    public static String getLiveUploadId() {
+
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoCollection configCollection = test.getCollection("config");
+        try
+        {
+            FindIterable<Document> findIterable = configCollection.find(exists("liveUploadId"));
+            Iterator<Document> iterator = findIterable.iterator();
+            Document doc = iterator.next();
+
+            return doc.getString("liveUploadId");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(" [hint] Database might be empty? Couldn't getLiveUploadId");
+            throw e;
+        }
     }
 
 

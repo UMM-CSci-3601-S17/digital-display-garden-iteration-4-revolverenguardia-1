@@ -85,12 +85,22 @@ public class TestExcelParser {
         plantArray = parser.collapseVertically(plantArray);
         parser.replaceNulls(plantArray);
 
+
+
+        String oldUploadId = ExcelParser.getLiveUploadId();
         parser.populateDatabase(plantArray, "an arbitrary ID");
         MongoCollection plants = testDB.getCollection("plants");
 
 
-        assertEquals(286, plants.count());
-        assertEquals(11, plants.count(eq("commonName", "Geranium")));
+        try {
+            assertEquals(286, plants.count());
+            assertEquals(11, plants.count(eq("commonName", "Geranium")));
+        }
+        finally {
+            ExcelParser.clearUpload("an arbitrary ID");
+            ExcelParser.setLiveUploadId(oldUploadId);
+        }
+
     }
 
 
