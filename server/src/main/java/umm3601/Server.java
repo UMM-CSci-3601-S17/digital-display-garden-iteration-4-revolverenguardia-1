@@ -74,27 +74,27 @@ public class Server {
         // List plants
         get("api/plants", (req, res) -> {
             res.type("application/json");
-            return plantController.listPlants(req.queryMap().toMap(), ExcelParser.getLiveUploadId(databaseName));
+            return plantController.listPlants(req.queryMap().toMap(), getLiveUploadId());
         });
 
         //Get a plant
         get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getPlantByPlantID(id, ExcelParser.getLiveUploadId(databaseName));
+            return plantController.getPlantByPlantID(id, getLiveUploadId());
         });
 
         //Get feedback counts for a plant
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, ExcelParser.getLiveUploadId(databaseName));
+            return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
         });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
             res.type("application/json");
-            return plantController.getGardenLocationsAsJson(ExcelParser.getLiveUploadId(databaseName));
+            return plantController.getGardenLocationsAsJson(getLiveUploadId());
         });
 
         // List all uploadIds
@@ -106,7 +106,7 @@ public class Server {
         post("api/plant/rate", (req, res) -> {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
-            return plantController.addFlowerRating(req.body(),ExcelParser.getLiveUploadId(databaseName));
+            return plantController.addFlowerRating(req.body(),getLiveUploadId());
         });
 
         get("api/export", (req, res) -> {
@@ -122,7 +122,7 @@ public class Server {
 
         get("api/liveUploadId", (req, res) -> {
             res.type("application/json");
-            return JSON.serialize(ExcelParser.getLiveUploadId(databaseName));
+            return JSON.serialize(getLiveUploadId());
         });
 
 
@@ -130,7 +130,7 @@ public class Server {
         get("api/qrcodes", (req, res) -> {
             res.type("application/zip");
 
-            String liveUploadID = ExcelParser.getLiveUploadId(databaseName);
+            String liveUploadID = getLiveUploadId();
             System.err.println("liveUploadID=" + liveUploadID);
             String zipPath = QRCodes.CreateQRCodesFromAllBeds(
                     liveUploadID,
@@ -155,7 +155,7 @@ public class Server {
         // Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
-            return plantController.storePlantComment(req.body(), ExcelParser.getLiveUploadId(databaseName));
+            return plantController.storePlantComment(req.body(), getLiveUploadId());
         });
 
         // Accept an xls file
@@ -199,7 +199,7 @@ public class Server {
 
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
-                String oldUploadId = ExcelParser.getLiveUploadId(databaseName);
+                String oldUploadId = getLiveUploadId();
                 String newUploadId = ExcelParser.generateNewUploadId();
                 String[][] excelFile = parser.parseExcel();
                 parser.patchDatabase(excelFile, oldUploadId, newUploadId);
@@ -222,5 +222,10 @@ public class Server {
             res.status(404);
             return "Sorry, we couldn't find that!";
         });
+    }
+
+    public static String getLiveUploadId()
+    {
+        return ExcelParser.getLiveUploadId(databaseName);
     }
 }
