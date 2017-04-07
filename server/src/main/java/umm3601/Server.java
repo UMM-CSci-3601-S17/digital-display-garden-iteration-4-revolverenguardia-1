@@ -116,7 +116,14 @@ public class Server {
             // res.raw().getOutputStream(), the response can no longer be
             // modified. Since writeComment(..) closes the OutputStream
             // when it is done, it needs to be the last line of this function.
-            plantController.writeFeedback(res.raw().getOutputStream(), req.queryMap().toMap().get("uploadId")[0]);
+            try {
+                plantController.writeFeedback(res.raw().getOutputStream(), req.queryMap().toMap().get("uploadId")[0]);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                throw e;
+            }
             return res;
         });
 

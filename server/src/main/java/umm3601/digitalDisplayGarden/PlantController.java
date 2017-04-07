@@ -14,12 +14,11 @@ import org.bson.conversions.Bson;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.exists;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.include;
 import static com.mongodb.client.model.Updates.*;
 import static com.mongodb.client.model.Projections.fields;
+import static umm3601.digitalDisplayGarden.FeedbackWriter.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -107,8 +106,8 @@ public class PlantController {
             Iterator<Document> iterator = jsonPlant.iterator();
 
             if (iterator.hasNext()) {
-                incrementMetadata(plantID, "pageViews");
-                addVisit(plantID);
+                incrementMetadata(plantID, "pageViews", uploadID);
+                addVisit(plantID, uploadID);
                 returnVal = iterator.next().toJson();
             } else {
                 returnVal = "null";
@@ -266,34 +265,86 @@ public class PlantController {
         return true;
     }
 
-    public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException{
+    public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException {
 
-          FindIterable iter = commentCollection.find(
-                   and(
-                           exists("commentOnPlant"),
-                           eq("uploadId", uploadId)
-                   ));
-           Iterator iterator = iter.iterator();
+        FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
 
-           FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
+        FindIterable iter = commentCollection.find(
+                and(
+                        exists("commentOnPlant"),
+                        eq("uploadId", uploadId)
+                ));
+        Iterator iterator = iter.iterator();
 
-           while (iterator.hasNext()) {
-               Document comment = (Document) iterator.next();
-               Iterator<Document> onPlantItr = plantCollection.find(and(eq("id", comment.getString("commentOnPlant")), eq("uploadId", uploadId))).iterator();
-               Document onPlant;
-               onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
+        //Loop through all comments and add their entries
+        while (iterator.hasNext()) {
+            Document comment = (Document) iterator.next();
+            Iterator<Document> onPlantItr = plantCollection.find(and(eq("id", comment.getString("commentOnPlant")), eq("uploadId", uploadId))).iterator();
+            Document onPlant;
+            onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
+            try {
+                String[] dataToWrite = new String[6];
+                dataToWrite[COL_CMT_PLANTID] = onPlant.getString("id");
+                dataToWrite[COL_CMT_COMMONNAME] = onPlant.getString("commonName");
+                dataToWrite[COL_CMT_CULTIVAR] = onPlant.getString("cultivar");
+                dataToWrite[COL_CMT_GRDNLOC] = onPlant.getString("gardenLocation");
+                dataToWrite[COL_CMT_COMMENT] = comment.getString("comment");
+                dataToWrite[COL_CMT_DATE] = ((ObjectId) comment.get("_id")).getDate().toString();
 
-               String [] dataToWrite = new String[5]; //10 for now
-               dataToWrite[0] = onPlant.getString("id");
-               dataToWrite[1] = onPlant.getString("gardenLocation");
-               dataToWrite[2] = onPlant.getString("commonName");
-               dataToWrite[3] = onPlant.getString("cultivar");
-               dataToWrite[4] = comment.getString("comment");
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_COMMENTS);
+            } catch (Exception e) {
+                System.err.println("ERROR ON PLANT " + onPlant);
+                e.printStackTrace();
+            }
+        }
 
-               feedbackWriter.writeComment(dataToWrite, ((ObjectId) comment.get("_id")).getDate());
-           }
-           feedbackWriter.complete();
-           return true;
+        //Loop through all plants
+        iter = plantCollection.find(
+                    eq("uploadId", uploadId)
+
+        );
+        iterator = iter.iterator();
+
+        while (iterator.hasNext()) {
+            Document onPlant = (Document) iterator.next();
+
+            try {
+                String[] dataToWrite = new String[9];
+                Document metadata = (Document) onPlant.get("metadata");
+                Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
+
+                Integer likeCount = feedback.getInteger("likeCount");
+                Integer dislikeCount = feedback.getInteger("dislikeCount");
+                Integer commentCount = feedback.getInteger("commentCount");
+                Integer pageViews = metadata.getInteger("pageViews");
+
+                dataToWrite[COL_META_PLANTID] = onPlant.getString("id");
+                dataToWrite[COL_META_COMMONNAME] = onPlant.getString("commonName");
+                dataToWrite[COL_META_CULTIVAR] = onPlant.getString("cultivar");
+                dataToWrite[COL_META_GRDNLOC] = onPlant.getString("gardenLocation");
+
+                dataToWrite[COL_META_LIKES] = likeCount.toString();
+                dataToWrite[COL_META_DISLIKES] = dislikeCount.toString();
+                dataToWrite[COL_META_COMMENTS] = commentCount.toString();
+                dataToWrite[COL_META_PAGEVIEWS] = pageViews.toString();
+
+                System.out.println(metadata.get("ratings"));
+                System.out.println(feedback);
+                System.out.println(metadata);
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.err.println("ERROR ON PLANT " + onPlant);
+                e.printStackTrace();
+            }
+        }
+
+
+        feedbackWriter.complete();
+        return true;
     }
 
     /**
@@ -392,22 +443,26 @@ public class PlantController {
      *
      * @param plantID a ID number of a plant in the DB
      * @param field a field to be incremented in the metadata object of the plant
+     * @param uploadId the uploadId of the metadata field
      * @return true if a plant was found
      * @throws com.mongodb.MongoCommandException when the id is valid and the field is empty
      */
-    public boolean incrementMetadata(String plantID, String field) {
+    public boolean incrementMetadata(String plantID, String field, String uploadId) {
 
         Document searchDocument = new Document();
         searchDocument.append("id", plantID);
+        searchDocument.append("uploadId", uploadId);
 
         Bson updateDocument = inc("metadata." + field, 1);
 
         return null != plantCollection.findOneAndUpdate(searchDocument, updateDocument);
     }
-    public boolean addVisit(String plantID) {
+
+    public boolean addVisit(String plantID, String uploadId) {
 
         Document filterDoc = new Document();
         filterDoc.append("id", plantID);
+        filterDoc.append("uploadId", uploadId);
 
         Document visit = new Document();
         visit.append("visit", new ObjectId());
