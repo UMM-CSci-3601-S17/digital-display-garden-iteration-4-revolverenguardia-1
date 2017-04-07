@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import org.bson.conversions.Bson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -46,6 +47,15 @@ public class PlantController {
         plantCollection = db.getCollection("plants");
         commentCollection = db.getCollection("comments");
         configCollection = db.getCollection("config");
+
+        //Okay so this fixes a bug, I couldn't tell you what the bug is however.
+        //The first export always caused an expection to be thrown within apache land
+        //If we create one xlsx spreadsheet and write it into RAM (ByteArrayOutputStream)
+        //It has to do with xml tags (xlsx is based off of xml) and the workbook writing
+        //corrupt data for some reason. We should keep an eye on this in the future.
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        FeedbackWriter firstExportHack = new FeedbackWriter(out);
+        firstExportHack.complete();
     }
 
     // List plants
@@ -161,7 +171,7 @@ public class PlantController {
             {
                 if(rating.get("like").equals(true))
                     likes++;
-                else if(rating.get("like").equals(false))
+                else if(rating.get("like").equals(false)) // THIS IS IMPORTANT (do not delete)
                     dislikes++;
             }
         }
@@ -326,11 +336,8 @@ public class PlantController {
                 dataToWrite[COL_META_LIKES] = likeCount.toString();
                 dataToWrite[COL_META_DISLIKES] = dislikeCount.toString();
                 dataToWrite[COL_META_COMMENTS] = commentCount.toString();
+                dataToWrite[COL_META_QRSCANS] = "0";
                 dataToWrite[COL_META_PAGEVIEWS] = pageViews.toString();
-
-                System.out.println(metadata.get("ratings"));
-                System.out.println(feedback);
-                System.out.println(metadata);
 
                 feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
             }
@@ -338,10 +345,8 @@ public class PlantController {
             {
                 e.printStackTrace();
                 System.err.println("ERROR ON PLANT " + onPlant);
-                e.printStackTrace();
             }
         }
-
 
         feedbackWriter.complete();
         return true;

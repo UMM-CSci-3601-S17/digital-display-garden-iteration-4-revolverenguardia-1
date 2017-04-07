@@ -1,14 +1,10 @@
 package umm3601.digitalDisplayGarden;
-import java.awt.*;
-import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -247,6 +243,8 @@ public class FeedbackWriter {
      */
     public void complete() throws IOException{
         workbook.write(outputStream);
+
+        outputStream.flush();
         outputStream.close();
     }
 }
