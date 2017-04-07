@@ -251,7 +251,6 @@ public class ExcelParser {
         {
             //With a plant, grab its metadata and update the new plant with the old metadata
             Document oldMetadata = ((Document)oldPlant.get("metadata"));
-            System.out.println(oldMetadata.toJson());
 
             Document newPlantFilter = new Document(filterByNewUploadId);
             newPlantFilter.put("id", oldPlant.getString("id"));
