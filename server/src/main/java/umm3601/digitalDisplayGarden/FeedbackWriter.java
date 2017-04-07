@@ -8,14 +8,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class CommentWriter {
+public class FeedbackWriter {
 
     OutputStream outputStream;
     XSSFWorkbook workbook;
     XSSFSheet sheet;
     int rowCount;
 
-    public CommentWriter(OutputStream outputStream) throws IOException{
+    public FeedbackWriter(OutputStream outputStream) throws IOException{
         this.outputStream = outputStream;
 
         this.workbook = new XSSFWorkbook();

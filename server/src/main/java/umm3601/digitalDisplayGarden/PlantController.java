@@ -1,9 +1,7 @@
 package umm3601.digitalDisplayGarden;
 
-import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.util.JSON;
@@ -12,7 +10,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import org.bson.conversions.Bson;
-import org.joda.time.DateTime;
 
 import java.io.OutputStream;
 import java.util.Iterator;
@@ -278,15 +275,15 @@ public class PlantController {
                    ));
            Iterator iterator = iter.iterator();
 
-           CommentWriter commentWriter = new CommentWriter(outputStream);
+           FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
 
            while (iterator.hasNext()) {
                Document comment = (Document) iterator.next();
-               commentWriter.writeComment(comment.getString("commentOnPlant"),
+               feedbackWriter.writeComment(comment.getString("commentOnPlant"),
                        comment.getString("comment"),
                        ((ObjectId) comment.get("_id")).getDate());
            }
-           commentWriter.complete();
+           feedbackWriter.complete();
     }
 
     /**
