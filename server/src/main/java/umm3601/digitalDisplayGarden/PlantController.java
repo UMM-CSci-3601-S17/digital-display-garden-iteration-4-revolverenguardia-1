@@ -266,7 +266,7 @@ public class PlantController {
         return true;
     }
 
-    public void writeComments(OutputStream outputStream, String uploadId) throws IOException{
+    public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException{
 
           FindIterable iter = commentCollection.find(
                    and(
@@ -279,11 +279,21 @@ public class PlantController {
 
            while (iterator.hasNext()) {
                Document comment = (Document) iterator.next();
-               feedbackWriter.writeComment(comment.getString("commentOnPlant"),
-                       comment.getString("comment"),
-                       ((ObjectId) comment.get("_id")).getDate());
+               Iterator<Document> onPlantItr = plantCollection.find(and(eq("id", comment.getString("commentOnPlant")), eq("uploadId", uploadId))).iterator();
+               Document onPlant;
+               onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
+
+               String [] dataToWrite = new String[5]; //10 for now
+               dataToWrite[0] = onPlant.getString("id");
+               dataToWrite[1] = onPlant.getString("gardenLocation");
+               dataToWrite[2] = onPlant.getString("commonName");
+               dataToWrite[3] = onPlant.getString("cultivar");
+               dataToWrite[4] = comment.getString("comment");
+
+               feedbackWriter.writeComment(dataToWrite, ((ObjectId) comment.get("_id")).getDate());
            }
            feedbackWriter.complete();
+           return true;
     }
 
     /**

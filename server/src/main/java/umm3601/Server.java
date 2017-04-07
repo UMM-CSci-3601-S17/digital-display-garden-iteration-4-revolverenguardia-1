@@ -114,9 +114,9 @@ public class Server {
             res.header("Content-Disposition", "attachment; filename=\"plant-comments.xlsx\"");
             // Note that after flush() or close() is called on
             // res.raw().getOutputStream(), the response can no longer be
-            // modified. Since writeComments(..) closes the OutputStream
+            // modified. Since writeComment(..) closes the OutputStream
             // when it is done, it needs to be the last line of this function.
-            plantController.writeComments(res.raw().getOutputStream(), req.queryMap().toMap().get("uploadId")[0]);
+            plantController.writeFeedback(res.raw().getOutputStream(), req.queryMap().toMap().get("uploadId")[0]);
             return res;
         });
 
