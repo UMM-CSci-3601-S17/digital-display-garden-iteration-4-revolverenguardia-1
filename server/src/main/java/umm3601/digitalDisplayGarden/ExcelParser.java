@@ -225,7 +225,7 @@ public class ExcelParser {
 
 
 
-        setLiveUploadId(uploadId);
+        setLiveUploadId(uploadId, databaseName);
     }
 
     public void patchDatabase(String[][] cellValues, String oldUploadId, String newUploadId){
@@ -277,7 +277,7 @@ public class ExcelParser {
             }
         }
 
-        setLiveUploadId(newUploadId);
+        setLiveUploadId(newUploadId, databaseName);
     }
 
 
@@ -316,10 +316,10 @@ public class ExcelParser {
     --------------------------- SERVER UTILITIES -------------------------------
      */
 
-    public static void setLiveUploadId(String uploadID){
+    public static void setLiveUploadId(String uploadID, String db){
 
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoDatabase test = mongoClient.getDatabase(db);
         MongoCollection configCollection = test.getCollection("config");
 
         configCollection.deleteMany(exists("liveUploadId"));
@@ -346,10 +346,10 @@ public class ExcelParser {
 
     }
 
-    public static void clearUpload(String uploadId)
+    public static void clearUpload(String uploadId, String db)
     {
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoDatabase test = mongoClient.getDatabase(db);
         MongoCollection plantCollection = test.getCollection("plants");
         MongoCollection commentCollection = test.getCollection("comments");
         Document uploadIdFilter = new Document();
@@ -363,9 +363,9 @@ public class ExcelParser {
      *
      * @return a sorted JSON array of all the distinct uploadIds in the DB
      */
-    public static String listUploadIds() {
+    public static String listUploadIds(String db) {
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoDatabase test = mongoClient.getDatabase(db);
         MongoCollection plantCollection = test.getCollection("plants");
 
         AggregateIterable<Document> documents
@@ -382,15 +382,17 @@ public class ExcelParser {
 //        return JSON.serialize(plantCollection.distinct("uploadId","".getClass()));
     }
 
-    public static String getLiveUploadId() {
+    public static String getLiveUploadId(String db) {
 
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase("test");
+        MongoDatabase test = mongoClient.getDatabase(db);
         MongoCollection configCollection = test.getCollection("config");
         try
         {
             FindIterable<Document> findIterable = configCollection.find(exists("liveUploadId"));
             Iterator<Document> iterator = findIterable.iterator();
+            if(!iterator.hasNext())
+                return null;
             Document doc = iterator.next();
 
             return doc.getString("liveUploadId");

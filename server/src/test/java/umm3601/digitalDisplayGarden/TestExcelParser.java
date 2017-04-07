@@ -91,7 +91,7 @@ public class TestExcelParser {
 
 
 
-        String oldUploadId = ExcelParser.getLiveUploadId();
+        String oldUploadId = ExcelParser.getLiveUploadId(databaseName);
         parser.populateDatabase(plantArray, "an arbitrary ID");
         MongoCollection plants = testDB.getCollection("plants");
 
@@ -101,8 +101,8 @@ public class TestExcelParser {
             assertEquals(11, plants.count(eq("commonName", "Geranium")));
         }
         finally {
-            ExcelParser.clearUpload("an arbitrary ID");
-            ExcelParser.setLiveUploadId(oldUploadId);
+            ExcelParser.clearUpload("an arbitrary ID", databaseName);
+            ExcelParser.setLiveUploadId(oldUploadId, databaseName);
         }
 
     }
@@ -112,16 +112,16 @@ public class TestExcelParser {
 
         //Clear the db-blah-test database BEFORE the test
         //So that you view only the most recent test results
-        ExcelParser.clearUpload("an arbitrary ID");
-        ExcelParser.clearUpload("a totally arbitrary ID");
-        ExcelParser.clearUpload("an even more arbitrary ID");
+        ExcelParser.clearUpload("an arbitrary ID", databaseName);
+        ExcelParser.clearUpload("a totally arbitrary ID", databaseName);
+        ExcelParser.clearUpload("an even more arbitrary ID", databaseName);
 
         String[][] plantArray = parser.extractFromXLSX(fromFile);
         plantArray = parser.collapseHorizontally(plantArray);
         plantArray = parser.collapseVertically(plantArray);
         parser.replaceNulls(plantArray);
 
-        String oldUploadId = ExcelParser.getLiveUploadId();
+        String oldUploadId = ExcelParser.getLiveUploadId(databaseName);
         parser.populateDatabase(plantArray, "an arbitrary ID");
         MongoCollection plants = testDB.getCollection("plants");
 
@@ -158,7 +158,7 @@ public class TestExcelParser {
 
         }
         finally {
-            ExcelParser.setLiveUploadId(oldUploadId);
+            ExcelParser.setLiveUploadId(oldUploadId, databaseName);
         }
 
     }
