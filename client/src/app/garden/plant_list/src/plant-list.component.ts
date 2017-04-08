@@ -4,7 +4,7 @@
  *
  * @author Iteration 2 - Team Omar Anwar
  */
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { PlantListService } from "./plant-list.service";
 import { Plant } from "./plant";
 import { FilterBy } from "../../filter.pipe";

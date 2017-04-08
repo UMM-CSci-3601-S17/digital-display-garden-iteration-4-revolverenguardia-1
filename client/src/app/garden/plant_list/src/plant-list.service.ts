@@ -28,9 +28,12 @@ export class PlantListService {
     constructor(private http:Http) {
 
         this.getPlantsFromServer().subscribe(
-            plants => this.plantCollection = new PlantCollection(plants),
-            err => {
-                console.log(err);
+            plants => {
+                this.plantCollection = new PlantCollection(plants);
+                PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
+                    err => {
+                        console.log(err);
+                    }
             }
         );
     }
