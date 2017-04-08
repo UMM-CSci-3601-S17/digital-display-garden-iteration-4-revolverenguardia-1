@@ -1,0 +1,46 @@
+<!--
+    Provides an interface to view and interact with all Common Name specific data.
+
+    @author Iteration 3 - Team revolver en guardia
+-->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+            a {
+                text-decoration: none;
+                color: white;
+            }
+            #bed-list {
+                list-style-type: none;
+                background-color: #333;
+                height: 95%;
+                padding: 8%;
+            }
+            li {
+                font-size: 150%;
+                text-align: center;
+                padding-bottom: 16%;
+            }
+
+        </style>
+    </head>
+
+    <div id="common-name-list-view">
+
+        <div id="common-name-list-header">
+            <a class="active"
+               (click)="handleCommonNameListClick($event.target.textContent)">{{COMMON_NAME_LIST_HEADER}}
+            </a>
+        </div>
+
+        <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
+            <li *ngFor="let commonName of commonNames">
+                <a>{{ commonName._id }}</a>
+            </li>
+        </ul>
+
+    </div>
+
+</html>
