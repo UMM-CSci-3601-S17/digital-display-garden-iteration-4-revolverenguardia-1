@@ -5,7 +5,7 @@
  * this PlantListService also provides the ability to filter the plants contained within the
  * PlantListComponent.
  *
- * @author Iteration 2 - Team Omar Anwar
+ * @author Iteration 3 - Team revolver en guardia
  */
 import {Injectable} from '@angular/core';
 import { Http } from '@angular/http';
@@ -24,6 +24,9 @@ export class PlantListService {
 
     // The bed filter we have currently filtered by
     private currentBedFilter;
+
+    // The common name filter we have currently filtered by
+    private currentCommonNameFilter;
 
     constructor(private http:Http) {
 
@@ -64,6 +67,29 @@ export class PlantListService {
             // Filter by the bed name
             else {
                 let filteredPlants: Plant[] = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
+                PlantListComponent.getInstance().setFilteredPlants(filteredPlants);
+            }
+        }
+    }
+
+    /**
+     * If the data has not already been filtered by the current common name this method
+     * filters the plant data.
+     * @param commonName - common name to filter by
+     */
+    public filterByCommonName(commonName: string): void{
+
+        // Check that we haven't already filtered
+        if(this.currentCommonNameFilter != commonName) {
+
+            this.currentCommonNameFilter = commonName;
+
+            if(this.currentCommonNameFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
+                PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
+
+            // Filter by the common name
+            else {
+                let filteredPlants: Plant[] = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
                 PlantListComponent.getInstance().setFilteredPlants(filteredPlants);
             }
         }

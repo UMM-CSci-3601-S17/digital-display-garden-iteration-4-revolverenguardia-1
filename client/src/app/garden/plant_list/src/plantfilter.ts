@@ -31,4 +31,22 @@ export class PlantFilter {
 
         return filteredPlants;
     }
+
+    /**
+     * Filters the provided plant collection by the provided common name.
+     * @param commonName - the common name to filter by
+     * @param plants - the plants array to filter
+     * @returns {Plant[]} - the filtered plant array
+     */
+    public static filterByCommonName(commonName: string, plants: Plant[]): Plant[]{
+
+        let filteredPlants: Plant[] = [];
+
+        plants.forEach((plant, index) => {
+            if (plant.commonName == commonName)
+                filteredPlants.push(plant);
+        });
+
+        return filteredPlants;
+    }
 }

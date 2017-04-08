@@ -81,4 +81,12 @@ export class PlantListComponent {
         this.plantListService.filterByBedName(bedName);
     }
 
+    /**
+     * Filters the filteredplants array by the provided common name.
+     * @param commonName - the common name to filter the PlantListComponent's data by
+     */
+    public filterByCommonName(commonName: string): void{
+        this.plantListService.filterByCommonName(commonName);
+    }
+
 }
