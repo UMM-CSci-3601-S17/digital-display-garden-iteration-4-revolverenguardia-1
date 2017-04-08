@@ -46,7 +46,7 @@ describe("Bed list", () => {
 
     it("Get Bed List Header", () => {
         let bed: BedListComponent = new BedListComponent(null);
-        expect(bed.BED_LIST_HEADER).toBe("Bed");
+        expect(bed.BED_LIST_HEADER).toBe("Filter");
     });
 
     it("Get Bed Names", () => {
