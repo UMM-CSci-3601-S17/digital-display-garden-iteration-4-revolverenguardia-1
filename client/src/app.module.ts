@@ -10,8 +10,10 @@ import { NavbarComponent } from './app/navbar/navbar.component';
 import {GardenComponent} from "./app/garden/src/garden-component";
 import {PlantListComponent} from "./app/garden/plant_list/src/plant-list.component";
 import {BedListComponent} from "./app/garden/bed_list/src/bed-list.component";
+import { CommonNameListComponent } from "./app/garden/common_name_list/src/common-name-list.component";
 import {PlantListService} from "./app/garden/plant_list/src/plant-list.service";
 import {BedListService} from "./app/garden/bed_list/src/bed-list.service";
+import { CommonNameListService } from "./app/garden/common_name_list/src/common-name-list.service";
 import {AdminComponent} from "./app/admin/admin.component";
 import {PlantComponent} from "./app/garden/plant_list/src/plant.component";
 import {ImportComponent} from "./app/admin/import.component";
@@ -39,13 +41,14 @@ import {FilterGardenSidebarComponent} from "./app/garden/filter_garden_sidebar/f
         FilterGardenSidebarComponent,
         PlantListComponent,
         BedListComponent,
+        CommonNameListComponent,
         PlantComponent,
         AdminComponent,
         ImportComponent,
         ExportComponent,
         FileUploadComponent
     ],
-    providers: [ PlantListService, BedListService, AdminService, PlantService ],
+    providers: [ PlantListService, BedListService, CommonNameListService, AdminService, PlantService ],
     bootstrap: [ AppComponent ]
 })
 
