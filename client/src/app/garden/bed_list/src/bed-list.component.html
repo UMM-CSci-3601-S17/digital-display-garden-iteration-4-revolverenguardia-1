@@ -8,52 +8,31 @@
 <html>
     <head>
         <style>
-
-            /*Global References*/
-            body {
-                display: inline;
-            }
             a {
-                font-size: 150%;
-                display: block;
                 text-decoration: none;
-                padding: 32px 0px 32px 0px;
-                text-align: center;
-                color: #48000E;
-            }
-            a.active {
-                padding: 8px 0px 8px 0px;
-                background-color: #196B1D;
                 color: white;
             }
-            a:hover:not(.active) {
-                background-color: #555;
-                color: white;
-            }
-
-            /*ID References*/
             #bed-list {
                 list-style-type: none;
-                padding: 0;
-                height: 75%;
-                background-color: #f1f1f1;
-                overflow: hidden;
-                overflow-y: scroll;
+                background-color: #333;
+                height: 95%;
+                padding: 8%;
             }
-            #filter-list-view{
-                float: right;
-                width: 5%;
+            li {
+                font-size: 150%;
+                text-align: center;
+                padding-bottom: 16%;
             }
 
         </style>
     </head>
 
-    <body>
-
         <div id="bed-list-view">
 
             <div id="bed-list-header">
-                <a class="active" (click)="handleBedListClick($event.target.textContent)">{{BED_LIST_HEADER}}</a>
+                <a class="active"
+                   (click)="handleBedListClick($event.target.textContent)">{{BED_LIST_HEADER}}
+                </a>
             </div>
 
             <ul id="bed-list" (click)="handleBedListClick($event.target.textContent)">
@@ -64,5 +43,4 @@
 
         </div>
 
-    </body>
 </html>
