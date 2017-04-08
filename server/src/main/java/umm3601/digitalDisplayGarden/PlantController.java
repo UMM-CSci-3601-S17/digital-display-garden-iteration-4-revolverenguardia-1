@@ -217,6 +217,17 @@ public class PlantController {
         return beds.toArray(new String[beds.size()]);
     }
 
+    public String getCommonNamesAsJson(String uploadID){
+        AggregateIterable<Document> documents
+                = plantCollection.aggregate(
+                Arrays.asList(
+                        Aggregates.match(eq("uploadId", uploadID)), //!! Order is important here
+                        Aggregates.group("$commonName"),
+                        Aggregates.sort(Sorts.ascending("_id"))
+                ));
+        return JSON.serialize(documents);
+    }
+
     /**
      * Accepts string representation of JSON object containing
      * at least the following.
