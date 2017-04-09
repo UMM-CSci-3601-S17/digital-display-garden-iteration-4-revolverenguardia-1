@@ -3,6 +3,7 @@ package umm3601;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
+import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.digitalDisplayGarden.PlantController;
 
 import java.io.File;
@@ -43,6 +44,7 @@ public class Server {
         staticFiles.location("/public");
 
         PlantController plantController = new PlantController(databaseName);
+        GardenCharts chartMaker = new GardenCharts(databaseName);
 
         options("/*", (request, response) -> {
 
@@ -157,6 +159,13 @@ public class Server {
             res.type("application/json");
             return plantController.storePlantComment(req.body(), plantController.getLiveUploadId());
         });
+
+        // Posting a comment
+        get("api/chart/viewsPerHour", (req, res) -> {
+            res.type("application/json");
+            return chartMaker.getViewsPerHour(plantController.getLiveUploadId());
+        });
+
 
         // Accept an xls file
         post("api/import", (req, res) -> {
