@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+//import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import {AdminService} from "./admin.service";
 import {Observable} from "rxjs";
 
@@ -8,29 +8,27 @@ import {Observable} from "rxjs";
 })
 
 // Component class
-export class GraphComponent {
+export class GraphComponent implements OnInit {
 
-    public text: string;
-    private uploadIds: string[];
-    private stuff: Observable<string[]>;
+
     constructor(private adminService: AdminService) {
-        this.text = "Hello world!";
     }
 
-/*
+    dataTable : any[][];
+
     ngOnInit(): void {
-        this.adminService.getUploadIds()
-            .subscribe(result => this.uploadIds = result , err => console.log(err));
-    }*/
+        this.adminService.getViewsPerHour()
+            .subscribe(result => { this.line_ChartData["dataTable"] = result;
+                 console.log(result)}, err => console.log(err));
+    }
 
     public line_ChartData = {
         chartType: `LineChart`,
-        dataTable: [
-            ['Year', 'Sales', 'Expenses'],
-            ['2004', 1000, 400],
-            ['2005', 1170, 460],
-            ['2006', 660, 1120],
-            ['2007', 1030, 540]],
+        dataTable: [['Year', 'Sales', 'Expenses'],
+            ['2004',  1000,      400],
+            ['2005',  1170,      460],
+            ['2006',  660,       1120],
+            ['2007',  1030,      540]],
         options: {'title': 'dataAndStuff'},
     };
 
