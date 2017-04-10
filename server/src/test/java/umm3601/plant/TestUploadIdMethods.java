@@ -47,10 +47,12 @@ public class TestUploadIdMethods {
     @Test
     public void TestGenerateNewLiveUploadId(){
 
+        Date date = new Date();
         String newUploadId = ExcelParser.generateNewUploadId().substring(11,19);
 
-        Date date = new Date();
         String theDate = date.toString();
+        System.out.println(theDate);
+        System.out.println(newUploadId);
 
 
         assertEquals("the time that the upload id was made should correspond to the current time",theDate.substring(11,19),newUploadId);
