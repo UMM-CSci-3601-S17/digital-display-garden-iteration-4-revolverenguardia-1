@@ -20,27 +20,73 @@ export class GraphComponent implements OnInit {
         this.adminService.getViewsPerHour()
             .subscribe(result => { this.columnChartOptions["dataTable"] = result;
                  console.log(result)}, err => console.log(err));
+        this.adminService.getViewsPerHour()
+            .subscribe(result => { this.line_ChartData["dataTable"] = result;
+                console.log(result)}, err => console.log(err));
 
     }
 
+    /*updateGraph(): void{
+        this.adminService.getViewsPerHour()
+            .subscribe(result => { this.columnChartOptions["dataTable"] = result;
+                console.log(result)}, err => console.log(err));
+    }*/
+
     public line_ChartData = {
         chartType: `LineChart`,
-        dataTable: [['Year', 'Sales', 'Expenses'],
-            ['2004',  1000,      400],
-            ['2005',  1170,      460],
-            ['2006',  660,       1120],
-            ['2007',  1030,      540]],
-        options: {'title': 'dataAndStuff'},
+        dataTable: [['Hour', 'Views'],
+            ['0',  0],
+            ['1',  0],
+            ['2',  0],
+            ['3',  0],
+            ['4',  0],
+            ['5',  0],
+            ['6',  0],
+            ['7',  0],
+            ['8',  0],
+            ['9',  0],
+            ['10',  0],
+            ['11',  0],
+            ['12',  0],
+            ['13',  0],
+            ['14',  0],
+            ['15',  0],
+            ['16',  0],
+            ['17',  0],
+            ['18',  0],
+            ['19',  0],
+            ['20',  0],
+            ['21',  0],
+            ['22',  0],
+            ['23',  0],
+        ],
+        options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
     };
 
     public columnChartOptions = {
         chartType: `ColumnChart`,
-        dataTable: [['Year', 'Sales', 'Expenses'],
-            ['2004',  1000,      400],
-            ['2005',  1170,      460],
-            ['2006',  660,       1120],
-            ['2007',  1030,      540]],
-        options: {'title': 'dataAndStuff'},
+        dataTable: [['Hour', 'Views'],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
+            ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
+            ],
+        options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
+    }
+
+    public mapOptions = {
+
+        chartType: `Map`,
+        dataTable: [['Lat', 'Long', 'Location'],
+            [45.593823, -95.875248,   'GardenLocation = 1' ],
+            [45.593831, -95.875525,   'green'],
+/*            ['Washington DC, United States',    'Washington', 'pink' ],
+            ['Philadelphia PA, United States',  'Philly',     'green'],
+            ['Pittsburgh PA, United States',    'Pittsburgh', 'green'],
+            ['Buffalo NY, United States',       'Buffalo',    'blue' ],
+            ['Baltimore MD, United States',     'Baltimore',  'pink' ],
+            ['Albany NY, United States',        'Albany',     'blue' ],
+            ['Allentown PA, United States',     'Allentown',  'green']*/
+        ],
+        options: {'zoomLevel' : '19'}
     }
 
 }
