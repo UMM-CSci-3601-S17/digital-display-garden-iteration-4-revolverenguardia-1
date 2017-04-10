@@ -286,7 +286,7 @@ public class PlantController {
         return true;
     }
 
-    public void writeComments(OutputStream outputStream, String uploadId) throws IOException{
+    public void exportComments(OutputStream outputStream, String uploadId) throws IOException{
 
           FindIterable iter = commentCollection.find(
                    and(
@@ -296,6 +296,9 @@ public class PlantController {
            Iterator iterator = iter.iterator();
 
            CommentWriter commentWriter = new CommentWriter(outputStream);
+
+           //Iterate through comments in database to Write them to OutputStream
+            //passes plantID, comment, and date as strings to writeComment in CommentWriter
 
            while (iterator.hasNext()) {
                Document comment = (Document) iterator.next();
