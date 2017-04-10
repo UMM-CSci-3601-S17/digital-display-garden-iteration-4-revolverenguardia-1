@@ -34,6 +34,9 @@ public class ListPlants {
         Map<String, String[]> queryParams = new HashMap<>();
         queryParams.put("commonName", new String[]{"Alternanthera"});
         String rawPlants = plantController.listPlants(queryParams, "first uploadId");
+
+        System.out.println(rawPlants);
+
         filteredPlants = gson.fromJson(rawPlants, Plant[].class);
         assertEquals("Incorrect number of plants with commonName Alternanthera", 1, filteredPlants.length);
         assertEquals("Incorrect commonName of plant", "Alternanthera", filteredPlants[0].commonName);
@@ -51,6 +54,7 @@ public class ListPlants {
         Map<String, String[]> queryParams = new HashMap<>();
         queryParams.put("commonName", new String[]{"Bob"});
         String rawPlants = plantController.listPlants(queryParams, "second uploadId");
+
         filteredPlants = gson.fromJson(rawPlants, Plant[].class);
         assertEquals("Incorrect number of plants with commonName Bob", 0, filteredPlants.length);
     }

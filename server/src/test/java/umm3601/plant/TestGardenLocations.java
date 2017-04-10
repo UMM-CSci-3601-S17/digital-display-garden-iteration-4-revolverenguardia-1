@@ -28,6 +28,7 @@ public class TestGardenLocations {
 
         String json = plantController.getGardenLocationsAsJson("first uploadId");
         gardenLocations = gson.fromJson(json, GardenLocation[].class);
+
         assertEquals("Incorrect number of unique garden locations", 1, gardenLocations.length);
         assertEquals("Incorrect zero index", "10.0", gardenLocations[0]._id);
         assertEquals("Incorrect value for index 0", "10.0", gardenLocations[0]._id);
