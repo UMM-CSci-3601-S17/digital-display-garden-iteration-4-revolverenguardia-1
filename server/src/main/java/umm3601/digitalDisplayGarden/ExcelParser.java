@@ -327,12 +327,13 @@ public class ExcelParser {
     }
 
     public static String generateNewUploadId() {
+        java.util.Date juDate = new Date();
+        DateTime dt = new DateTime(juDate);
+
         StringBuilder sb = new StringBuilder();
         // Send all output to the Appendable object sb
         Formatter formatter = new Formatter(sb);
 
-        java.util.Date juDate = new Date();
-        DateTime dt = new DateTime(juDate);
 
         int day = dt.getDayOfMonth();
         int month = dt.getMonthOfYear();
