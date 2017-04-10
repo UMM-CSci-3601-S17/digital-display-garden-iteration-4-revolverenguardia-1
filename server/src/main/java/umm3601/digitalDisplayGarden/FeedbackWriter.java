@@ -23,6 +23,7 @@ public class FeedbackWriter {
     XSSFCellStyle styleWordWrap;
 
     //Comment Sheet Column Designations
+    public static final int COL_CMT_FIELDS = 6;
     public static final int COL_CMT_PLANTID = 0,
                                 COL_CMT_COMMONNAME = 1,
                                 COL_CMT_CULTIVAR = 2,
@@ -30,7 +31,7 @@ public class FeedbackWriter {
                                 COL_CMT_COMMENT = 4,
                                 COL_CMT_DATE = 5;
 
-
+    public static final int COL_META_FIELDS = 8;
     public static final int COL_META_PLANTID = 0,
                                 COL_META_COMMONNAME = 1,
                                 COL_META_CULTIVAR = 2,
@@ -38,8 +39,8 @@ public class FeedbackWriter {
                                 COL_META_LIKES = 4,
                                 COL_META_DISLIKES = 5,
                                 COL_META_COMMENTS = 6,
-                                COL_META_QRSCANS = 7,
-                                COL_META_PAGEVIEWS = 8;
+                                //COL_META_QRSCANS = 7,
+                                COL_META_PAGEVIEWS = 7;
 
     public static final int SHEET_COMMENTS = 0,
                             SHEET_METADATA = 1;
@@ -170,12 +171,14 @@ public class FeedbackWriter {
         cell.setCellValue("Comments");
         cell.setCellStyle(styleCentered);
 
+        /*
         cell = row1.createCell(COL_META_QRSCANS);
         cell.setCellValue("QR");
         cell.setCellStyle(styleCentered);
         cell = row2.createCell(COL_META_QRSCANS);
         cell.setCellValue("Scans");
         cell.setCellStyle(styleCentered);
+        */
 
         cell = row1.createCell(COL_META_PAGEVIEWS);
         cell.setCellValue("Page");

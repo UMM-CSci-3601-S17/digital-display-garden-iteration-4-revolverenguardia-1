@@ -2,11 +2,9 @@ package umm3601.plant;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
-import umm3601.digitalDisplayGarden.ExcelParser;
 import umm3601.digitalDisplayGarden.FeedbackWriter;
 import umm3601.digitalDisplayGarden.PlantController;
 
@@ -14,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static umm3601.digitalDisplayGarden.FeedbackWriter.*;
 import static junit.framework.TestCase.assertEquals;
 
 /**
@@ -38,7 +37,7 @@ public class TestExportFeedback {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
         FeedbackWriter feedback = new FeedbackWriter(buffer);
-        String [] input = new String[6];
+        String [] input = new String[COL_CMT_FIELDS];
         for(int i = 0; i < plantComments; i++) {
             input[FeedbackWriter.COL_CMT_PLANTID] = "16001";
             input[FeedbackWriter.COL_CMT_COMMONNAME] = "Alternathera";
@@ -49,17 +48,16 @@ public class TestExportFeedback {
             feedback.writeToSheet(input, FeedbackWriter.SHEET_COMMENTS);
         }
 
-        input = new String[9];
+        input = new String[FeedbackWriter.COL_META_FIELDS];
         for(int i = 0; i < plantMetadata; i++) {
-            input[FeedbackWriter.COL_META_PLANTID] = "16001";
-            input[FeedbackWriter.COL_META_COMMONNAME] = "Alternathera";
-            input[FeedbackWriter.COL_META_CULTIVAR] = "Experimental";
-            input[FeedbackWriter.COL_META_GRDNLOC] = "1S";
-            input[FeedbackWriter.COL_META_LIKES] = Integer.toString(i);
-            input[FeedbackWriter.COL_META_DISLIKES] = "0";
-            input[FeedbackWriter.COL_META_COMMENTS] = "4";
-            input[FeedbackWriter.COL_META_QRSCANS] = "1";
-            input[FeedbackWriter.COL_META_PAGEVIEWS] = "4";
+            input[COL_META_PLANTID] = "16001";
+            input[COL_META_COMMONNAME] = "Alternathera";
+            input[COL_META_CULTIVAR] = "Experimental";
+            input[COL_META_GRDNLOC] = "1S";
+            input[COL_META_LIKES] = Integer.toString(i);
+            input[COL_META_DISLIKES] = "0";
+            input[COL_META_COMMENTS] = "4";
+            input[COL_META_PAGEVIEWS] = "4";
             feedback.writeToSheet(input, FeedbackWriter.SHEET_METADATA);
         }
 

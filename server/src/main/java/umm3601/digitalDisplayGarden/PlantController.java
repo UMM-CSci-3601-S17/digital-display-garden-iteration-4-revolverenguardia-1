@@ -285,7 +285,7 @@ public class PlantController {
             Document onPlant;
             onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
             try {
-                String[] dataToWrite = new String[6];
+                String[] dataToWrite = new String[COL_CMT_FIELDS];
                 dataToWrite[COL_CMT_PLANTID] = onPlant.getString("id");
                 dataToWrite[COL_CMT_COMMONNAME] = onPlant.getString("commonName");
                 dataToWrite[COL_CMT_CULTIVAR] = onPlant.getString("cultivar");
@@ -311,7 +311,7 @@ public class PlantController {
             Document onPlant = (Document) iterator.next();
 
             try {
-                String[] dataToWrite = new String[9];
+                String[] dataToWrite = new String[COL_META_FIELDS];
                 Document metadata = (Document) onPlant.get("metadata");
                 Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
 
@@ -328,7 +328,6 @@ public class PlantController {
                 dataToWrite[COL_META_LIKES] = likeCount.toString();
                 dataToWrite[COL_META_DISLIKES] = dislikeCount.toString();
                 dataToWrite[COL_META_COMMENTS] = commentCount.toString();
-                dataToWrite[COL_META_QRSCANS] = "0";
                 dataToWrite[COL_META_PAGEVIEWS] = pageViews.toString();
 
                 feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
