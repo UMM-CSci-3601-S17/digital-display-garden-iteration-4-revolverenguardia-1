@@ -26,18 +26,20 @@ public class TestExportFeedback {
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        //PopulateMockDatabase db = new PopulateMockDatabase();
+        //db.clearAndPopulateDBAgain();
+        //plantController = new PlantController(databaseName);
     }
 
     @Test
     public void testExportFeedback() throws IOException {
+        int plantComments = 160;
+        int plantMetadata = 500;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
         FeedbackWriter feedback = new FeedbackWriter(buffer);
         String [] input = new String[6];
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < plantComments; i++) {
             input[FeedbackWriter.COL_CMT_PLANTID] = "16001";
             input[FeedbackWriter.COL_CMT_COMMONNAME] = "Alternathera";
             input[FeedbackWriter.COL_CMT_CULTIVAR] = "Experimental";
@@ -48,7 +50,7 @@ public class TestExportFeedback {
         }
 
         input = new String[9];
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < plantMetadata; i++) {
             input[FeedbackWriter.COL_META_PLANTID] = "16001";
             input[FeedbackWriter.COL_META_COMMONNAME] = "Alternathera";
             input[FeedbackWriter.COL_META_CULTIVAR] = "Experimental";
@@ -62,7 +64,6 @@ public class TestExportFeedback {
         }
 
         feedback.complete();
-
         //Use that output stream and produce an input stream from the bytes to
         //read the spreadsheet into an XSSFWorkbook
         ByteArrayInputStream reRead = new ByteArrayInputStream(buffer.toByteArray());
@@ -72,13 +73,13 @@ public class TestExportFeedback {
         Sheet sheet;
 
         sheet = workbook.getSheetAt(0); //Comment Sheet
-        assertEquals("Comment Sheet does not contain 4+2 rows",sheet.getLastRowNum() - sheet.getFirstRowNum(), 4+2);
+        assertEquals("Comment Sheet does not contain "+ plantComments +"+2 rows",sheet.getPhysicalNumberOfRows(), plantComments+2);
 
         sheet = workbook.getSheetAt(1); //Metadata Sheet
-        assertEquals("Metadata Sheet does not contain 2+2 rows",sheet.getLastRowNum() - sheet.getFirstRowNum(), 2+2);
+        assertEquals("Metadata Sheet does not contain "+ plantMetadata + "+2 rows",sheet.getPhysicalNumberOfRows(), plantMetadata+2);
 
 
 
     }
-
 }
+
