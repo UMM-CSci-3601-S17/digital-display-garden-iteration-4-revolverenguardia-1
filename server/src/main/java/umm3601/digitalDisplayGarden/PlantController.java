@@ -314,6 +314,7 @@ public class PlantController {
                 Document metadata = (Document) onPlant.get("metadata");
                 Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
 
+
                 Integer likeCount = feedback.getInteger("likeCount");
                 Integer dislikeCount = feedback.getInteger("dislikeCount");
                 Integer commentCount = feedback.getInteger("commentCount");
@@ -323,6 +324,7 @@ public class PlantController {
                 dataToWrite[COL_PLANT_COMMONNAME] = onPlant.getString("commonName");
                 dataToWrite[COL_PLANT_CULTIVAR] = onPlant.getString("cultivar");
                 dataToWrite[COL_PLANT_GRDNLOC] = onPlant.getString("gardenLocation");
+
 
                 dataToWrite[COL_PLANT_LIKES] = likeCount.toString();
                 dataToWrite[COL_PLANT_DISLIKES] = dislikeCount.toString();

@@ -12,8 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
 
-public class ListPlants {
+public class TestPlantController {
 
 
     private final static String databaseName = "data-for-testing-only";
@@ -94,5 +95,20 @@ public class ListPlants {
 
         assertEquals(2, filteredPlants.length);
     }
+
+    @Test
+    public void TestGetPlantsByPlantID(){
+
+        String plantJson = "{ \"_id\" : { \"$oid\" : \"58d1c36efb0cac4e15afd202\" }, \"commonName\" : \"Alternanthera\", \"cultivar\" : \"Experimental\", \"gardenLocation\" : \"10.0\", \"id\" : \"16001.0\" }";
+        String plantJson2 = "{ \"_id\" : { \"$oid\" : \"58d1c36efb0cac4e15afd204\" }, \"commonName\" : \"Dianthus\", \"cultivar\" : \"Jolt™ Pink F1\", \"gardenLocation\" : \"7.0\", \"id\" : \"16040.0\" }";
+        assertEquals("this should be plant 1",plantJson,plantController.getPlantByPlantID("16001.0","first uploadId"));
+        assertEquals("this should be plant 2",plantJson2,plantController.getPlantByPlantID("16040.0","second uploadId"));
+
+        System.out.println(plantController.getPlantByPlantID("16005", "first uploadId").charAt(0));
+        //test to see if the plant doesnt appear'
+        assertEquals("this plant doesnt exist thus should return \"null\"",plantController.getPlantByPlantID("16005", "first uploadId"), "null");
+
+    }
+
 
 }
