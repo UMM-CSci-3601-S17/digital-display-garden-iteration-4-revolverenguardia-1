@@ -18,8 +18,9 @@ export class GraphComponent implements OnInit {
 
     ngOnInit(): void {
         this.adminService.getViewsPerHour()
-            .subscribe(result => { this.line_ChartData["dataTable"] = result;
+            .subscribe(result => { this.columnChartOptions["dataTable"] = result;
                  console.log(result)}, err => console.log(err));
+
     }
 
     public line_ChartData = {
@@ -31,5 +32,15 @@ export class GraphComponent implements OnInit {
             ['2007',  1030,      540]],
         options: {'title': 'dataAndStuff'},
     };
+
+    public columnChartOptions = {
+        chartType: `ColumnChart`,
+        dataTable: [['Year', 'Sales', 'Expenses'],
+            ['2004',  1000,      400],
+            ['2005',  1170,      460],
+            ['2006',  660,       1120],
+            ['2007',  1030,      540]],
+        options: {'title': 'dataAndStuff'},
+    }
 
 }
