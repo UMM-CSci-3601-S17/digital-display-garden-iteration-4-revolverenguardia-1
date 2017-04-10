@@ -39,26 +39,26 @@ public class TestExportFeedback {
         FeedbackWriter feedback = new FeedbackWriter(buffer);
         String [] input = new String[COL_CMT_FIELDS];
         for(int i = 0; i < plantComments; i++) {
-            input[FeedbackWriter.COL_CMT_PLANTID] = "16001";
-            input[FeedbackWriter.COL_CMT_COMMONNAME] = "Alternathera";
-            input[FeedbackWriter.COL_CMT_CULTIVAR] = "Experimental";
-            input[FeedbackWriter.COL_CMT_GRDNLOC] = "1S";
-            input[FeedbackWriter.COL_CMT_COMMENT] = "What a lovely flower! " + i;
-            input[FeedbackWriter.COL_CMT_DATE] = "4 10 2017"; //This isn't the format
-            feedback.writeToSheet(input, FeedbackWriter.SHEET_COMMENTS);
+            input[COL_CMT_PLANTID] = "16001";
+            input[COL_CMT_COMMONNAME] = "Alternathera";
+            input[COL_CMT_CULTIVAR] = "Experimental";
+            input[COL_CMT_GRDNLOC] = "1S";
+            input[COL_CMT_COMMENT] = "What a lovely flower! " + i;
+            input[COL_CMT_DATE] = "4 10 2017"; //This isn't the format
+            feedback.writeToSheet(input, SHEET_COMMENTS);
         }
 
-        input = new String[FeedbackWriter.COL_META_FIELDS];
+        input = new String[FeedbackWriter.COL_PLANT_FIELDS];
         for(int i = 0; i < plantMetadata; i++) {
-            input[COL_META_PLANTID] = "16001";
-            input[COL_META_COMMONNAME] = "Alternathera";
-            input[COL_META_CULTIVAR] = "Experimental";
-            input[COL_META_GRDNLOC] = "1S";
-            input[COL_META_LIKES] = Integer.toString(i);
-            input[COL_META_DISLIKES] = "0";
-            input[COL_META_COMMENTS] = "4";
-            input[COL_META_PAGEVIEWS] = "4";
-            feedback.writeToSheet(input, FeedbackWriter.SHEET_METADATA);
+            input[COL_PLANT_PLANTID] = "16001";
+            input[COL_PLANT_COMMONNAME] = "Alternathera";
+            input[COL_PLANT_CULTIVAR] = "Experimental";
+            input[COL_PLANT_GRDNLOC] = "1S";
+            input[COL_PLANT_LIKES] = Integer.toString(i);
+            input[COL_PLANT_DISLIKES] = "0";
+            input[COL_PLANT_COMMENTS] = "4";
+            input[COL_PLANT_PAGEVIEWS] = "4";
+            feedback.writeToSheet(input, SHEET_METADATA);
         }
 
         feedback.complete();

@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 
 import org.bson.conversions.Bson;
 
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -311,7 +310,7 @@ public class PlantController {
             Document onPlant = (Document) iterator.next();
 
             try {
-                String[] dataToWrite = new String[COL_META_FIELDS];
+                String[] dataToWrite = new String[COL_PLANT_FIELDS];
                 Document metadata = (Document) onPlant.get("metadata");
                 Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
 
@@ -320,15 +319,15 @@ public class PlantController {
                 Integer commentCount = feedback.getInteger("commentCount");
                 Integer pageViews = metadata.getInteger("pageViews");
 
-                dataToWrite[COL_META_PLANTID] = onPlant.getString("id");
-                dataToWrite[COL_META_COMMONNAME] = onPlant.getString("commonName");
-                dataToWrite[COL_META_CULTIVAR] = onPlant.getString("cultivar");
-                dataToWrite[COL_META_GRDNLOC] = onPlant.getString("gardenLocation");
+                dataToWrite[COL_PLANT_PLANTID] = onPlant.getString("id");
+                dataToWrite[COL_PLANT_COMMONNAME] = onPlant.getString("commonName");
+                dataToWrite[COL_PLANT_CULTIVAR] = onPlant.getString("cultivar");
+                dataToWrite[COL_PLANT_GRDNLOC] = onPlant.getString("gardenLocation");
 
-                dataToWrite[COL_META_LIKES] = likeCount.toString();
-                dataToWrite[COL_META_DISLIKES] = dislikeCount.toString();
-                dataToWrite[COL_META_COMMENTS] = commentCount.toString();
-                dataToWrite[COL_META_PAGEVIEWS] = pageViews.toString();
+                dataToWrite[COL_PLANT_LIKES] = likeCount.toString();
+                dataToWrite[COL_PLANT_DISLIKES] = dislikeCount.toString();
+                dataToWrite[COL_PLANT_COMMENTS] = commentCount.toString();
+                dataToWrite[COL_PLANT_PAGEVIEWS] = pageViews.toString();
 
                 feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
             }
