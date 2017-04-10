@@ -36,6 +36,11 @@ public class PopulateMockDatabase {
         MongoCollection plants = db.getCollection("plants");
         db.drop();
 
+
+        MongoCollection config = db.getCollection("config");
+        config.insertOne(new Document().append("liveUploadId", "first uploadId"));
+
+
         //First Plant Alternanthera
         Document alternanthera = new Document();
         alternanthera.append("_id", new ObjectId("58d1c36efb0cac4e15afd202"));

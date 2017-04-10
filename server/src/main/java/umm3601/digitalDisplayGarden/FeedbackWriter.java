@@ -111,7 +111,7 @@ public class FeedbackWriter {
         commentSheet.setColumnWidth(COL_CMT_DATE,6800);
         commentSheet.createFreezePane(0, 2);
 
-        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:I1200");
+        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:F1200");
         commentSheet.setAutoFilter(rangeAddress);
 
         commentRowCount = 2;
@@ -183,7 +183,7 @@ public class FeedbackWriter {
         metadataSheet.createFreezePane(0, 2);
 
 
-        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:I1200");
+        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:H1200");
         metadataSheet.setAutoFilter(rangeAddress);
         metadataRowCount = 2;
     }

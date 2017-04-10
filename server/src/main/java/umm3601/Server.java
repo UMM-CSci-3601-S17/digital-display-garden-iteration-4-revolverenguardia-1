@@ -115,7 +115,7 @@ public class Server {
             // If an exception is thrown (specifically within workbook.write() within complete() in FeedbackWriter
             // This loop will attempt to write feedback twice, writing to an intermediate buffer.
             // If the write succeeds, then write it to the response output stream
-            int error = 2;
+            int error = 3;
             while(error > 0) {
                 try {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();

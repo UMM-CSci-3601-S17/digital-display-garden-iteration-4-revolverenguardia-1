@@ -34,18 +34,14 @@ public class TestUploadIdMethods {
     }
 
 
-//    @Test
-//    public void TestGetLiveUploadId(){
-//        String plantJson = "{ \"_id\" : { \"$oid\" : \"58d1c36efb0cac4e15afd202\" }, \"uploadId\" : \"first uploadId\",\"commonName\" : \"Alternanthera\", \"cultivar\" : \"Experimental\", \"gardenLocation\" : \"10.0\", \"id\" : \"16001.0\" }";
-//        String newUploadId = ExcelParser.generateNewUploadId();
-//
-//
-//        String actualUploadId = ExcelParser.getLiveUploadId(databaseName);
-//
-//        System.out.println(actualUploadId);
-//        //assertTrue("",actualUploadId);
-//        assertEquals("",plantJson.contains("uploadId"),actualUploadId);
-//    }
+    @Test
+    public void TestGetLiveUploadId(){
+        String actualUploadId = ExcelParser.getLiveUploadId(databaseName);
+
+        System.out.println(actualUploadId);
+        //assertTrue("",actualUploadId);
+        assertEquals("","first uploadId", actualUploadId);
+    }
 
 
     @Test
