@@ -13,7 +13,7 @@ export class FileUploadComponent {
 
     constructor(private http: Http) {}
 
-    upload() {
+    uploadForImport() {
         let inputEl: HTMLInputElement = this.inputEl.nativeElement;
         let fileCount: number = inputEl.files.length;
         let formData = new FormData();
@@ -22,6 +22,18 @@ export class FileUploadComponent {
                 formData.append('file[]', inputEl.files.item(i));
             }
             return this.http.post(API_URL + "import", formData);
+        }
+    }
+
+    uploadForPatch() {
+        let inputEl: HTMLInputElement = this.inputEl.nativeElement;
+        let fileCount: number = inputEl.files.length;
+        let formData = new FormData();
+        if (fileCount > 0) { // a file was selected
+            for (let i = 0; i < fileCount; i++) {
+                formData.append('file[]', inputEl.files.item(i));
+            }
+            return this.http.post(API_URL + "patch", formData);
         }
     }
 }

@@ -74,39 +74,39 @@ public class Server {
         // List plants
         get("api/plants", (req, res) -> {
             res.type("application/json");
-            return plantController.listPlants(req.queryMap().toMap(), plantController.getLiveUploadId());
+            return plantController.listPlants(req.queryMap().toMap(), ExcelParser.getLiveUploadId(databaseName));
         });
 
         //Get a plant
         get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getPlantByPlantID(id, plantController.getLiveUploadId());
+            return plantController.getPlantByPlantID(id, ExcelParser.getLiveUploadId(databaseName));
         });
 
         //Get feedback counts for a plant
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
+            return plantController.getFeedbackForPlantByPlantID(id, ExcelParser.getLiveUploadId(databaseName));
         });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
             res.type("application/json");
-            return plantController.getGardenLocationsAsJson(plantController.getLiveUploadId());
+            return plantController.getGardenLocationsAsJson(ExcelParser.getLiveUploadId(databaseName));
         });
 
         // List all uploadIds
         get("api/uploadIds", (req, res) -> {
             res.type("application/json");
-            return plantController.listUploadIds();
+            return ExcelParser.listUploadIds(databaseName);
         });
 
         post("api/plant/rate", (req, res) -> {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
-            return plantController.addFlowerRating(req.body(), plantController.getLiveUploadId());
+            return plantController.addFlowerRating(req.body(),ExcelParser.getLiveUploadId(databaseName));
         });
 
         get("api/export", (req, res) -> {
@@ -122,7 +122,7 @@ public class Server {
 
         get("api/liveUploadId", (req, res) -> {
             res.type("application/json");
-            return JSON.serialize(plantController.getLiveUploadId());
+            return JSON.serialize(ExcelParser.getLiveUploadId(databaseName));
         });
 
 
@@ -130,7 +130,7 @@ public class Server {
         get("api/qrcodes", (req, res) -> {
             res.type("application/zip");
 
-            String liveUploadID = plantController.getLiveUploadId();
+            String liveUploadID = ExcelParser.getLiveUploadId(databaseName);
             System.err.println("liveUploadID=" + liveUploadID);
             String zipPath = QRCodes.CreateQRCodesFromAllBeds(
                     liveUploadID,
@@ -155,7 +155,7 @@ public class Server {
         // Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
-            return plantController.storePlantComment(req.body(), plantController.getLiveUploadId());
+            return plantController.storePlantComment(req.body(), ExcelParser.getLiveUploadId(databaseName));
         });
 
         // Accept an xls file
@@ -166,14 +166,13 @@ public class Server {
 
                 MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
                 req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
-
-                String fileName = Long.valueOf(System.currentTimeMillis()).toString();
                 Part part = req.raw().getPart("file[]");
 
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
-                String id = ExcelParser.getAvailableUploadId();
-                parser.parseExcel(id);
+                String id = ExcelParser.generateNewUploadId();
+                String[][] excelFile = parser.parseExcel();
+                parser.populateDatabase(excelFile, id);
 
                 return JSON.serialize(id);
 
@@ -183,6 +182,37 @@ public class Server {
             }
 
         });
+
+
+        // Accept an xls file
+        post("api/patch", (req, res) -> {
+
+            res.type("application/json");
+            try {
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
+                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+                Part part = req.raw().getPart("file[]");
+
+
+
+
+                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+
+                String oldUploadId = ExcelParser.getLiveUploadId(databaseName);
+                String newUploadId = ExcelParser.generateNewUploadId();
+                String[][] excelFile = parser.parseExcel();
+                parser.patchDatabase(excelFile, oldUploadId, newUploadId);
+
+                return JSON.serialize(newUploadId);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        });
+
 
         get("/*", clientRoute);
 
