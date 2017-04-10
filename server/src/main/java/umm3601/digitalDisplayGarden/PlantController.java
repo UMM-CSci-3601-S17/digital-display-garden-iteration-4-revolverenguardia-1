@@ -47,15 +47,7 @@ public class PlantController {
         plantCollection = db.getCollection("plants");
         commentCollection = db.getCollection("comments");
         configCollection = db.getCollection("config");
-
-        //Okay so this fixes a bug, I couldn't tell you what the bug is however.
-        //The first export always caused an expection to be thrown within apache land
-        //If we create one xlsx spreadsheet and write it into RAM (ByteArrayOutputStream)
-        //It has to do with xml tags (xlsx is based off of xml) and the workbook writing
-        //corrupt data for some reason. We should keep an eye on this in the future.
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        FeedbackWriter firstExportHack = new FeedbackWriter(out);
-        firstExportHack.complete();
+        
     }
 
     // List plants

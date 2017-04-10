@@ -5,10 +5,7 @@ import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
 import umm3601.digitalDisplayGarden.PlantController;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -110,20 +107,39 @@ public class Server {
         });
 
         get("api/export", (req, res) -> {
-            res.type("application/vnd.ms-excel");
-            res.header("Content-Disposition", "attachment; filename=\"plant-comments.xlsx\"");
             // Note that after flush() or close() is called on
             // res.raw().getOutputStream(), the response can no longer be
             // modified. Since writeComment(..) closes the OutputStream
             // when it is done, it needs to be the last line of this function.
-            try {
-                plantController.writeFeedback(res.raw().getOutputStream(), req.queryMap().toMap().get("uploadId")[0]);
+            //REVISED to attempt to fix bug where first write always breaks.
+            // If an exception is thrown (specifically within workbook.write() within complete() in FeedbackWriter
+            // This loop will attempt to write feedback twice, writing to an intermediate buffer.
+            // If the write succeeds, then write it to the response output stream
+            int error = 2;
+            while(error > 0) {
+                try {
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    plantController.writeFeedback(buffer, req.queryMap().toMap().get("uploadId")[0]);
+
+                    res.type("application/vnd.ms-excel");
+                    res.header("Content-Disposition", "attachment; filename=\"plant-comments.xlsx\"");
+
+                    OutputStream out = res.raw().getOutputStream();
+                    out.write(buffer.toByteArray());
+                    out.flush();
+                    out.close();
+                    error = 0;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error--;
+                    if(error == 0)
+                    {
+                        //If all attempts fail, produce an Internal Server Error 500
+                        throw e;
+                    }
+                }
             }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-                throw e;
-            }
+
             return res;
         });
 
