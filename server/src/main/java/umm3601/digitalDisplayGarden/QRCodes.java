@@ -54,7 +54,7 @@ public class QRCodes {
         final int numBeds = bedNames.length;
         String bedURLs[] = new String [numBeds];
         for(int i = 0; i < numBeds; i++) {
-            bedURLs[i] = urlPrefix + bedNames[i];
+            bedURLs[i] = urlPrefix + bedNames[i] + "?qr=true";
         }
 
         return bedURLs;
