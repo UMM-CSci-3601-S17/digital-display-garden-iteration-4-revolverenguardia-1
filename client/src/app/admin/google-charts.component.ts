@@ -19,18 +19,9 @@ export class GraphComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.adminService.getViewsPerHour()
-            .subscribe(result => { this.columnChartOptions["dataTable"] = result;
-                 console.log(result)}, err => console.log(err));
-        this.adminService.getViewsPerHour()
-            .subscribe(result => { this.line_ChartData["dataTable"] = result;
-                console.log(result)}, err => console.log(err));
-        this.adminService.getBedMetadataForMap()
-            .subscribe(result => {
-                this.mapData = this.processMapData(result);
-                this.processMapData(this.mapData);
-            }, err => console.log(err));
-
+        this.updateTimeVViewCountBar();
+        this.updateTimeVViewCountLine();
+        this.updateBedMetadataMap();
     }
 
     /*updateGraph(): void{
@@ -80,16 +71,24 @@ export class GraphComponent implements OnInit {
         options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
     }
 
-    public bedLocations = [[45.593823, -95.875248], [45.593831, -95.875525], [45.593113, -95.877688], [45.593008, -95.876990], [45.593512, -95.876351]];
+    public bedLocations = [[45.593823, -95.875248],
+        [45.593831, -95.875525],
+        [45.593113, -95.877688],
+        [45.593008, -95.876990],
+        [45.593512, -95.876351]];
+
     public bedNames = ['5', '6', '7', '9', '10', '11', '13'];
 
     public mapOptions = {
         chartType: `Map`,
         dataTable: [['Lat', 'Long', 'Views'],
-            [this.bedLocations[0][0], this.bedLocations[0][1], ],
-            [this.bedLocations[1][0], this.bedLocations[1][1], '<div> Test</div>'],
+            [this.bedLocations[0][0], this.bedLocations[0][1], 'TEST'],
+            [this.bedLocations[1][0], this.bedLocations[1][1], 'TEST'],
+            [this.bedLocations[2][0], this.bedLocations[2][1], 'TEST'],
+            [this.bedLocations[3][0], this.bedLocations[3][1], 'TEST'],
+            [this.bedLocations[4][0], this.bedLocations[4][1], 'TEST']
         ],
-        options: {'zoomLevel' : '18', showInfoWindow: true}
+        options: {'zoomLevel' : '18', title : false, showInfoWindow: true}
     }
 
     public bubbleChartOption = {
@@ -127,25 +126,70 @@ export class GraphComponent implements OnInit {
         }
     }
 
+    protected updateTimeVViewCountBar()
+    {
+        console.log("UPDATING!>");
+        this.adminService.getViewsPerHour()
+            .subscribe(result => { this.columnChartOptions["dataTable"] = result;
+                console.log(result)}, err => console.log(err));
+
+
+    }
+    protected updateTimeVViewCountLine()
+    {
+        this.adminService.getViewsPerHour()
+            .subscribe(result => { this.line_ChartData["dataTable"] = result;
+                console.log(result)}, err => console.log(err));
+    }
+
+    protected updateBedMetadataMap()
+    {
+        this.adminService.getBedMetadataForMap()
+            .subscribe(result => {
+                this.mapData = this.processMapData(result);
+                this.mapOptions.dataTable = this.createDataTable(this.mapData);
+            }, err => console.log(err));
+    }
+
     private processMapData(mapData : any[]) : string[]
     {
         var buffer : Array<string> = new Array<string>(mapData.length);
 
         for(var i : number = 0; i < mapData.length; i++)
         {
-            buffer[i] += '<h2>Bed ' + mapData[i]["gardenLocation"];'</h2>';
-            buffer[i] += '<div> <strong>Likes:</strong> ' + mapData[i]["likes"] + '<br/>';
-            buffer[i] += '<div> <strong>Dislikes:</strong> ' + mapData[i]["dislikes"] + '<br/>';
-            buffer[i] += '<div> <strong>Comments:</strong> ' + mapData[i]["comments"] + '<br/>';
+            buffer[i] =  '<h2>Bed ' + mapData[i]["gardenLocation"] + '</h2>';
+            buffer[i] += '<div><strong>Likes:</strong> ' + mapData[i]["likes"]       + '<br/>';
+            buffer[i] += '<div><strong>Dislikes:</strong> ' + mapData[i]["dislikes"] + '<br/>';
+            buffer[i] += '<div><strong>Comments:</strong> ' + mapData[i]["comments"] + '<br/>';
             buffer[i] += '</div>';
         }
 
         return buffer;
     }
 
-    private setMapOptions(toolWindow: string[])
+    private createDataTable(toolWindow: string[]) : any[][]
     {
+        var dataTable : any[][] = new Array<Array<any>>(toolWindow.length+1);
 
+        for(var i : number = 0; i < toolWindow.length+1; i++)
+        {
+            dataTable[i] = new Array<any>(3);
+        }
+
+        dataTable[0][0] = 'Lat';
+        dataTable[0][1] = 'Long';
+        dataTable[0][2] = 'ToolWindow';
+        for(var i : number = 0; i < toolWindow.length; i++)
+        {
+
+
+            dataTable[i+1][0] = this.bedLocations[i % 5][0];
+            dataTable[i+1][1] = this.bedLocations[i % 5][1];
+            dataTable[i+1][2] = toolWindow[i];
+            console.log(toolWindow[i]);
+        }
+
+        return dataTable;
     }
 
 }
