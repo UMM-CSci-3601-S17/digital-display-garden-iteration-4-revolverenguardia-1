@@ -33,46 +33,59 @@ public class BedController {
     private final MongoCollection<Document> bedCollection;
 
     public BedController(String databaseName) throws IOException {
-        // Set up our server address
-        // (Default host: 'localhost', default port: 27017)
-        // ServerAddress testAddress = new ServerAddress();
-
-        // Try connecting to the server
-        //MongoClient mongoClient = new MongoClient(testAddress, credentials);
         MongoClient mongoClient = new MongoClient(); // Defaults!
 
         // Try connecting to a database
         MongoDatabase db = mongoClient.getDatabase(databaseName);
 
         bedCollection = db.getCollection("beds");
-
     }
 
-//    public boolean incrementBedMetadata(String bedNum, String field, String uploadId) {
-//
-//        Document searchDocument = new Document();
-//
-//        searchDocument.append("id", bedNum);
-//        searchDocument.append("uploadId", uploadId);
-//
-//        Bson updateDocument = inc("metadata." + field, 1);
-//
-//        return null != bedCollection.findOneAndUpdate(searchDocument, updateDocument);
-//    }
-//
+    public boolean incrementBedMetadata(String gardenLocation, String field, String uploadId) {
 
-//    public boolean addBedVisit(String plantID, String uploadId) {
-//
-//        Document filterDoc = new Document();
-//        filterDoc.append("id", plantID);
-//        filterDoc.append("uploadId", uploadId);
-//
-//        Document visit = new Document();
-//        visit.append("visit", new ObjectId());
-//
-//        return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
-//    }
-//
+        Document searchDocument = new Document();
+
+        searchDocument.append("gardenLocation", gardenLocation);
+        searchDocument.append("uploadId", uploadId);
+
+        Bson updateDocument = inc("metadata." + field, 1);
+
+        return null != bedCollection.findOneAndUpdate(searchDocument, updateDocument);
+    }
+
+
+    public boolean addBedVisit(String gardenLocation, String uploadId) {
+
+        Document filterDoc = new Document();
+        filterDoc.append("gardenLocation", gardenLocation);
+        filterDoc.append("uploadId", uploadId);
+
+        Document visit = new Document();
+        visit.append("visit", new ObjectId());
+
+        return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
+    }
+
+    public boolean addBedQRVisit(String gardenLocation, String uploadId) {
+
+        Document filterDoc = new Document();
+        filterDoc.append("gardenLocation", gardenLocation);
+        filterDoc.append("uploadId", uploadId);
+
+        Document visit = new Document();
+        visit.append("visit", new ObjectId());
+
+        Document scan = new Document();
+        scan.append("scan", new ObjectId());
+
+        Document a = bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
+        if(a == null)
+            return false;
+        Document b = bedCollection.findOneAndUpdate(filterDoc, push("metadata.qrScans", scan));
+
+        return null != b;
+    }
+
 
 
 

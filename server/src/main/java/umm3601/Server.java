@@ -3,6 +3,7 @@ package umm3601;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
+import umm3601.digitalDisplayGarden.BedController;
 import umm3601.digitalDisplayGarden.PlantController;
 
 import java.io.*;
@@ -40,6 +41,7 @@ public class Server {
         staticFiles.location("/public");
 
         PlantController plantController = new PlantController(databaseName);
+        BedController bedController = new BedController(databaseName);
 
         options("/*", (request, response) -> {
 
@@ -149,6 +151,24 @@ public class Server {
             return JSON.serialize(getLiveUploadId());
         });
 
+
+        get("api/bedVisit", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
+            System.out.println(body);
+            //Increment bedCount
+            bedController.addBedVisit(body, getLiveUploadId());
+            return true;
+        });
+
+        get("api/qrVisit", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
+            //Increment bedCount
+            //Increment qrForBedCount
+            bedController.addBedQRVisit(body, getLiveUploadId());
+            return true;
+        });
 
 
         get("api/qrcodes", (req, res) -> {
