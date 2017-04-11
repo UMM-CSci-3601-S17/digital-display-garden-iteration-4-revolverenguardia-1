@@ -90,7 +90,7 @@ public class Server {
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
+            return plantController.getJSONFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
         });
 
         //List all Beds
@@ -166,9 +166,10 @@ public class Server {
             return chartMaker.getViewsPerHour(plantController.getLiveUploadId());
         });
 
-        get("api/chart/", (req, res) -> {
+        get("api/chart/plantMetadataMap", (req, res) -> {
             res.type("application/json");
-            return chartMaker.getViewsPerHour(plantController.getLiveUploadId());
+
+            return chartMaker.getBedMetadataForMap(plantController, plantController.getLiveUploadId());
         });
 
         // Accept an xls file

@@ -72,8 +72,8 @@ export class GraphComponent implements OnInit {
         options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
     }
 
-    public bedLocations = [[45.593823, -95.875248], [45.593831, -95.875525]];
-    public bedNames = ['1S', '6'];
+    public bedLocations = [[45.593823, -95.875248], [45.593831, -95.875525], [45.593113, -95.877688], [45.593008, -95.876990], [45.593512, -95.876351]];
+    public bedNames = ['5', '6', '7', '9', '10', '11', '13'];
 
     public mapOptions = {
         chartType: `Map`,
