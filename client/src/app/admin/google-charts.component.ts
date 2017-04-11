@@ -92,16 +92,37 @@ export class GraphComponent implements OnInit {
 
     public bubbleChartOption = {
         chartType: `BubbleChart`,
-        dataTable: [['ID', 'X', 'Y', 'Temperature'],
-            ['',   80,  167,      120],
-            ['',   79,  136,      130],
-            ['',   78,  184,      50],
-            ['',   72,  278,      230],
-            ['',   81,  200,      210],
-            ['',   72,  170,      100],
-            ['',   68,  477,      80]
+        dataTable: [['ID', 'X', 'Y', 'Colour (Likes)', 'Views(Size)'],
+            ['1', 80,  90,      120,   47],
+            ['2', 79,  90,      130,   11],
+            ['3', 78,  90,      50,   22],
+            ['4', 72,  90,      230,   51],
+            ['5', 81,  90,      210,   117],
+            ['6', 72,  90,      100,   3],
+            ['7', 19,  14,      80,   44]
         ],
-        options: {backgroundColor: 'none'}
+        options: {
+            backgroundColor: 'none',
+            width: 1140,
+            height: 400,
+            chartArea: {
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%'
+            },
+            hAxis: {
+                gridlines: {count: 0},
+                minValue: 0,
+                maxValue: 100,
+                viewWindow: {min: 0, max: 100}},
+            vAxis: {
+                gridlines: {count: 0},
+                minValue: 0,
+                maxValue: 100,
+                viewWindow: {min: 0, max: 100}},
+            colorAxis: {colors: ['blue', 'red']},
+        }
     }
 
 }
