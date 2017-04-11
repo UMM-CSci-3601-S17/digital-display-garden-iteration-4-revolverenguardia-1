@@ -19,7 +19,7 @@
             }
             #common-name-list {
                 list-style-type: none;
-                height: 95%;
+                height: 90%;
                 padding: 0%;
             }
             li {
@@ -29,8 +29,11 @@
             }
             .searchByHeader {
                 color: white;
-                text-align: center;
+                font-weight: bolder;
                 font-size: 150%;
+                padding-top: 8%;
+                padding-bottom: 2%;
+                padding-left: 5%;
             }
 
         </style>
@@ -44,7 +47,7 @@
             <!--</a>-->
         <!--</div>-->
 
-        <h4 class="searchByHeader">Common Name</h4>
+        <h4 class="searchByHeader">Search by Common Name</h4>
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
             <li *ngFor="let commonName of commonNames">
