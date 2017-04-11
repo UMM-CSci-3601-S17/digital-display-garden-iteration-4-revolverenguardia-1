@@ -46,7 +46,7 @@ public class PlantController {
         plantCollection = db.getCollection("plants");
         commentCollection = db.getCollection("comments");
         configCollection = db.getCollection("config");
-        
+
     }
 
     // List plants

@@ -198,13 +198,16 @@ public class ExcelParser {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase test = mongoClient.getDatabase(databaseName);
         MongoCollection plants = test.getCollection("plants");
+        MongoCollection beds = test.getCollection("beds");
 
         String[] keys = getKeys(cellValues);
 
         for (int i = 4; i < cellValues.length; i++){
             Document doc = new Document();
+            Document bedDoc = new Document();
             for(int j = 0; j < cellValues[i].length; j++){
                 doc.append(keys[j], cellValues[i][j]);
+                bedDoc.append(keys[j], cellValues[i][j]);
             }
 
             if(doc.get("gardenLocation").equals(""))
@@ -220,10 +223,20 @@ public class ExcelParser {
             doc.append("uploadId", uploadId);
 
             plants.insertOne(doc);
+
+
+            if(bedDoc.get("commonName").equals(""))
+                continue;
+            Document metadataBedDoc = new Document();
+            metadataBedDoc.append("pageViews", 0);
+            metadataBedDoc.append("visits", new BsonArray());
+            metadataBedDoc.append("qr scans", new BsonArray());
+
+            bedDoc.append("bed metadata", metadataBedDoc);
+            bedDoc.append("uploadId", uploadId);
+
+            beds.insertOne(bedDoc);
         }
-
-
-
 
         setLiveUploadId(uploadId, databaseName);
     }
