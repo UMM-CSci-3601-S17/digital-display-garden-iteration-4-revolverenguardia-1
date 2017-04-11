@@ -3,6 +3,7 @@ package umm3601.digitalDisplayGarden;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Accumulators;
@@ -98,7 +99,7 @@ public class GardenCharts
                 System.out.println(hours.get(hour));
             }
 
-            System.out.println("hours: " + hours.toString());
+//            System.out.println("hours: " + hours.toString());
 
             for(int i = 0; i < 25; i++){
                 if(hours.get(i) == null){
@@ -106,7 +107,7 @@ public class GardenCharts
                 }
             }
 
-            System.out.println("hours: " + hours.toString());
+//            System.out.println("hours: " + hours.toString());
             // DB STUFF
 
             for (int i = 1; i < 24 + 1; i++) {
@@ -114,7 +115,7 @@ public class GardenCharts
                 dataTable[i][1] = hours.get(i - 1).intValue(); //TODO: put REAL data here
             }
 
-            System.out.println(makeJSON(dataTable));
+//            System.out.println(makeJSON(dataTable));
             return makeJSON(dataTable);
         }
         catch(Exception e)
@@ -129,36 +130,43 @@ public class GardenCharts
         // Count flower dislikes
         // Count flower comments
 
-        int likes = 0;
-        int dislikes = 0;
-        int comments = 0;
+        try {
+            int likes = 0;
+            int dislikes = 0;
+            int comments = 0;
 
-        String[] bedNames = plantController.getGardenLocations(uploadID);
-        JsonArray out = new JsonArray();
+            String[] bedNames = plantController.getGardenLocations(uploadID);
+            JsonArray out = new JsonArray();
 
-        for(int i = 0; i < bedNames.length; i++) {
-            Document bed = new Document();
-            Document filter = new Document();
-            filter.append("uploadId", uploadID);
-            filter.append("gardenLocation", bedNames[i]);
+            for (int i = 0; i < bedNames.length; i++) {
+                JsonObject bed = new JsonObject();
+                Document filter = new Document();
+                filter.append("uploadId", uploadID);
+                filter.append("gardenLocation", bedNames[i]);
 
-            FindIterable<Document> fitr = plantCollection.find(filter);
-            for(Document plant: fitr)
-            {
-                long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                FindIterable<Document> fitr = plantCollection.find(filter);
+                for (Document plant : fitr) {
+                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
 
-                likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
-                dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
-                comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+                    likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                    dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
+                    comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+                }
+                bed.addProperty("gardenLocation", bedNames[i]);
+                bed.addProperty("likes", likes);
+                bed.addProperty("dislikes", dislikes);
+                bed.addProperty("comments", comments);
+                out.add(bed);
             }
-            bed.append("gardenLocation", bedNames[i]);
-            bed.append("likes", likes);
-            bed.append("dislikes", dislikes);
-            bed.append("comments", comments);
-            out.add(bed.toJson());
-        }
 
-        return JSON.serialize(out);
+            System.out.println(out);
+            return out.toString();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 
