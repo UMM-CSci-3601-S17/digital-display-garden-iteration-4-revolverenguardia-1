@@ -15,6 +15,8 @@ export class GraphComponent implements OnInit {
     }
     value : number = 3;
     dataTable : any[][];
+    mapData : string[];
+
 
     ngOnInit(): void {
         this.adminService.getViewsPerHour()
@@ -23,6 +25,11 @@ export class GraphComponent implements OnInit {
         this.adminService.getViewsPerHour()
             .subscribe(result => { this.line_ChartData["dataTable"] = result;
                 console.log(result)}, err => console.log(err));
+        this.adminService.getBedMetadataForMap()
+            .subscribe(result => {
+                this.mapData = this.processMapData(result);
+                this.processMapData(this.mapData);
+            }, err => console.log(err));
 
     }
 
@@ -78,12 +85,7 @@ export class GraphComponent implements OnInit {
     public mapOptions = {
         chartType: `Map`,
         dataTable: [['Lat', 'Long', 'Views'],
-            [this.bedLocations[0][0], this.bedLocations[0][1], '<h2>Bed ' + this.bedNames[0] + '</h2>' +
-            '<div> ' +
-            '<strong>Likes:</strong> ' + this.value + '<br/>' +
-            '<strong>Dislikes:</strong> '+ this.value + '<br/>' +
-            '<strong>Comments:</strong> ' + this.value + ''+
-            '</div>'],
+            [this.bedLocations[0][0], this.bedLocations[0][1], ],
             [this.bedLocations[1][0], this.bedLocations[1][1], '<div> Test</div>'],
         ],
         options: {'zoomLevel' : '18', showInfoWindow: true}
@@ -101,6 +103,27 @@ export class GraphComponent implements OnInit {
             ['',   68,  477,      80]
         ],
         options: {backgroundColor: 'none'}
+    }
+
+    private processMapData(mapData : any[]) : string[]
+    {
+        var buffer : Array<string> = new Array<string>(mapData.length);
+
+        for(var i : number = 0; i < mapData.length; i++)
+        {
+            buffer[i] += '<h2>Bed ' + mapData[i]["gardenLocation"];'</h2>';
+            buffer[i] += '<div> <strong>Likes:</strong> ' + mapData[i]["likes"] + '<br/>';
+            buffer[i] += '<div> <strong>Dislikes:</strong> ' + mapData[i]["dislikes"] + '<br/>';
+            buffer[i] += '<div> <strong>Comments:</strong> ' + mapData[i]["comments"] + '<br/>';
+            buffer[i] += '</div>';
+        }
+
+        return buffer;
+    }
+
+    private setMapOptions(toolWindow: string[])
+    {
+
     }
 
 }

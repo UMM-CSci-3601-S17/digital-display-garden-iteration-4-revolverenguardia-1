@@ -134,8 +134,10 @@ public class GardenCharts
         int comments = 0;
 
         String[] bedNames = plantController.getGardenLocations(uploadID);
+        JsonArray out = new JsonArray();
 
         for(int i = 0; i < bedNames.length; i++) {
+            Document bed = new Document();
             Document filter = new Document();
             filter.append("uploadId", uploadID);
             filter.append("gardenLocation", bedNames[i]);
@@ -149,12 +151,12 @@ public class GardenCharts
                 dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
                 comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
             }
+            bed.append("gardenLocation", bedNames[i]);
+            bed.append("likes", likes);
+            bed.append("dislikes", dislikes);
+            bed.append("comments", comments);
+            out.add(bed.toJson());
         }
-
-        Document out = new Document();
-        out.append("likes", likes);
-        out.append("dislikes", dislikes);
-        out.append("comments", comments);
 
         return JSON.serialize(out);
     }
