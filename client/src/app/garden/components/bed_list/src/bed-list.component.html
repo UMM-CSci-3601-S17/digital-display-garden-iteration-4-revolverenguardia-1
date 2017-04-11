@@ -34,10 +34,9 @@
                    (click)="handleBedListClick($event.target.textContent)">{{BED_LIST_HEADER}}
                 </a>
             </div>
-
             <ul id="bed-list">
-                <li *ngFor="let bed of bedNames" (click)="handleBedListClick($event.target.textContent)">
-                    <a [routerLink]="['/bed', bed._id]">{{ bed._id }}</a>
+                <li *ngFor="let bed of bedNames" [routerLink]="['/bed', bed._id]">
+                    <a (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
                 </li>
             </ul>
 

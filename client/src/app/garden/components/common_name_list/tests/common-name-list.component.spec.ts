@@ -46,7 +46,7 @@ describe("Common name list", () => {
 
     it("Get Common Name List Header", () => {
         let commonName: CommonNameListComponent = new CommonNameListComponent(null);
-        expect(commonName.COMMON_NAME_LIST_HEADER).toBe("Filter");
+        expect(commonName.COMMON_NAME_LIST_HEADER).toBe("ALL");
     });
 
     it("Get the Number of Common Names", () => {
