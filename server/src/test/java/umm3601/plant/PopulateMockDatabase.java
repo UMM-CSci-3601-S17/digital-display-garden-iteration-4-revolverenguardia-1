@@ -121,6 +121,59 @@ public class PopulateMockDatabase {
 
         plantFour.append("metadata", metadataDoc3);
         plants.insertOne(plantFour);
+
+        //for testing getCommonNamesAsJson (third uploadID)
+        //Fifth Plant PlantFive
+        Document plantFive = new Document();
+        plantFive.append("_id", new ObjectId("58d1c36efb0cac4e15afd280"));
+        plantFive.append("uploadId", "third uploadId");
+
+        plantFive.append("commonName", "Tulip");
+        plantFive.append("cultivar", "Red");
+        plantFive.append("gardenLocation", "20");
+        plantFive.append("id", "16080.0");
+
+        Document metadataDoc4 = new Document();
+        metadataDoc4.append("pageViews", 0);
+        metadataDoc4.append("ratings", new BsonArray());
+
+        plantFive.append("metadata", metadataDoc4);
+        plants.insertOne(plantFive);
+
+        //Sixth Plant PlantSix
+        Document plantSix = new Document();
+        plantSix.append("_id", new ObjectId("58d1c36efb0cac4e15afd281"));
+        plantSix.append("uploadId", "third uploadId");
+
+        plantSix.append("commonName", "Tulip");
+        plantSix.append("cultivar", "Pink");
+        plantSix.append("gardenLocation", "20");
+        plantSix.append("id", "16081.0");
+
+        Document metadataDoc5 = new Document();
+        metadataDoc5.append("pageViews", 0);
+        metadataDoc5.append("ratings", new BsonArray());
+
+        plantSix.append("metadata", metadataDoc5);
+        plants.insertOne(plantSix);
+
+        //Seventh Plant PlantSeven
+        Document plantSeven = new Document();
+        plantSeven.append("_id", new ObjectId("58d1c36efb0cac4e15afd282"));
+        plantSeven.append("uploadId", "third uploadId");
+
+        plantSeven.append("commonName", "Rose");
+        plantSeven.append("cultivar", "Yellow");
+        plantSeven.append("gardenLocation", "20");
+        plantSeven.append("id", "16082.0");
+
+        Document metadataDoc6 = new Document();
+        metadataDoc6.append("pageViews", 0);
+        metadataDoc6.append("ratings", new BsonArray());
+
+        plantSeven.append("metadata", metadataDoc6);
+        plants.insertOne(plantSeven);
+
     }
 }
 

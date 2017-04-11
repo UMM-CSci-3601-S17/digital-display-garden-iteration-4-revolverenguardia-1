@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import {BedListComponent} from "../src/bed-list.component";
 import {Bed} from "../src/bed";
 import {BedListService} from "../src/bed-list.service";
+import {RouterTestingModule} from "@angular/router/testing";
 
 
 describe("Bed list", () => {
@@ -32,7 +33,8 @@ describe("Bed list", () => {
 
         TestBed.configureTestingModule({
             declarations: [ BedListComponent ],
-            providers:    [ { provide: BedListService, useValue: bedListServiceStub } ]
+            providers:    [ { provide: BedListService, useValue: bedListServiceStub } ],
+            imports: [ RouterTestingModule ]
         })
     });
 
@@ -46,7 +48,7 @@ describe("Bed list", () => {
 
     it("Get Bed List Header", () => {
         let bed: BedListComponent = new BedListComponent(null);
-        expect(bed.BED_LIST_HEADER).toBe("Bed");
+        expect(bed.BED_LIST_HEADER).toBe("ALL");
     });
 
     it("Get Bed Names", () => {

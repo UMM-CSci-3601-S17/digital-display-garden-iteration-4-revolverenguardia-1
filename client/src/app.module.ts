@@ -8,19 +8,23 @@ import { PipeModule } from './pipe.module';
 
 import { NavbarComponent } from './app/navbar/navbar.component';
 import {GardenComponent} from "./app/garden/src/garden-component";
-import {PlantListComponent} from "./app/garden/plant_list/src/plant-list.component";
-import {BedListComponent} from "./app/garden/bed_list/src/bed-list.component";
-import {PlantListService} from "./app/garden/plant_list/src/plant-list.service";
-import {BedListService} from "./app/garden/bed_list/src/bed-list.service";
+import {PlantListComponent} from "./app/garden/components/plant_list/src/plant-list.component";
+import {BedListComponent} from "./app/garden/components/bed_list/src/bed-list.component";
+import { CommonNameListComponent } from "./app/garden/components/common_name_list/src/common-name-list.component";
+
+import {PlantListService} from "./app/garden/components/plant_list/src/plant-list.service";
+import {BedListService} from "./app/garden/components/bed_list/src/bed-list.service";
+import { CommonNameListService } from "./app/garden/components/common_name_list/src/common-name-list.service";
 import {AdminComponent} from "./app/admin/admin.component";
-import {PlantComponent} from "./app/garden/plant_list/src/plant.component";
+import {PlantComponent} from "./app/garden/components/plant_list/src/plant.component";
 import {ImportComponent} from "./app/admin/import.component";
 import {AdminService} from "./app/admin/admin.service";
 import {ExportComponent} from "./app/admin/export.component";
 import {FileUploadComponent} from "./app/admin/file-upload.component";
-import {PlantService} from "./app/garden/plant_list/src/plant.service";
-
-
+import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
+import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
+import { FooterComponent} from "./app/garden/components/footer/src/footer.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     imports: [
@@ -29,21 +33,31 @@ import {PlantService} from "./app/garden/plant_list/src/plant.service";
         JsonpModule,
         routing,
         FormsModule,
-        PipeModule
+        PipeModule,
+        RouterModule
     ],
     declarations: [
         AppComponent,
         NavbarComponent,
         GardenComponent,
+        FilterGardenSidebarComponent,
         PlantListComponent,
         BedListComponent,
+        CommonNameListComponent,
         PlantComponent,
         AdminComponent,
         ImportComponent,
         ExportComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        FooterComponent
     ],
-    providers: [ PlantListService, BedListService, AdminService, PlantService ],
+    providers: [
+        PlantListService,
+        BedListService,
+        CommonNameListService,
+        AdminService,
+        PlantService
+    ],
     bootstrap: [ AppComponent ]
 })
 

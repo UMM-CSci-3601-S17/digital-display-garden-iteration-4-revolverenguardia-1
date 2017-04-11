@@ -1,0 +1,60 @@
+<!--
+    Provides an interface to view and interact with all Bed specific data.
+
+    @author Iteration 2 - Team Omar Anwar
+-->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+            a {
+                text-decoration: none;
+                display: block;
+                color: white;
+                padding: 5%;
+            }
+            a:hover {
+                background-color: #333;
+            }
+            #bed-list {
+                list-style-type: none;
+                height: 90%;
+                padding: 0%;
+            }
+            li {
+                font-size: 150%;
+                text-align: center;
+                padding-bottom: 5%;
+            }
+            .searchByHeader {
+                color: white;
+                font-weight: bolder;
+                font-size: 150%;
+                padding-top: 8%;
+                padding-bottom: 2%;
+                padding-left: 5%;
+            }
+
+        </style>
+    </head>
+
+        <div id="bed-list-view">
+
+            <!--<div id="bed-list-header">-->
+                <!--<a class="active"-->
+                   <!--(click)="handleBedListClick($event.target.textContent)">{{BED_LIST_HEADER}}-->
+                <!--</a>-->
+            <!--</div>-->
+
+            <h4 class="searchByHeader">Search by Beds</h4>
+
+            <ul id="bed-list">
+                <li *ngFor="let bed of bedNames" [routerLink]="['/bed', bed._id]">
+                    <a (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
+                </li>
+            </ul>
+
+        </div>
+
+</html>

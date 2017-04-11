@@ -7,6 +7,7 @@
 <html>
     <style>
 
+
         /* Global References */
         body {
             display: inline;
@@ -34,19 +35,18 @@
             list-style-type: none;
             padding: 0;
             background-color: #f1f1f1;
-            height: 75%;
+            height: 100%;
             overflow: hidden;
             overflow-y: scroll;
         }
         #plant-list-view{
-            float: left;
-            width: 80%;
-            margin-right: 1%;
+            width: 90%;
+            height: 82%;
+            float: right;
         }
 
     </style>
 
-<body>
 
 
     <div id="plant-list-view">
@@ -57,11 +57,15 @@
 
         <ul id="plant-list" >
             <li *ngFor="let plant of filteredPlants" [routerLink]="['/plant', plant.id]">
-                <a (click)="this.handlePlantListClick(plant)">{{ plant.cultivar }}</a>
+                <a (click)="this.handlePlantListClick(plant)">
+                    {{ plant.commonName }}
+                    <br>
+                    {{ plant.cultivar }}
+                </a>
             </li>
         </ul>
 
     </div>
 
-</body>
+
 </html>

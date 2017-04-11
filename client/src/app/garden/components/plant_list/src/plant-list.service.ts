@@ -5,7 +5,7 @@
  * this PlantListService also provides the ability to filter the plants contained within the
  * PlantListComponent.
  *
- * @author Iteration 2 - Team Omar Anwar
+ * @author Iteration 3 - Team revolver en guardia
  */
 import {Injectable} from '@angular/core';
 import { Http } from '@angular/http';
@@ -14,6 +14,9 @@ import { Observable } from "rxjs";
 import {PlantCollection} from "./plantcollection";
 import {PlantListComponent} from "./plant-list.component";
 import {PlantFilter} from "./plantfilter";
+import {GardenComponent} from "../../../src/garden-component";
+
+
 
 @Injectable()
 export class PlantListService {
@@ -25,42 +28,37 @@ export class PlantListService {
     // The bed filter we have currently filtered by
     private currentBedFilter;
 
-    constructor(private http:Http) {
+    // The common name filter we have currently filtered by
+    private currentCommonNameFilter;
 
-        this.getPlantsFromServer().subscribe(
-            plants => this.plantCollection = new PlantCollection(plants),
-            err => {
-                console.log(err);
-            }
-        );
-    }
+    constructor(private http:Http) { }
 
     /**
      * Requests that the plant collection be sent from the server.
      * @returns {Observable<R>} - the received Observable Plant collection
      */
-    private getPlantsFromServer(): Observable<Plant[]> {
+    public getPlantsFromServer(): Observable<Plant[]> {
         return this.http.request(API_URL + "plants").map(res => res.json());
     }
 
     /**
-     * If the data has not already been filtered by the current bed name this method
+     * If the data has not already been filtered by the current common name this method
      * filters the plant data.
-     * @param bedName - bed name to filter by
+     * @param commonName - common name to filter by
      */
-    public filterByBedName(bedName: string): void{
+    public filterByCommonName(commonName: string): void{
 
         // Check that we haven't already filtered
-        if(this.currentBedFilter != bedName) {
+        if(this.currentCommonNameFilter != commonName) {
 
-            this.currentBedFilter = bedName;
+            this.currentCommonNameFilter = commonName;
 
-            if(this.currentBedFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
+            if(this.currentCommonNameFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
                 PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
 
-            // Filter by the bed name
+            // Filter by the common name
             else {
-                let filteredPlants: Plant[] = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
+                let filteredPlants: Plant[] = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
                 PlantListComponent.getInstance().setFilteredPlants(filteredPlants);
             }
         }

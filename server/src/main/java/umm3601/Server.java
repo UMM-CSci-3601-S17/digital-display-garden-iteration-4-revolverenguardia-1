@@ -96,6 +96,12 @@ public class Server {
             return plantController.getGardenLocationsAsJson(getLiveUploadId());
         });
 
+        //List all Common Names
+        get("api/commonNames", (req, res) -> {
+            res.type("application/json");
+            return plantController.getCommonNamesAsJson(plantController.getLiveUploadId());
+        });
+
         // List all uploadIds
         get("api/uploadIds", (req, res) -> {
             res.type("application/json");

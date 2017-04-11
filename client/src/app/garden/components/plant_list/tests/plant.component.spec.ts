@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import {PlantService} from "../src/plant.service";
 import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe("Plant component", () => {
 
@@ -89,10 +90,10 @@ describe("Plant component", () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [FormsModule],
+            imports: [FormsModule, RouterTestingModule],
             declarations: [ PlantComponent ],
             providers:    [ { provide: PlantService, useValue: plantServiceStub },
-                            { provide: ActivatedRoute, useValue: { params: Observable.of( {id: "PlantID1"} ) } } ]
+                            { provide: ActivatedRoute, useValue: { params: Observable.of( {id: "PlantID1"} ) } } ],
         })
     });
 
