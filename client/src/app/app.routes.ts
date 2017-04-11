@@ -10,6 +10,7 @@ import {ExportComponent} from "./admin/export.component";
 export const routes: Routes = [
 
     { path: '', component: GardenComponent },
+    { path: 'bed/:id', component: GardenComponent },
     { path: 'plant/:id', component: PlantComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'admin/importData', component: ImportComponent},

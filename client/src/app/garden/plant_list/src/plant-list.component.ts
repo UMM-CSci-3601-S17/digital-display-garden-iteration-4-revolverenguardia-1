@@ -11,8 +11,7 @@ import { FilterBy } from "../../filter.pipe";
 
 @Component({
     selector: 'plant-list',
-    templateUrl: 'plant-list.component.html',
-    providers: [ FilterBy ]
+    templateUrl: 'plant-list.component.html'
 })
 
 export class PlantListComponent {
