@@ -109,7 +109,6 @@ public class GardenCharts
             System.out.println("hours: " + hours.toString());
             // DB STUFF
 
-            Random rand = new Random();
             for (int i = 1; i < 24 + 1; i++) {
                 dataTable[i][0] = Integer.toString(i - 1);
                 dataTable[i][1] = hours.get(i - 1).intValue(); //TODO: put REAL data here

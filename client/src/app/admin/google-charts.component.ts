@@ -75,9 +75,9 @@ export class GraphComponent implements OnInit {
     public mapOptions = {
 
         chartType: `Map`,
-        dataTable: [['Lat', 'Long', 'Location'],
-            [45.593823, -95.875248,   'GardenLocation = 1' ],
-            [45.593831, -95.875525,   'green'],
+        dataTable: [['Lat', 'Long', 'View Counts', 'Count'],
+/*            [45.593823, -95.875248,   'View Counts:', 5000000],
+            [45.593831, -95.875525,   'View Counts:', 800000000],*/
 /*            ['Washington DC, United States',    'Washington', 'pink' ],
             ['Philadelphia PA, United States',  'Philly',     'green'],
             ['Pittsburgh PA, United States',    'Pittsburgh', 'green'],
@@ -86,7 +86,7 @@ export class GraphComponent implements OnInit {
             ['Albany NY, United States',        'Albany',     'blue' ],
             ['Allentown PA, United States',     'Allentown',  'green']*/
         ],
-        options: {'zoomLevel' : '19'}
+        options: {'zoomLevel' : '19', showTooltip: true, showInfoWindow: true}
     }
 
 }
