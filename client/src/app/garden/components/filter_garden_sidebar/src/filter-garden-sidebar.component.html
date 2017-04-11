@@ -12,7 +12,7 @@
             background-color: #111;
             overflow-x: hidden;
             transition: 0.5s;
-            padding-top: 60px;
+            padding-top: 40px;
         }
 
         .sidenav a {
@@ -30,11 +30,11 @@
 
         .sidenav .closebtn {
             float: right;
-            /*position: absolute;*/
-            /*right: 25px;*/
-            /*font-size: 36px;*/
-            /*margin-left: 50px;*/
-            /*margin-top: 0;*/
+            position: absolute;
+            right: 10px;
+            font-size: 36px;
+            margin-left: 50px;
+            margin-top: 0;
         }
 
         @media screen and (max-height: 450px) {
@@ -75,30 +75,31 @@
             -webkit-transform-origin: left top;
             -webkit-transform:rotate(-90deg) translateX(-100%);
         }
+
         .active {
             background-color: #196B1D;
         }
     </style>
 </head>
 
-<div id="bedSidenav" class="sidenav" [style.width.px]="bedNavWidth">
-    <a class="closebtn" (click)="closeBedNav()">&times;</a>
-    <bed-list></bed-list>
-</div>
+    <div id="bedSidenav" class="sidenav" [style.width.px]="bedNavWidth">
+        <a class="closebtn" (click)="closeBedNav()">&times;</a>
+        <bed-list></bed-list>
+    </div>
 
-<div id="nameSidenav" class="sidenav" [style.width.px]="nameNavWidth">
-    <a class="closebtn" (click)="closeNameNav()">&times;</a>
-    <a>Filter by Name</a>
-    <common-name-list></common-name-list>
-</div>
+    <div id="nameSidenav" class="sidenav" [style.width.px]="nameNavWidth">
+        <a class="closebtn" (click)="closeNameNav()">&times;</a>
+        <a>Filter by Name</a>
+        <common-name-list></common-name-list>
+    </div>
 
-<div class="nav">
-    <ul>
-        <li><a class="active">Filters</a></li>
-        <li (click)="openBedNav()"><a>Bed</a></li>
-        <li (click)="openNameNav()"><a>Common Name</a></li>
-    </ul>
-</div>
+    <div class="nav">
+        <ul>
+            <li><a class="active">Filters</a></li>
+            <li (click)="openBedNav()"><a>Bed</a></li>
+            <li (click)="openNameNav()"><a>Common Name</a></li>
+        </ul>
+    </div>
 
 
 </html>

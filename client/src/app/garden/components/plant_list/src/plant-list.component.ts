@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 import { PlantListService } from "./plant-list.service";
 import { Plant } from "./plant";
 
+
 @Component({
     selector: 'plant-list',
     templateUrl: 'plant-list.component.html'
