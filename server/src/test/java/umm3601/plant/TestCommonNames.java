@@ -26,11 +26,11 @@ public class TestCommonNames {
         CommonName[] commonNames;
         Gson gson = new Gson();
 
-        String json = plantController.getCommonNamesAsJson("first uploadId");
+        String json = plantController.getCommonNamesAsJson("third uploadId");
         commonNames = gson.fromJson(json, CommonName[].class);
         assertEquals("Incorrect number of unique common names", 2, commonNames.length);
-        assertEquals("Incorrect zero index", "Alternanthera", commonNames[0]._id);
-        assertEquals("Incorrect value for index 0", "Alternanthera", commonNames[0]._id);
+        assertEquals("Incorrect value for index 0", "Rose", commonNames[0]._id);
+        assertEquals("Incorrect value for index 1", "Tulip", commonNames[1]._id);
     }
 
 }
