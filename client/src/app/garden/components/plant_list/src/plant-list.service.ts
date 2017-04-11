@@ -31,48 +31,14 @@ export class PlantListService {
     // The common name filter we have currently filtered by
     private currentCommonNameFilter;
 
-    constructor(private http:Http) {
-
-        this.getPlantsFromServer().subscribe(
-            plants => {
-                this.plantCollection = new PlantCollection(plants);
-                this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
-                    err => {
-                        console.log(err);
-                    }
-            }
-        );
-    }
+    constructor(private http:Http) { }
 
     /**
      * Requests that the plant collection be sent from the server.
      * @returns {Observable<R>} - the received Observable Plant collection
      */
-    private getPlantsFromServer(): Observable<Plant[]> {
+    public getPlantsFromServer(): Observable<Plant[]> {
         return this.http.request(API_URL + "plants").map(res => res.json());
-    }
-
-    /**
-     * If the data has not already been filtered by the current bed name this method
-     * filters the plant data.
-     * @param bedName - bed name to filter by
-     */
-    public filterByBedName(bedName: string): void{
-
-        // Check that we haven't already filtered
-        if(this.currentBedFilter != bedName) {
-
-            this.currentBedFilter = bedName;
-
-            if(this.currentBedFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
-                PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
-
-            // Filter by the bed name
-            else {
-                let filteredPlants: Plant[] = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
-                PlantListComponent.getInstance().setFilteredPlants(filteredPlants);
-            }
-        }
     }
 
     /**

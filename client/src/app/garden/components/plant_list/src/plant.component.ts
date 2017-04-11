@@ -4,12 +4,13 @@
  * @author Iteration 1 - Team Rayquaza
  * @editor Iteration 2 - Team Omar Anwar
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
 import {FooterComponent} from '../../footer/src/footer.component';
 import 'rxjs/add/operator/switchMap';
+import {PlatformLocation} from "@angular/common";
 
 @Component({
     selector: 'plant-component',
@@ -31,7 +32,6 @@ export class PlantComponent implements OnInit {
 
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
-    // private plant: Plant = new Plant();
 
     /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,
@@ -40,7 +40,9 @@ export class PlantComponent implements OnInit {
      * @param plantService - the PlantService that provides data
      * @param route - the routing service that routes to specific PlantComponent pages
      */
-    constructor(private plantService: PlantService, private route: ActivatedRoute) { }
+    constructor(private plantService: PlantService, private route: ActivatedRoute ) {
+
+    }
 
 
     /**
@@ -65,7 +67,6 @@ export class PlantComponent implements OnInit {
                 .subscribe(succeeded => this.rated = succeeded);
         }
     }
-
 
     /**
      * Comments on the currently loaded Plant that is displayed on the PlantComponent.

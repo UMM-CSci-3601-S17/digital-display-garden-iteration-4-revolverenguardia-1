@@ -7,20 +7,27 @@
 import {Component, OnInit} from '@angular/core';
 import { PlantListService } from "./plant-list.service";
 import { Plant } from "./plant";
-
+import {GardenComponent} from "../../../src/garden-component";
+import {PlantFilter} from "./plantfilter";
+import {PlantCollection} from "./plantcollection";
 
 @Component({
     selector: 'plant-list',
     templateUrl: 'plant-list.component.html'
 })
 
-export class PlantListComponent {
+export class PlantListComponent implements OnInit{
 
     // The list of filtered plant to display within the HTML
     private filteredPlants: Plant[] = [];
 
+    private plantCollection: PlantCollection;
+
     // the currently selected plant within the html
     private selectedPlant: Plant;
+
+    // The current bed filter used to filter the bed
+    private currentBedFilter: string;
 
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
@@ -28,6 +35,36 @@ export class PlantListComponent {
     constructor(private plantListService: PlantListService) {
         // Keep track of 'this' for static factory method
         PlantListComponent.plantListComponent = this;
+    }
+
+    ngOnInit(){
+        this.plantListService.getPlantsFromServer().subscribe(
+            plants => {
+                this.plantCollection = new PlantCollection(plants);
+                this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
+
+                err => {
+                    console.log(err);
+                }
+            }
+        );
+    }
+
+    public filterByBedName(bedName: string): void{
+
+        // Check that we haven't already filtered
+        if(this.currentBedFilter != bedName) {
+
+            this.currentBedFilter = bedName;
+
+            if(this.currentBedFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
+                this.filteredPlants = this.plantCollection.getPlants();
+
+            // Filter by the bed name
+            else {
+                this.filteredPlants = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
+            }
+        }
     }
 
     /**
@@ -76,9 +113,9 @@ export class PlantListComponent {
      * Filters the filteredplants array by the provided bed name.
      * @param bedName - the bed name to filter the PlantListComponent's data by
      */
-    public filterByBedName(bedName: string): void{
-        this.plantListService.filterByBedName(bedName);
-    }
+    // public filterByBedName(bedName: string): void{
+    //     this.plantListService.filterByBedName(bedName);
+    // }
 
     /**
      * Filters the filteredplants array by the provided common name.

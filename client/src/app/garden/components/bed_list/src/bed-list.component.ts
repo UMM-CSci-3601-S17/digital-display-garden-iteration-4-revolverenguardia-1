@@ -28,7 +28,7 @@ export class BedListComponent implements OnInit {
      */
     public readonly BED_LIST_HEADER: string = PlantFilter.FILTER_BY_ALL_PLANTS;
 
-    constructor(private bedListService: BedListService) {}
+    constructor(private bedListService: BedListService) { }
 
     /**
      * Should filter by the provided bed name.
