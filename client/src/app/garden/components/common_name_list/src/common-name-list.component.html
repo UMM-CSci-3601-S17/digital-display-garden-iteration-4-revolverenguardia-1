@@ -10,17 +10,30 @@
         <style>
             a {
                 text-decoration: none;
+                display: block;
                 color: white;
+                padding: 5%;
+            }
+            a:hover {
+                background-color: #333;
             }
             #common-name-list {
                 list-style-type: none;
-                height: 95%;
-                padding: 7%;
+                height: 90%;
+                padding: 0%;
             }
             li {
                 font-size: 150%;
                 text-align: center;
-                padding-bottom: 16%;
+                padding-bottom: 5%;
+            }
+            .searchByHeader {
+                color: white;
+                font-weight: bolder;
+                font-size: 150%;
+                padding-top: 8%;
+                padding-bottom: 2%;
+                padding-left: 5%;
             }
 
         </style>
@@ -28,11 +41,13 @@
 
     <div id="common-name-list-view">
 
-        <div id="common-name-list-header">
-            <a class="active"
-               (click)="handleCommonNameListClick($event.target.textContent)">{{COMMON_NAME_LIST_HEADER}}
-            </a>
-        </div>
+        <!--<div id="common-name-list-header">-->
+            <!--<a class="active"-->
+               <!--(click)="handleCommonNameListClick($event.target.textContent)">{{COMMON_NAME_LIST_HEADER}}-->
+            <!--</a>-->
+        <!--</div>-->
+
+        <h4 class="searchByHeader">Search by Common Name</h4>
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
             <li *ngFor="let commonName of commonNames">
