@@ -1,6 +1,7 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import {HomeComponent} from "./home/src/home.component";
 import {GardenComponent} from "./garden/src/garden-component";
 import {AdminComponent} from "./admin/admin.component";
 import {PlantComponent} from "./garden/plant_list/src/plant.component";
@@ -9,7 +10,8 @@ import {ExportComponent} from "./admin/export.component";
 
 export const routes: Routes = [
 
-    { path: '', component: GardenComponent },
+    { path: '', component: HomeComponent },
+    { path: 'garden', component: GardenComponent },
     { path: 'plant/:id', component: PlantComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'admin/importData', component: ImportComponent},

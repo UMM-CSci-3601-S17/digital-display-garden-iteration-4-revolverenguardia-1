@@ -13,6 +13,7 @@ import {BedListComponent} from "./app/garden/bed_list/src/bed-list.component";
 import {PlantListService} from "./app/garden/plant_list/src/plant-list.service";
 import {BedListService} from "./app/garden/bed_list/src/bed-list.service";
 import {AdminComponent} from "./app/admin/admin.component";
+import {HomeComponent} from "./app/home/src/home.component";
 import {PlantComponent} from "./app/garden/plant_list/src/plant.component";
 import {ImportComponent} from "./app/admin/import.component";
 import {AdminService} from "./app/admin/admin.service";
@@ -41,7 +42,8 @@ import {PlantService} from "./app/garden/plant_list/src/plant.service";
         AdminComponent,
         ImportComponent,
         ExportComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        HomeComponent
     ],
     providers: [ PlantListService, BedListService, AdminService, PlantService ],
     bootstrap: [ AppComponent ]
