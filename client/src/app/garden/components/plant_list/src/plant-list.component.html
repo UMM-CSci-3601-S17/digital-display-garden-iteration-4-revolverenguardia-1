@@ -55,10 +55,13 @@
             <a class="active">Plants</a>
         </div>
 
-
         <ul id="plant-list" >
             <li *ngFor="let plant of filteredPlants" [routerLink]="['/plant', plant.id]">
-                <a (click)="this.handlePlantListClick(plant)">{{ plant.cultivar }}</a>
+                <a (click)="this.handlePlantListClick(plant)">
+                    {{ plant.commonName }}
+                    <br>
+                    {{ plant.cultivar }}
+                </a>
             </li>
         </ul>
 
