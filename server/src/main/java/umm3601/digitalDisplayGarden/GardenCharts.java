@@ -109,7 +109,6 @@ public class GardenCharts
             System.out.println("hours: " + hours.toString());
             // DB STUFF
 
-            Random rand = new Random();
             for (int i = 1; i < 24 + 1; i++) {
                 dataTable[i][0] = Integer.toString(i - 1);
                 dataTable[i][1] = hours.get(i - 1).intValue(); //TODO: put REAL data here
@@ -125,7 +124,44 @@ public class GardenCharts
         }
     }
 
-    public String makeJSON(Object[][] in) { //TODO write a test for thsi
+    public String getBedMetadataForMap(PlantController plantController, String uploadID) {
+        // Count Flower likes
+        // Count flower dislikes
+        // Count flower comments
+
+        int likes = 0;
+        int dislikes = 0;
+        int comments = 0;
+
+        String[] bedNames = plantController.getGardenLocations(uploadID);
+
+        for(int i = 0; i < bedNames.length; i++) {
+            Document filter = new Document();
+            filter.append("uploadId", uploadID);
+            filter.append("gardenLocation", bedNames[i]);
+
+            FindIterable<Document> fitr = plantCollection.find(filter);
+            for(Document plant: fitr)
+            {
+                long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+
+                likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
+                comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+            }
+        }
+
+        Document out = new Document();
+        out.append("likes", likes);
+        out.append("dislikes", dislikes);
+        out.append("comments", comments);
+
+        return JSON.serialize(out);
+    }
+
+
+
+        public String makeJSON(Object[][] in) { //TODO write a test for thsi
         JsonArray outerArray = new JsonArray();
         for(int i = 0; i < in.length; i++)
         {
