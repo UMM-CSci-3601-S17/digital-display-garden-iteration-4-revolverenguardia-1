@@ -24,6 +24,7 @@ import {FileUploadComponent} from "./app/admin/file-upload.component";
 import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
 import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
 import { FooterComponent} from "./app/garden/components/footer/src/footer.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { FooterComponent} from "./app/garden/components/footer/src/footer.compon
         JsonpModule,
         routing,
         FormsModule,
-        PipeModule
+        PipeModule,
+        RouterModule
     ],
     declarations: [
         AppComponent,

@@ -61,23 +61,23 @@ describe("Plant list", () => {
         });
     }));
 
-    it("Get Instance of PlantListComponent", () => {
-        let plc: PlantListComponent  = new PlantListComponent(null);
-        expect(PlantListComponent.getInstance() == null).toBe(false);
-    });
-
-    it("Set Filtered Plants", () => {
-
-        let plants: Plant[] = [];
-        plants.push(new Plant("PlantID1", "CommonName1", "Cultivar1", "Source1", "GardenLocation1"));
-        plants.push(new Plant("PlantID2", "CommonName2", "Cultivar2", "Source2", "GardenLocation2"));
-        plants.push(new Plant("PlantID3", "CommonName3", "Cultivar3", "Source3", "GardenLocation3"));
-
-        expect(plants.length).toBe(3);
-
-        plantList.setFilteredPlants(plants);
-
-        expect(plantList.getFilteredPlants().length).toBe(3);
-    });
+    // it("Get Instance of PlantListComponent", () => {
+    //     let plc: PlantListComponent  = new PlantListComponent(null);
+    //     expect(PlantListComponent.getInstance() == null).toBe(false);
+    // });
+    //
+    // it("Set Filtered Plants", () => {
+    //
+    //     let plants: Plant[] = [];
+    //     plants.push(new Plant("PlantID1", "CommonName1", "Cultivar1", "Source1", "GardenLocation1"));
+    //     plants.push(new Plant("PlantID2", "CommonName2", "Cultivar2", "Source2", "GardenLocation2"));
+    //     plants.push(new Plant("PlantID3", "CommonName3", "Cultivar3", "Source3", "GardenLocation3"));
+    //
+    //     expect(plants.length).toBe(3);
+    //
+    //     plantList.setFilteredPlants(plants);
+    //
+    //     expect(plantList.getFilteredPlants().length).toBe(3);
+    // });
 
 });

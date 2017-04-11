@@ -8,10 +8,9 @@
 import {OnInit, Component} from "@angular/core";
 import {Bed} from "./bed";
 import {BedListService} from "./bed-list.service";
-import {PlantListService} from "../../plant_list/src/plant-list.service";
+import {RouterModule} from "@angular/router";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 import {PlantListComponent} from "../../plant_list/src/plant-list.component";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'bed-list',
