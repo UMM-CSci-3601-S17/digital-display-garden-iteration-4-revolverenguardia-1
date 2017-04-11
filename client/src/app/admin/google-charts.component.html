@@ -1,13 +1,13 @@
 <div class="chart">
     <google-chart [data]="columnChartOptions"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "updateTimeVViewCountBar()" >
+    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
         <span aria-hidden="true"></span>
         Update Graph
     </button>
 </div>
 <div class="chart">
     <google-chart [data]="line_ChartData"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "updateTimeVViewCountLine()" >
+    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
         <span aria-hidden="true"></span>
         Update Graph
     </button>
@@ -16,7 +16,7 @@
 
 <div class="chart">
     <google-chart [data]="mapOptions"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click)= "updateBedMetadataMap()" >
+    <button type="button" class="btn btn-primary btn-lg" onClick= "window.location.reload()" >
         <span aria-hidden="true"></span>
         Update Graph
     </button>
