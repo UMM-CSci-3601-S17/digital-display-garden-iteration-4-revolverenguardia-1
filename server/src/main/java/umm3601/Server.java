@@ -154,6 +154,18 @@ public class Server {
             return bytes;
         });
 
+        get("api/admin/gardenPicture", (req, res) -> {
+            res.type("application/png");
+
+            String gardenPath = "/Garden.png";
+
+
+            //res.header("Content-Disposition","filename=\"" + "Garden.png" + "\"");
+
+            return plantController.getClass().getResourceAsStream(gardenPath);
+
+        });
+
         // Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");

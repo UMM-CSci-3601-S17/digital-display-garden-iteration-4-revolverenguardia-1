@@ -63,6 +63,7 @@ export class GraphComponent implements OnInit {
         options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
     };
 
+
     public columnChartOptions = {
         chartType: `ColumnChart`,
         dataTable: [['Hour', 'Views'],
