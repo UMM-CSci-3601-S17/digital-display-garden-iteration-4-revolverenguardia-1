@@ -55,7 +55,16 @@ public class MakeJSON {
         System.out.println(list.get(0));
 
         assertEquals("Incorrect size", 4, list.size());
-        //assertEquals("Incorrect first row", "Team", list.get(0));
+
+        ArrayList<Object> row0 = (ArrayList<Object>) list.get(0);
+
+        assertEquals("Incorrect first row", "\"Team\"", row0.get(0).toString());
+        assertEquals("Incorrect first row", "\"Score\"", row0.get(1).toString());
+
+        ArrayList<Object> row3 = (ArrayList<Object>) list.get(3);
+
+        assertEquals("Incorrect last row", "\"RedBull\"", row3.get(0).toString());
+        assertEquals("Incorrect last row", "3", row3.get(1).toString());
     }
 
     @Test
