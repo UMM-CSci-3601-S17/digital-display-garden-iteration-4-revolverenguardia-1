@@ -5,8 +5,8 @@
  */
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {PlantListService} from "../plant_list/src/plant-list.service";
-import {PlantListComponent} from "../plant_list/src/plant-list.component";
+import {PlantListService} from "../components/plant_list/src/plant-list.service";
+import {PlantListComponent} from "../components/plant_list/src/plant-list.component";
 
 @Component({
     selector: 'garden-component',
@@ -14,12 +14,27 @@ import {PlantListComponent} from "../plant_list/src/plant-list.component";
 })
 export class GardenComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute){
+    private bedURLParameter: string;
 
+    private static gardenComponent: GardenComponent;
+
+    constructor(private route: ActivatedRoute){
+        GardenComponent.gardenComponent = this;
+    }
+
+    public static getInstance(): GardenComponent{
+        return GardenComponent.gardenComponent;
+    }
+
+    public getBedURL(): string{
+        return this.bedURLParameter;
     }
 
     ngOnInit(){
-        let bedName: string = this.route.snapshot.params['id'];
-        PlantListComponent.getInstance().filterByBedName(bedName);
+        this.route.params
+            .map(params => params['id'])
+            .subscribe(bedName => {
+                this.bedURLParameter = bedName.toUpperCase();
+            });
     }
 }

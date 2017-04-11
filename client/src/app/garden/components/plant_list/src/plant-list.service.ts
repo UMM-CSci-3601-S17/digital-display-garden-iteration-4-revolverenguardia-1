@@ -14,6 +14,9 @@ import { Observable } from "rxjs";
 import {PlantCollection} from "./plantcollection";
 import {PlantListComponent} from "./plant-list.component";
 import {PlantFilter} from "./plantfilter";
+import {GardenComponent} from "../../../src/garden-component";
+
+
 
 @Injectable()
 export class PlantListService {
@@ -33,7 +36,7 @@ export class PlantListService {
         this.getPlantsFromServer().subscribe(
             plants => {
                 this.plantCollection = new PlantCollection(plants);
-                PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
+                this.filterByBedName(GardenComponent.getInstance().getBedURL());
                     err => {
                         console.log(err);
                     }
