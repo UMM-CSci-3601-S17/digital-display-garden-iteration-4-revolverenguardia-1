@@ -41,7 +41,7 @@ export class PlantListComponent implements OnInit{
         this.plantListService.getPlantsFromServer().subscribe(
             plants => {
                 this.plantCollection = new PlantCollection(plants);
-                // this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
+                this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
 
                 err => {
                     console.log(err);
