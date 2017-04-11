@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
+import {FooterComponent} from '../../footer/footer.component';
 import 'rxjs/add/operator/switchMap';
 
 @Component({

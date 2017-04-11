@@ -11,6 +11,7 @@ import {GardenComponent} from "./app/garden/src/garden-component";
 import {PlantListComponent} from "./app/garden/plant_list/src/plant-list.component";
 import {BedListComponent} from "./app/garden/bed_list/src/bed-list.component";
 import { CommonNameListComponent } from "./app/garden/common_name_list/src/common-name-list.component";
+
 import {PlantListService} from "./app/garden/plant_list/src/plant-list.service";
 import {BedListService} from "./app/garden/bed_list/src/bed-list.service";
 import { CommonNameListService } from "./app/garden/common_name_list/src/common-name-list.service";
@@ -22,8 +23,7 @@ import {ExportComponent} from "./app/admin/export.component";
 import {FileUploadComponent} from "./app/admin/file-upload.component";
 import {PlantService} from "./app/garden/plant_list/src/plant.service";
 import {FilterGardenSidebarComponent} from "./app/garden/filter_garden_sidebar/filter-garden-sidebar.component";
-
-
+import { FooterComponent} from "./app/garden/footer/footer.component";
 
 @NgModule({
     imports: [
@@ -46,9 +46,16 @@ import {FilterGardenSidebarComponent} from "./app/garden/filter_garden_sidebar/f
         AdminComponent,
         ImportComponent,
         ExportComponent,
-        FileUploadComponent
+        FileUploadComponent,
+        FooterComponent
     ],
-    providers: [ PlantListService, BedListService, CommonNameListService, AdminService, PlantService ],
+    providers: [
+        PlantListService,
+        BedListService,
+        CommonNameListService,
+        AdminService,
+        PlantService
+    ],
     bootstrap: [ AppComponent ]
 })
 
