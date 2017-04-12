@@ -54,7 +54,10 @@ public class QRCodes {
         final int numBeds = bedNames.length;
         String bedURLs[] = new String [numBeds];
         for(int i = 0; i < numBeds; i++) {
-            bedURLs[i] = urlPrefix + bedNames[i] + "?qr=true";
+
+            //Will be needed for later to count qr scans in bed metadata
+            //bedURLs[i] = urlPrefix + bedNames[i] + "?qr=true";
+            bedURLs[i] = urlPrefix + bedNames[i];
         }
 
         return bedURLs;
