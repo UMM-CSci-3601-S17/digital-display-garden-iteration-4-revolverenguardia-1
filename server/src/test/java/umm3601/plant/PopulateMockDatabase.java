@@ -34,6 +34,7 @@ public class PopulateMockDatabase {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase db = mongoClient.getDatabase(databaseName);
         MongoCollection plants = db.getCollection("plants");
+        MongoCollection beds = db.getCollection("beds");
         db.drop();
 
 
@@ -83,6 +84,37 @@ public class PopulateMockDatabase {
 
         begonia.append("metadata", metadataDoc1);
         plants.insertOne(begonia);
+
+
+        //First Garden Location bed7.0
+        Document bed7 = new Document();
+        bed7.append("_id", new ObjectId("58d1c36efb0cac4e15afd302"));
+        bed7.append("gardenLocation", "7.0");
+
+        Document bedMetadataDoc = new Document();
+        bedMetadataDoc.append("pageViews", 0);
+        bedMetadataDoc.append("visits", new BsonArray());
+        bedMetadataDoc.append("qrScans", new BsonArray());
+
+        bed7.append("uploadId", "first uploadId");
+        bed7.append("metadata", bedMetadataDoc);
+        beds.insertOne(bed7);
+
+
+        //Second Garden Location bed10.0
+        Document bed10 = new Document();
+        bed10.append("_id", new ObjectId("58d1c36efb0cac4e15afd303"));
+        bed10.append("gardenLocation", "10.0");
+
+
+        Document bedMetadataDoc1 = new Document();
+        bedMetadataDoc1.append("pageViews", 0);
+        bedMetadataDoc1.append("visits", new BsonArray());
+        bedMetadataDoc1.append("qrScans", new BsonArray());
+
+        bed10.append("uploadId", "second uploadId");
+        bed10.append("metadata", bedMetadataDoc1);
+        beds.insertOne(bed10);
 
         //Third Plant Dianthus
         Document dianthus = new Document();
