@@ -8,7 +8,6 @@
 import {OnInit, Component} from "@angular/core";
 import {Bed} from "./bed";
 import {BedListService} from "./bed-list.service";
-import {RouterModule} from "@angular/router";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 import {PlantListComponent} from "../../plant_list/src/plant-list.component";
 
@@ -35,6 +34,7 @@ export class BedListComponent implements OnInit {
      */
     private handleBedListClick(bedName): void{
         PlantListComponent.getInstance().filterByBedName(bedName);
+        this.bedListService.reportBedVisit(bedName).subscribe();
     }
 
     /**

@@ -99,7 +99,7 @@ public class Server {
         //List all Common Names
         get("api/commonNames", (req, res) -> {
             res.type("application/json");
-            return plantController.getCommonNamesAsJson(plantController.getLiveUploadId());
+            return plantController.getCommonNamesAsJson(getLiveUploadId());
         });
 
         // List all uploadIds
@@ -158,18 +158,20 @@ public class Server {
         });
 
 
-        get("api/bedVisit", (req, res) -> {
+        post("api/bedVisit", (req, res) -> {
             res.type("application/json");
             String body = req.body();
             System.out.println(body);
             //Increment bedCount
+            System.out.println("BED VISIT " + body);
             bedController.addBedVisit(body, getLiveUploadId());
             return true;
         });
 
-        get("api/qrVisit", (req, res) -> {
+        post("api/qrVisit", (req, res) -> {
             res.type("application/json");
             String body = req.body();
+
             //Increment bedCount
             //Increment qrForBedCount
             bedController.addBedQRVisit(body, getLiveUploadId());
