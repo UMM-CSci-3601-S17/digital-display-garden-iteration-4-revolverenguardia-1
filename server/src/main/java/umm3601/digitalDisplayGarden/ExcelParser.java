@@ -290,7 +290,9 @@ public class ExcelParser {
             //PROBLEM: updating _id means that that object's effective date is _now_
             //So when you patch old comments, the date they will be said to be made is the time of patch
             comment.put("uploadId", newUploadId);
-//            comment.put("_id", new ObjectId());
+
+            //for now we should at least keep this as without this old comments arent saved
+            comment.put("_id", new ObjectId());
 
             //Only re-upload a comment if the plant it points to still exists
             Document newPlantFilter = new Document(filterByNewUploadId);
