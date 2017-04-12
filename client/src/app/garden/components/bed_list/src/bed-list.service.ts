@@ -24,17 +24,19 @@ export class BedListService {
     }
 
     reportBedVisit(gardenLocation : string): Observable<boolean> {
-        console.log("GOT HERE " + gardenLocation);
-        console.log(API_URL + "qrVisit");
-        console.log(this.route.snapshot.params["qr"])
+        //console.log("GOT HERE " + gardenLocation);
+        //console.log(API_URL + "qrVisit");
+        //console.log(this.route.snapshot.params["qr"])
 
         if(this.route.snapshot.params["qr"]) {
-            console.log("OJOJOJOJ");
             return this.http.post(API_URL + "qrVisit", gardenLocation).map(res => res.json());
         } else {
-            console.log("OKOKOKOK");
             return this.http.post(API_URL + "bedVisit", gardenLocation).map(res => res.json());
         }
+    }
+
+    returnPageViews(gardenLocation : string): Observable<boolean> {
+        return this.http.post(API_URL + "bedPageViews", gardenLocation).map(res => res.json());
     }
 
 

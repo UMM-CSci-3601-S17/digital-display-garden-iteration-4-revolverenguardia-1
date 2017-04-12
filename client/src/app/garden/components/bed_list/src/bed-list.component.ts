@@ -35,6 +35,7 @@ export class BedListComponent implements OnInit {
     private handleBedListClick(bedName): void{
         PlantListComponent.getInstance().filterByBedName(bedName);
         this.bedListService.reportBedVisit(bedName).subscribe();
+        this.bedListService.returnPageViews(bedName).subscribe();
     }
 
     /**

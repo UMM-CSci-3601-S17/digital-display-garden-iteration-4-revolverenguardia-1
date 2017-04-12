@@ -157,13 +157,20 @@ public class Server {
             return JSON.serialize(getLiveUploadId());
         });
 
+        post("api/bedPageViews", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
+            //Increment pageViews for beds
+            bedController.incrementBedMetadata(body,"pageViews",getLiveUploadId());
+            return true;
+        });
+
 
         post("api/bedVisit", (req, res) -> {
             res.type("application/json");
             String body = req.body();
-            System.out.println(body);
             //Increment bedCount
-            System.out.println("BED VISIT " + body);
+            //System.out.println("BED VISIT " + body);
             bedController.addBedVisit(body, getLiveUploadId());
             return true;
         });
