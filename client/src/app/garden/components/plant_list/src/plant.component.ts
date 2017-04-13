@@ -40,9 +40,7 @@ export class PlantComponent implements OnInit {
      * @param plantService - the PlantService that provides data
      * @param route - the routing service that routes to specific PlantComponent pages
      */
-    constructor(private plantService: PlantService, private route: ActivatedRoute ) {
-
-    }
+    constructor(private plantService: PlantService, private route: ActivatedRoute ) { }
 
 
     /**

@@ -23,13 +23,8 @@ export class PlantListService {
 
     private readonly URL: string = API_URL + "plant";
 
-    private plantCollection: PlantCollection;
-
-    // The bed filter we have currently filtered by
-    private currentBedFilter;
-
     // The common name filter we have currently filtered by
-    private currentCommonNameFilter;
+    private currentCommonNameFilter = "ALL";
 
     constructor(private http:Http) { }
 
@@ -42,29 +37,6 @@ export class PlantListService {
     }
 
     /**
-     * If the data has not already been filtered by the current common name this method
-     * filters the plant data.
-     * @param commonName - common name to filter by
-     */
-    public filterByCommonName(commonName: string): void{
-
-        // Check that we haven't already filtered
-        if(this.currentCommonNameFilter != commonName) {
-
-            this.currentCommonNameFilter = commonName;
-
-            if(this.currentCommonNameFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
-                PlantListComponent.getInstance().setFilteredPlants(this.plantCollection.getPlants());
-
-            // Filter by the common name
-            else {
-                let filteredPlants: Plant[] = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
-                PlantListComponent.getInstance().setFilteredPlants(filteredPlants);
-            }
-        }
-    }
-
-    /**
      * Requests that the Plant specified by the provided id be sent from the server.
      * @param id
      * @returns {Observable<R>}
@@ -72,5 +44,13 @@ export class PlantListService {
     getPlantById(id: string): Observable<Plant> {
         console.log("Requesting: " + API_URL + "plant/" + id);
         return this.http.request(this.URL + "/" + id).map(res => res.json());
+    }
+
+    setCommonNameFilter(filter: string): void{
+        this.currentCommonNameFilter = filter;
+    }
+
+    getCommonNameFilter(): string{
+        return this.currentCommonNameFilter;
     }
 }

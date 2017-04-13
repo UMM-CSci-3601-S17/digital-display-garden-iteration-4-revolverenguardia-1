@@ -45,7 +45,7 @@ export class PlantListComponent implements OnInit{
             plants => {
                 this.plantCollection = new PlantCollection(plants);
                 this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
-
+                this.filterByCommonName(this.plantListService.getCommonNameFilter());
                 err => {
                     console.log(err);
                 }
@@ -75,19 +75,11 @@ export class PlantListComponent implements OnInit{
      * @param commonName - the common name to filter the PlantListComponent's data by
      */
     public filterByCommonName(commonName: string): void{
-        // Check that we haven't already filtered
-        if(this.currentCommonNameFilter != commonName) {
+        // Store filter to help handle page persistence
+        this.plantListService.setCommonNameFilter(commonName);
 
-            this.currentCommonNameFilter = commonName;
-
-            if(this.currentCommonNameFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
-                this.filteredPlants = this.plantCollection.getPlants();
-
-            // Filter by the common name
-            else {
-                this.filteredPlants = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
-            }
-        }
+        if(commonName != PlantFilter.FILTER_BY_ALL_PLANTS)
+            this.filteredPlants = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
     }
 
     /**
