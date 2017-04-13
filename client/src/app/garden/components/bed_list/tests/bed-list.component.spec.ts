@@ -46,14 +46,14 @@ describe("Bed list", () => {
         });
     }));
 
-    it("Get Bed List Header", () => {
-        let bed: BedListComponent = new BedListComponent(null);
-        expect(bed.BED_LIST_HEADER).toBe("ALL");
-    });
-
-    it("Get Bed Names", () => {
-        expect(bedList.getBedNames().length).toBe(3);
-    });
+    // it("Get Bed List Header", () => {
+    //     let bed: BedListComponent = new BedListComponent(null);
+    //     expect(bed.BED_LIST_HEADER).toBe("ALL");
+    // });
+    //
+    // it("Get Bed Names", () => {
+    //     expect(bedList.getBedNames().length).toBe(3);
+    // });
 
 });
 
