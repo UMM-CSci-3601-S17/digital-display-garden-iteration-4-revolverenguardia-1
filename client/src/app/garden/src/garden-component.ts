@@ -21,7 +21,6 @@ export class GardenComponent implements OnInit {
 
     constructor(private route: ActivatedRoute){
         GardenComponent.gardenComponent = this;
-        console.log("Ngoninit");
     }
 
     /**
