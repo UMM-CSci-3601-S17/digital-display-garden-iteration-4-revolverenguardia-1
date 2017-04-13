@@ -45,10 +45,12 @@ public class FeedbackWriter {
 
     public static final int COL_BED_GRDNLOC = 0,
                             COL_BED_PAGEVIEWS = 1;
-    public static final int COL_BED_VISITS = 2;
-    public static final int COL_BED_QRSCANS = 3;
+    public static final int COL_BED_QRSCANS = 2;
+    public static final int COL_BED_VISITS = 3;
+    public static final int COL_BED_QRVISITS=4;
 
-    public static final int COL_BED_FIELDS = 4;
+
+    public static final int COL_BED_FIELDS = 5;
 
     public static final int SHEET_COMMENTS = 0,
                             SHEET_METADATA = 1;
@@ -67,7 +69,7 @@ public class FeedbackWriter {
         styleWordWrap.setAlignment(HorizontalAlignment.LEFT);
 
         prepareCommentSheet();
-        prepareMetadataSheet();
+        preparePlantMetadata();
         prepareBedMetadataSheet();
 
     }
@@ -128,9 +130,9 @@ public class FeedbackWriter {
         commentRowCount = 2;
     }
 
-    private void prepareMetadataSheet()
+    private void preparePlantMetadata()
     {
-        this.metadataSheet = workbook.createSheet("Metadata");
+        this.metadataSheet = workbook.createSheet("Plant Metadata");
 
         Row row1 = metadataSheet.createRow(0);
         Row row2 = metadataSheet.createRow(1);
@@ -222,13 +224,6 @@ public class FeedbackWriter {
         cell.setCellValue("Views");
         cell.setCellStyle(styleCentered);
 
-        cell = row1.createCell(COL_BED_VISITS);
-        cell.setCellValue("Bed");
-        cell.setCellStyle(styleCentered);
-        cell = row2.createCell(COL_BED_VISITS);
-        cell.setCellValue("Visits");
-        cell.setCellStyle(styleCentered);
-
         cell = row1.createCell(COL_BED_QRSCANS);
         cell.setCellValue("QR");
         cell.setCellStyle(styleCentered);
@@ -237,27 +232,19 @@ public class FeedbackWriter {
         cell.setCellStyle(styleCentered);
 
 
-    /*
-    cell = row1.createCell(COL_META_QRSCANS);
-    cell.setCellValue("QR");
-    cell.setCellStyle(styleCentered);
-    cell = row2.createCell(COL_META_QRSCANS);
-    cell.setCellValue("Scans");
-    cell.setCellStyle(styleCentered);
-    */
-
-
         bedmetadataSheet.setColumnWidth(COL_BED_GRDNLOC,7400);
         bedmetadataSheet.setColumnWidth(COL_BED_PAGEVIEWS,3200);
-        bedmetadataSheet.setColumnWidth(COL_BED_VISITS,3200);
         bedmetadataSheet.setColumnWidth(COL_BED_QRSCANS,3200);
+        bedmetadataSheet.setColumnWidth(COL_BED_VISITS,3200);
+        bedmetadataSheet.setColumnWidth(COL_BED_QRVISITS,3200);
         bedmetadataSheet.createFreezePane(0, 2);
 
 
-        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:D1200");
+        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:C1200");
         bedmetadataSheet.setAutoFilter(rangeAddress);
         bedmetadataRowCount = 2;
     }
+
 
 
 

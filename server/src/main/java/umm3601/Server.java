@@ -130,7 +130,7 @@ public class Server {
                     plantController.writeFeedback(buffer, req.queryMap().toMap().get("uploadId")[0]);
 
                     res.type("application/vnd.ms-excel");
-                    res.header("Content-Disposition", "attachment; filename=\"plant-comments.xlsx\"");
+                    res.header("Content-Disposition", "attachment; filename=\"Garden-Visitor data.xlsx\"");
 
                     OutputStream out = res.raw().getOutputStream();
                     out.write(buffer.toByteArray());

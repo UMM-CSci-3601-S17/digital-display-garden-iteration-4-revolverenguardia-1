@@ -370,8 +370,7 @@ public class PlantController {
 
 
                 Integer pageViews = metadata.getInteger("pageViews");
-                List<Document> visits = (List<Document>)(metadata.get("visits"));
-                List<Document> qrScans = (List<Document>) metadata.get("qrScans");
+                Integer qrScans = metadata.getInteger("qrScans");
 
                 dataToWrite[COL_BED_GRDNLOC] = onBed.getString("gardenLocation");
 
@@ -382,9 +381,6 @@ public class PlantController {
 
 
                 dataToWrite[COL_BED_PAGEVIEWS] = pageViews.toString();
-
-                //TODO: Figure out how to write to excel sheet the visits or even if we need to export bed visits
-                dataToWrite[COL_BED_VISITS] = visits.toString();
                 dataToWrite[COL_BED_QRSCANS] = qrScans.toString();
 
                 feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_BEDMETADATA);
