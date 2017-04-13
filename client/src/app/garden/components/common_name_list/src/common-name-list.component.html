@@ -46,8 +46,8 @@
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
             <li *ngFor="let commonName of commonNames">
-                <a *ngIf="commonName._id == commonNameFilter" class="currentFilter" (click)="handleCommonNameListClick($event.target.textContent)" >{{ commonName._id }}</a>
-                <a *ngIf="commonName._id != commonNameFilter" (click)="handleCommonNameListClick($event.target.textContent)" >{{ commonName._id }}</a>
+                <a *ngIf="commonName._id == commonNameFilter" class="currentFilter" >{{ commonName._id }}</a>
+                <a *ngIf="commonName._id != commonNameFilter" >{{ commonName._id }}</a>
             </li>
         </ul>
 

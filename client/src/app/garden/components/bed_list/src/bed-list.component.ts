@@ -38,8 +38,13 @@ export class BedListComponent implements OnInit {
      * @param bedName - the bed name to filter by
      */
     private handleBedListClick(bedName): void{
-        this.bedFilter = bedName;
-        PlantListComponent.getInstance().filterByBedName(bedName);
+
+        if(this.bedFilter == bedName)
+            this.bedFilter = "ALL";
+        else
+            this.bedFilter = bedName;
+
+        PlantListComponent.getInstance().filterByBedName(this.bedFilter);
     }
 
     /**

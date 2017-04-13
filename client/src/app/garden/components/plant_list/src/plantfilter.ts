@@ -41,6 +41,11 @@ export class PlantFilter {
      */
     public static filterByCommonName(commonName: string, plants: Plant[]): Plant[]{
 
+        // Don't filter
+        if(commonName === "NO_FILTER")
+            return plants;
+
+        // Filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
