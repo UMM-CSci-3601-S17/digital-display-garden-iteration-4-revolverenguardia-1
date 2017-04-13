@@ -21,7 +21,10 @@ import {ImportComponent} from "./app/admin/import.component";
 import {AdminService} from "./app/admin/admin.service";
 import {ExportComponent} from "./app/admin/export.component";
 import {FileUploadComponent} from "./app/admin/file-upload.component";
-import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
+import {PlantService} from "./app/garden/plant_list/src/plant.service";
+import {GraphComponent} from "./app/admin/google-charts.component";
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+
 import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
 import {FooterComponent} from "./app/garden/components/footer/src/footer.component";
 import {RouterModule} from "@angular/router";
@@ -33,6 +36,8 @@ import {RouterModule} from "@angular/router";
         JsonpModule,
         routing,
         FormsModule,
+        PipeModule,
+        Ng2GoogleChartsModule,
         PipeModule,
         RouterModule
     ],
@@ -49,7 +54,9 @@ import {RouterModule} from "@angular/router";
         ImportComponent,
         ExportComponent,
         FileUploadComponent,
-        FooterComponent
+        FooterComponent,
+        GraphComponent,
+
     ],
     providers: [
         PlantListService,

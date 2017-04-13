@@ -56,9 +56,15 @@ public class PopulateMockDatabase {
         alternanthera.append("source", "PA");
         alternanthera.append("SSeedVVeg", "S");
 
+        BsonArray visits = new BsonArray();
+        ObjectId visit1 = new ObjectId("58e48858efbd6027e34b4c52");
+        visits.add(new BsonObjectId(visit1));
+
         Document metadataDoc = new Document();
         metadataDoc.append("pageViews", 0);
         metadataDoc.append("ratings", new BsonArray());
+        metadataDoc.append("visits", visits);
+
         
         alternanthera.append("metadata", metadataDoc);
         //alternanthera.append("garden", "hello!");
@@ -81,6 +87,7 @@ public class PopulateMockDatabase {
         Document metadataDoc1 = new Document();
         metadataDoc1.append("pageViews", 0);
         metadataDoc1.append("ratings", new BsonArray());
+
 
         begonia.append("metadata", metadataDoc1);
         plants.insertOne(begonia);

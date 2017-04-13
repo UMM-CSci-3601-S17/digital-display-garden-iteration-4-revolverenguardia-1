@@ -14,4 +14,14 @@ export class AdminService {
     getLiveUploadId(): Observable<string> {
         return this.http.request(this.url + "liveUploadId").map(res => res.json());
     }
+
+    //Google Charts HTTP requests
+
+    getViewsPerHour(): Observable<any[][]> {
+        return this.http.request(this.url + "chart/viewsPerHour").map(res => res.json())
+    }
+
+    getBedMetadataForMap(): Observable<any[]> {
+        return this.http.request(this.url + "chart/plantMetadataMap").map(res => res.json())
+    }
 }

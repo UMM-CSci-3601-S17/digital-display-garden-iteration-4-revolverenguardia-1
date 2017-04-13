@@ -1,0 +1,44 @@
+<div class="chart">
+    <google-chart [data]="columnChartOptions"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+<div class="chart">
+    <google-chart [data]="line_ChartData"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+
+
+<div class="chart">
+    <google-chart [data]="mapOptions"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" onClick= "window.location.reload()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+
+<div class="chart" id = "chartDiv">
+    <google-chart [data] = "bubbleChartOption"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+
+<style>
+    #chartDiv {
+        background-image: url("http://localhost:2538/api/admin/gardenPicture");
+        /*-moz-background-image: 'res/dt.png';*/
+    }
+    .chart {
+        margin-bottom: 18px;
+    }
+</style>
+
+
+

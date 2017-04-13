@@ -124,23 +124,11 @@ public class PlantController {
 
     }
 
-    /**
-     *
-     * @param plantID The plant to get feedback of
-     * @param uploadID Dataset to find the plant
-     *
-     * @return JSON for the number of comments, likes, and dislikes
-     * Of the form:
-     * {
-     *     commentCount: number
-     *     likeCount: number
-     *     dislikeCount: number
-     * }
-     */
+    public static final int PLANT_FEEDBACK_LIKES = 0,
+                            PLANT_FEEDBACK_DISLIKES = 1,
+                            PLANT_FEEDBACK_COMMENTS = 2;
 
-    public String getFeedbackForPlantByPlantID(String plantID, String uploadID) {
-        Document out = new Document();
-
+    public long[] getFeedbackForPlantByPlantID(String plantID, String uploadID) {
         Document filter = new Document();
         filter.put("commentOnPlant", plantID);
         filter.put("uploadId", uploadID);
@@ -168,13 +156,43 @@ public class PlantController {
                     dislikes++;
             }
         }
+        long[] out = new long[3];
+        out[PLANT_FEEDBACK_LIKES] = likes;
+        out[PLANT_FEEDBACK_DISLIKES] = dislikes;
+        out[PLANT_FEEDBACK_COMMENTS] = comments;
+
+        return out;
 
 
-        out.put("commentCount", comments);
-        out.put("likeCount", likes);
-        out.put("dislikeCount", dislikes);
+    }
+
+    /**
+     *
+     * @param plantID The plant to get feedback of
+     * @param uploadID Dataset to find the plant
+     *
+     * @return JSON for the number of comments, likes, and dislikes
+     * Of the form:
+     * {
+     *     commentCount: number
+     *     likeCount: number
+     *     dislikeCount: number
+     * }
+     */
+
+    public String getJSONFeedbackForPlantByPlantID(String plantID, String uploadID) {
+        Document out = new Document();
+
+        long[] metadataCount = getFeedbackForPlantByPlantID(plantID, uploadID);
+
+
+        out.put("likeCount", metadataCount[0]);
+        out.put("dislikeCount", metadataCount[1]);
+        out.put("commentCount", metadataCount[2]);
         return JSON.serialize(out);
     }
+
+
 
     public String getGardenLocationsAsJson(String uploadID){
         AggregateIterable<Document> documents

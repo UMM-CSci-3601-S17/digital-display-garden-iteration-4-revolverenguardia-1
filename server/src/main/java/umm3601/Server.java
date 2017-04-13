@@ -4,6 +4,7 @@ import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
 import umm3601.digitalDisplayGarden.BedController;
+import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.digitalDisplayGarden.PlantController;
 
 import java.io.*;
@@ -41,6 +42,7 @@ public class Server {
         staticFiles.location("/public");
 
         PlantController plantController = new PlantController(databaseName);
+        GardenCharts chartMaker = new GardenCharts(databaseName);
         BedController bedController = new BedController(databaseName);
 
         options("/*", (request, response) -> {
@@ -89,6 +91,13 @@ public class Server {
             String id = req.params("plantID");
             return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
         });
+
+//        //Get feedback counts for a plant
+//        get("api/plant/:plantID/counts", (req, res) -> {
+//            res.type("application/json");
+//            String id = req.params("plantID");
+//            return plantController.getJSONFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
+//        });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
@@ -201,10 +210,34 @@ public class Server {
             return bytes;
         });
 
+        get("api/admin/gardenPicture", (req, res) -> {
+            res.type("application/png");
+
+            String gardenPath = "/Garden.png";
+
+
+            //res.header("Content-Disposition","filename=\"" + "Garden.png" + "\"");
+
+            return plantController.getClass().getResourceAsStream(gardenPath);
+
+        });
+
         // Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
             return plantController.storePlantComment(req.body(), getLiveUploadId());
+        });
+
+        // Views per Hour
+        get("api/chart/viewsPerHour", (req, res) -> {
+            res.type("application/json");
+            return chartMaker.getViewsPerHour(getLiveUploadId());
+        });
+
+        get("api/chart/plantMetadataMap", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
         // Accept an xls file
