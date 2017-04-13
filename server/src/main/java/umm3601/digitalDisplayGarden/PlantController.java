@@ -343,7 +343,7 @@ public class PlantController {
             try {
                 String[] dataToWrite = new String[COL_PLANT_FIELDS];
                 Document metadata = (Document) onPlant.get("metadata");
-                Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
+                Document feedback = Document.parse(getJSONFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
 
 
                 Integer likeCount = feedback.getInteger("likeCount");

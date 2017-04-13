@@ -21,7 +21,7 @@ import {ImportComponent} from "./app/admin/import.component";
 import {AdminService} from "./app/admin/admin.service";
 import {ExportComponent} from "./app/admin/export.component";
 import {FileUploadComponent} from "./app/admin/file-upload.component";
-import {PlantService} from "./app/garden/plant_list/src/plant.service";
+import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
 import {GraphComponent} from "./app/admin/google-charts.component";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
