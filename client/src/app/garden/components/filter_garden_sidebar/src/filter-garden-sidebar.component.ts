@@ -16,22 +16,18 @@ export class FilterGardenSidebarComponent {
 
     public openBedNav(): void{
         this.bedNavWidth = 260;
-        console.log("Open Bed Nav " + this.bedNavWidth);
     }
 
     public closeBedNav(): void{
         this.bedNavWidth = 0;
-        console.log("Close Bed Nav " + this.bedNavWidth);
     }
 
     public openNameNav(): void{
         this.nameNavWidth = 260;
-        console.log("Open Name Nav " + this.nameNavWidth);
     }
 
     public closeNameNav(): void{
         this.nameNavWidth = 0;
-        console.log("Close Name Nav " + this.nameNavWidth);
     }
 
 }

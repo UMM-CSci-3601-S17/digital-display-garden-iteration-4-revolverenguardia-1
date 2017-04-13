@@ -32,13 +32,15 @@ export class PlantListComponent implements OnInit{
     // The current bed filter used to filter the bed
     private currentBedFilter: string;
 
+    // The current common name filter
+    private currentCommonNameFilter: string;
+
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
 
     constructor(private plantListService: PlantListService, private bedListService : BedListService, private route: ActivatedRoute, private location: Location) {
         // Keep track of 'this' for static factory method
         PlantListComponent.plantListComponent = this;
-
     }
 
     ngOnInit(){
@@ -47,6 +49,7 @@ export class PlantListComponent implements OnInit{
                 this.plantCollection = new PlantCollection(plants);
                 var bedName : string = GardenComponent.getInstance().getBedURLParameter();
                 this.filterByBedName(bedName);
+                this.filterByCommonName(this.plantListService.getCommonNameFilter());
 
                 this.route.queryParams
                     .map(queryParams => queryParams['qr'])
@@ -78,6 +81,22 @@ export class PlantListComponent implements OnInit{
                 this.filteredPlants = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
             }
         }
+    }
+
+    public getCommonNameFilter(): string{
+        return this.plantListService.getCommonNameFilter();
+    }
+
+    /**
+     * Filters the filteredplants array by the provided common name.
+     * @param commonName - the common name to filter the PlantListComponent's data by
+     */
+    public filterByCommonName(commonName: string): void{
+        // Store filter to help handle page persistence
+        this.plantListService.setCommonNameFilter(commonName);
+
+        if(commonName != PlantFilter.FILTER_BY_ALL_PLANTS)
+            this.filteredPlants = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
     }
 
     /**
@@ -121,21 +140,4 @@ export class PlantListComponent implements OnInit{
     public getFilteredPlants(): Plant[]{
         return this.filteredPlants;
     }
-
-    /**
-     * Filters the filteredplants array by the provided bed name.
-     * @param bedName - the bed name to filter the PlantListComponent's data by
-     */
-    // public filterByBedName(bedName: string): void{
-    //     this.plantListService.filterByBedName(bedName);
-    // }
-
-    /**
-     * Filters the filteredplants array by the provided common name.
-     * @param commonName - the common name to filter the PlantListComponent's data by
-     */
-    public filterByCommonName(commonName: string): void{
-        this.plantListService.filterByCommonName(commonName);
-    }
-
 }

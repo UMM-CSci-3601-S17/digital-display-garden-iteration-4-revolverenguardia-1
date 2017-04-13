@@ -8,9 +8,10 @@
 import {OnInit, Component} from "@angular/core";
 import {Bed} from "./bed";
 import {BedListService} from "./bed-list.service";
+import {RouterModule} from "@angular/router";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 import {PlantListComponent} from "../../plant_list/src/plant-list.component";
-import {ActivatedRoute} from "@angular/router";
+import {GardenComponent} from "../../../src/garden-component";
 
 @Component({
     selector: 'bed-list',
@@ -20,7 +21,9 @@ export class BedListComponent implements OnInit {
 
     // Full list of all bed names for the BedList
     private bedNames: Bed[];
-    private selectedBedName : string;
+
+    // Current bed filter
+    private bedFilter: string;
 
     /**
      * Title for the bed list view on the HTML Bed List Component.
@@ -28,18 +31,23 @@ export class BedListComponent implements OnInit {
      */
     public readonly BED_LIST_HEADER: string = PlantFilter.FILTER_BY_ALL_PLANTS;
 
-    constructor(private bedListService: BedListService, private route: ActivatedRoute) { }
+    constructor(private bedListService: BedListService) { }
 
     /**
      * Should filter by the provided bed name.
      * @param bedName - the bed name to filter by
      */
     private handleBedListClick(bedName): void{
-        if(this.selectedBedName == bedName)
+        if(this.bedFilter == bedName)
             return;
 
-        this.selectedBedName = bedName;
-        PlantListComponent.getInstance().filterByBedName(bedName);
+        if(this.bedFilter == bedName)
+            this.bedFilter = "ALL";
+        else
+            this.bedFilter = bedName;
+
+        PlantListComponent.getInstance().filterByBedName(this.bedFilter);
+
         this.bedListService.reportBedVisit(bedName, false).subscribe();
     }
 
@@ -58,5 +66,7 @@ export class BedListComponent implements OnInit {
                 console.log(err);
             }
         );
+
+        this.bedFilter = GardenComponent.getInstance().getBedURLParameter();
     }
 }

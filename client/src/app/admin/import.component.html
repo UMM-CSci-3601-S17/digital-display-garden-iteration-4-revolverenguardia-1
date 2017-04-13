@@ -13,9 +13,13 @@
     Patch
 </button>
 
-<div *ngIf="filename!==undefined"> Your file was successfully uploaded as data set {{this.filename}}.
+<div *ngIf="filename!==undefined" class="alert alert-success" role="alert"> Your file was successfully uploaded as data set {{this.filename}}.
 </div>
-<div *ngIf="filename === undefined && uploadAttempted === true">File upload failed.</div>
+<div *ngIf="filename === undefined && uploadAttempted === true" class="alert alert-danger" role="alert">
+    File upload failed.
+    <br/>
+    Please Upload a file that ends with .xlsx
+</div>
 
 <div>
 <button  [routerLink]="['/admin']" class="btn btn-primary" style="float: right">Back to Admin Page</button>

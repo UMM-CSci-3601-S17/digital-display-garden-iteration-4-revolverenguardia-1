@@ -40,9 +40,9 @@
             overflow-y: scroll;
         }
         #plant-list-view{
-            width: 90%;
             height: 82%;
-            float: right;
+            margin-right: 11px;
+            margin-left: 59px;
         }
 
     </style>
@@ -58,9 +58,8 @@
         <ul id="plant-list" >
             <li *ngFor="let plant of filteredPlants" [routerLink]="['/plant', plant.id]">
                 <a (click)="this.handlePlantListClick(plant)">
+                    <h4>{{ plant.cultivar }}</h4>
                     {{ plant.commonName }}
-                    <br>
-                    {{ plant.cultivar }}
                 </a>
             </li>
         </ul>

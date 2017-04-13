@@ -25,7 +25,6 @@ export class PlantFilter {
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
-            console.log("Check " + bedName + " == " + plant.gardenLocation );
             if (plant.gardenLocation == bedName) {
                 filteredPlants.push(plant);
             }
@@ -42,6 +41,11 @@ export class PlantFilter {
      */
     public static filterByCommonName(commonName: string, plants: Plant[]): Plant[]{
 
+        // Don't filter
+        if(commonName === "NO_FILTER")
+            return plants;
+
+        // Filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
