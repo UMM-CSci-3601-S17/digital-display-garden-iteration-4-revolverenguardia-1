@@ -34,6 +34,7 @@ public class TestExportFeedback {
     public void testExportFeedback() throws IOException {
         int plantComments = 160;
         int plantMetadata = 500;
+        int bedMetadata = 500;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
         FeedbackWriter feedback = new FeedbackWriter(buffer);
@@ -61,12 +62,21 @@ public class TestExportFeedback {
             feedback.writeToSheet(input, SHEET_METADATA);
         }
 
+//        input = new String[FeedbackWriter.COL_BED_FIELDS];
+//        for(int i = 0; i < bedMetadata; i++) {
+//            input[COL_BED_GRDNLOC] = "1S";
+//            input[COL_PLANT_PAGEVIEWS] = "0";
+//            input[COL_BED_VISITS] = "";
+//            input[COL_BED_QRSCANS] = "";
+//            feedback.writeToSheet(input, SHEET_BEDMETADATA);
+//        }
+
         feedback.complete();
         //Use that output stream and produce an input stream from the bytes to
         //read the spreadsheet into an XSSFWorkbook
         ByteArrayInputStream reRead = new ByteArrayInputStream(buffer.toByteArray());
         Workbook workbook = new XSSFWorkbook(reRead);
-        assertEquals("Excel Spreadsheet does not contain two Sheets", workbook.getNumberOfSheets(), 2);
+        assertEquals("Excel Spreadsheet does not contain two Sheets", workbook.getNumberOfSheets(), 3);
 
         Sheet sheet;
 
@@ -75,6 +85,9 @@ public class TestExportFeedback {
 
         sheet = workbook.getSheetAt(1); //Metadata Sheet
         assertEquals("Metadata Sheet does not contain "+ plantMetadata + "+2 rows",sheet.getPhysicalNumberOfRows(), plantMetadata+2);
+
+//        sheet = workbook.getSheetAt(2); //Metadata Sheet
+//        assertEquals("Bed Metadata Sheet does not contain "+ bedMetadata + "+2 rows",sheet.getPhysicalNumberOfRows(), plantMetadata+2);
 
 
 
