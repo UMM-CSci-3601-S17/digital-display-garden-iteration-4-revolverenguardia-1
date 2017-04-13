@@ -30,6 +30,7 @@ public class PlantController {
     private final MongoCollection<Document> plantCollection;
     private final MongoCollection<Document> commentCollection;
     private final MongoCollection<Document> configCollection;
+    private final MongoCollection<Document> bedCollection;
 
     public PlantController(String databaseName) throws IOException {
         // Set up our server address
@@ -46,6 +47,7 @@ public class PlantController {
         plantCollection = db.getCollection("plants");
         commentCollection = db.getCollection("comments");
         configCollection = db.getCollection("config");
+        bedCollection = db.getCollection("beds");
 
     }
 
@@ -348,6 +350,49 @@ public class PlantController {
             {
                 e.printStackTrace();
                 System.err.println("ERROR ON PLANT " + onPlant);
+            }
+        }
+
+        //Loop through all beds
+        iter = bedCollection.find(
+                eq("uploadId", uploadId)
+
+        );
+        iterator = iter.iterator();
+
+        while (iterator.hasNext()) {
+            Document onBed = (Document) iterator.next();
+
+            try {
+                String[] dataToWrite = new String[COL_BED_FIELDS];
+                Document metadata = (Document) onBed.get("metadata");
+                //Document stuff = Document.parse(getGardenLocationsAsJson(onBed.getString("id")));
+
+
+                Integer pageViews = metadata.getInteger("pageViews");
+                List<Document> visits = (List<Document>)(metadata.get("visits"));
+                List<Document> qrScans = (List<Document>) metadata.get("qrScans");
+
+                dataToWrite[COL_BED_GRDNLOC] = onBed.getString("gardenLocation");
+
+
+                //This wil only write one objectId to the Excel Sheet under visits
+//                Document visit = visits.get(0);
+//                String bedVisit = visit.get("visit").toString();
+
+
+                dataToWrite[COL_BED_PAGEVIEWS] = pageViews.toString();
+
+                //TODO: Figure out how to write to excel sheet the visits or even if we need to export bed visits
+                dataToWrite[COL_BED_VISITS] = visits.toString();
+                dataToWrite[COL_BED_QRSCANS] = qrScans.toString();
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_BEDMETADATA);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.err.println("ERROR ON BED " + onBed);
             }
         }
 
