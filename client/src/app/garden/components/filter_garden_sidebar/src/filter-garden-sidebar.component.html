@@ -80,6 +80,10 @@
         .active {
             background-color: #196B1D;
         }
+
+        .clearFilter{
+            background-color: #7a0019;
+        }
     </style>
 </head>
 
@@ -98,6 +102,7 @@
             <li><a class="active">Filters</a></li>
             <li (click)="openBedNav()"><a>Bed</a></li>
             <li (click)="openNameNav()"><a>Common Name</a></li>
+            <li class="clearFilter"><a href="/bed/all">Clear</a></li>
         </ul>
     </div>
 

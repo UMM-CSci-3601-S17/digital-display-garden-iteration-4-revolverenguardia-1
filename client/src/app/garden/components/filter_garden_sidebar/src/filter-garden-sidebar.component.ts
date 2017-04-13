@@ -29,5 +29,4 @@ export class FilterGardenSidebarComponent {
     public closeNameNav(): void{
         this.nameNavWidth = 0;
     }
-
 }

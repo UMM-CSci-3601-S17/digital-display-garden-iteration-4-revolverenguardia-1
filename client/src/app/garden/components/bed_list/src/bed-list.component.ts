@@ -12,6 +12,7 @@ import {RouterModule} from "@angular/router";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 import {PlantListComponent} from "../../plant_list/src/plant-list.component";
 import {GardenComponent} from "../../../src/garden-component";
+import {PlantListService} from "../../plant_list/src/plant-list.service";
 
 @Component({
     selector: 'bed-list',
@@ -44,7 +45,9 @@ export class BedListComponent implements OnInit {
         else
             this.bedFilter = bedName;
 
-        PlantListComponent.getInstance().filterByBedName(this.bedFilter);
+        let plantListComponent: PlantListComponent = PlantListComponent.getInstance();
+        plantListComponent.filterByBedName(this.bedFilter);
+        plantListComponent.filterByCommonName(plantListComponent.getCommonNameFilter());
     }
 
     /**

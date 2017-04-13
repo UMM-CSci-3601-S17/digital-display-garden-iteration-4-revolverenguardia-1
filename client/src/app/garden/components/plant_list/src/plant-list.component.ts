@@ -29,9 +29,6 @@ export class PlantListComponent implements OnInit{
     // The current bed filter used to filter the bed
     private currentBedFilter: string;
 
-    // The current common name filter
-    private currentCommonNameFilter: string;
-
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
 
