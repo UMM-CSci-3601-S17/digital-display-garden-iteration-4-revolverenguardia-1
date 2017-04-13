@@ -71,7 +71,7 @@ public class TestBedController {
         Document result = (Document) iterator.next();
         //System.out.println(result);
 
-        List<Document> bedVisits =  (List<Document>)((Document) result.get("metadata")).get("visits");
+        List<Document> bedVisits =  (List<Document>)((Document) result.get("metadata")).get("bedVisits");
         //System.out.println(bedVisits);
         assertEquals("",1 ,bedVisits.size());
 
