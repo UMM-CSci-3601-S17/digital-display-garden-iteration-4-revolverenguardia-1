@@ -11,6 +11,7 @@ import {BedListService} from "./bed-list.service";
 import {RouterModule} from "@angular/router";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 import {PlantListComponent} from "../../plant_list/src/plant-list.component";
+import {GardenComponent} from "../../../src/garden-component";
 
 @Component({
     selector: 'bed-list',
@@ -20,6 +21,9 @@ export class BedListComponent implements OnInit {
 
     // Full list of all bed names for the BedList
     private bedNames: Bed[];
+
+    // Current bed filter
+    private bedFilter: string;
 
     /**
      * Title for the bed list view on the HTML Bed List Component.
@@ -34,6 +38,7 @@ export class BedListComponent implements OnInit {
      * @param bedName - the bed name to filter by
      */
     private handleBedListClick(bedName): void{
+        this.bedFilter = bedName;
         PlantListComponent.getInstance().filterByBedName(bedName);
     }
 
@@ -52,5 +57,7 @@ export class BedListComponent implements OnInit {
                 console.log(err);
             }
         );
+
+        this.bedFilter = GardenComponent.getInstance().getBedURLParameter();
     }
 }

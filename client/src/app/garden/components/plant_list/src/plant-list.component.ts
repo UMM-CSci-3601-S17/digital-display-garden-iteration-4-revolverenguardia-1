@@ -70,6 +70,10 @@ export class PlantListComponent implements OnInit{
         }
     }
 
+    public getCommonNameFilter(): string{
+        return this.plantListService.getCommonNameFilter();
+    }
+
     /**
      * Filters the filteredplants array by the provided common name.
      * @param commonName - the common name to filter the PlantListComponent's data by
@@ -123,13 +127,4 @@ export class PlantListComponent implements OnInit{
     public getFilteredPlants(): Plant[]{
         return this.filteredPlants;
     }
-    /**
-     * Filters the filteredplants array by the provided bed name.
-     * @param bedName - the bed name to filter the PlantListComponent's data by
-     */
-
-    // public filterByBedName(bedName: string): void{
-    //     this.plantListService.filterByBedName(bedName);
-    // }
-
 }

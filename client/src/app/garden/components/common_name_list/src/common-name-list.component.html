@@ -14,9 +14,6 @@
                 color: white;
                 padding: 5%;
             }
-            a:hover {
-                background-color: #000;
-            }
             #common-name-list {
                 list-style-type: none;
                 height: 90%;
@@ -36,6 +33,9 @@
                 padding-bottom: 2%;
                 padding-left: 5%;
             }
+            .currentFilter{
+                background-color: #000;
+            }
 
         </style>
     </head>
@@ -46,7 +46,8 @@
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
             <li *ngFor="let commonName of commonNames">
-                <a>{{ commonName._id }}</a>
+                <a *ngIf="commonName._id == commonNameFilter" class="currentFilter" (click)="handleCommonNameListClick($event.target.textContent)" >{{ commonName._id }}</a>
+                <a *ngIf="commonName._id != commonNameFilter" (click)="handleCommonNameListClick($event.target.textContent)" >{{ commonName._id }}</a>
             </li>
         </ul>
 

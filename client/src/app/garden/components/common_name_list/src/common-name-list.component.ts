@@ -20,6 +20,9 @@ export class CommonNameListComponent implements OnInit {
     // Full list of all common names for the CommonNameList
     private commonNames: CommonName[];
 
+    // Current common name filter
+    private commonNameFilter: string;
+
     /**
      * Title for the common name list view on the HTML Common Name List Component.
      * This is used for filtering to show all plants and is linked to the PlantFilter class.
@@ -33,6 +36,7 @@ export class CommonNameListComponent implements OnInit {
      * @param commonName - the common nameconsole.log("Finish handle common name list click"); to filter by
      */
     private handleCommonNameListClick(commonName): void{
+        this.commonNameFilter = commonName;
         PlantListComponent.getInstance().filterByCommonName(commonName);
     }
 
@@ -51,5 +55,7 @@ export class CommonNameListComponent implements OnInit {
                 console.log(err);
             }
         );
+
+        this.commonNameFilter = PlantListComponent.getInstance().getCommonNameFilter();
     }
 }
