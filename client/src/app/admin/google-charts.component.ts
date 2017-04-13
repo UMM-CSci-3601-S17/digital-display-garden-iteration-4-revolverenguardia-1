@@ -93,7 +93,7 @@ export class GraphComponent implements OnInit {
 
     public bubbleChartOption = {
         chartType: `BubbleChart`,
-        dataTable: [['ID', 'X', 'Y', 'Likes (Colour)', 'Views (Size)'],
+        dataTable: [['Bed: ', 'X', 'Y', 'Likes (Colour)', 'Views (Size)'],
             ['1', 36,  33,      120,   47],
             ['2', 37,  25,      130,   11],
             ['3', 49,  16,      50,   22],
