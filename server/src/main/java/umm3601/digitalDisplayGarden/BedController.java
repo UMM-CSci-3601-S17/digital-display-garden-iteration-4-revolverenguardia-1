@@ -64,9 +64,8 @@ public class BedController {
         visit.append("visit", new ObjectId());
 
         incrementBedMetadata(gardenLocation, "pageViews", uploadId);
-        incrementBedMetadata(gardenLocation, "qrScans", uploadId);
 
-        return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
+        return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.bedVisits", visit));
     }
 
     public boolean addBedQRVisit(String gardenLocation, String uploadId) {
@@ -80,6 +79,9 @@ public class BedController {
 
         Document scan = new Document();
         scan.append("scan", new ObjectId());
+
+        incrementBedMetadata(gardenLocation, "pageViews", uploadId);
+        incrementBedMetadata(gardenLocation, "qrScans", uploadId);
 
         Document a = bedCollection.findOneAndUpdate(filterDoc, push("metadata.bedVisits", visit));
         if(a == null)
