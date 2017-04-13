@@ -45,6 +45,7 @@ export class PlantFilter {
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
+            console.log("Checking " + plant.commonName + " == " + commonName);
             if (plant.commonName == commonName)
                 filteredPlants.push(plant);
         });

@@ -29,6 +29,9 @@ export class PlantListComponent implements OnInit{
     // The current bed filter used to filter the bed
     private currentBedFilter: string;
 
+    // The current common name filter
+    private currentCommonNameFilter: string;
+
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
 
@@ -63,6 +66,26 @@ export class PlantListComponent implements OnInit{
             // Filter by the bed name
             else {
                 this.filteredPlants = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
+            }
+        }
+    }
+
+    /**
+     * Filters the filteredplants array by the provided common name.
+     * @param commonName - the common name to filter the PlantListComponent's data by
+     */
+    public filterByCommonName(commonName: string): void{
+        // Check that we haven't already filtered
+        if(this.currentCommonNameFilter != commonName) {
+
+            this.currentCommonNameFilter = commonName;
+
+            if(this.currentCommonNameFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
+                this.filteredPlants = this.plantCollection.getPlants();
+
+            // Filter by the common name
+            else {
+                this.filteredPlants = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
             }
         }
     }
@@ -108,21 +131,13 @@ export class PlantListComponent implements OnInit{
     public getFilteredPlants(): Plant[]{
         return this.filteredPlants;
     }
-
     /**
      * Filters the filteredplants array by the provided bed name.
      * @param bedName - the bed name to filter the PlantListComponent's data by
      */
+
     // public filterByBedName(bedName: string): void{
     //     this.plantListService.filterByBedName(bedName);
     // }
-
-    /**
-     * Filters the filteredplants array by the provided common name.
-     * @param commonName - the common name to filter the PlantListComponent's data by
-     */
-    public filterByCommonName(commonName: string): void{
-        this.plantListService.filterByCommonName(commonName);
-    }
 
 }

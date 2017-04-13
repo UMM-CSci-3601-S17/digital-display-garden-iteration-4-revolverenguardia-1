@@ -33,7 +33,9 @@ export class CommonNameListComponent implements OnInit {
      * @param commonName - the common name to filter by
      */
     private handleCommonNameListClick(commonName): void{
+        console.log("Handle common name list click");
         PlantListComponent.getInstance().filterByCommonName(commonName);
+        console.log("Finish handle common name list click");
     }
 
     /**
