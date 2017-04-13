@@ -56,8 +56,8 @@ public class QRCodes {
         for(int i = 0; i < numBeds; i++) {
 
             //Will be needed for later to count qr scans in bed metadata
-            //bedURLs[i] = urlPrefix + bedNames[i] + "?qr=true";
-            bedURLs[i] = urlPrefix + bedNames[i];
+            bedURLs[i] = urlPrefix + bedNames[i] + "?qr=true";
+            //bedURLs[i] = urlPrefix + bedNames[i];
         }
 
         return bedURLs;

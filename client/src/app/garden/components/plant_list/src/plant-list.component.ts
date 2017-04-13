@@ -5,6 +5,7 @@
  * @author Iteration 2 - Team Omar Anwar
  */
 import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 import { PlantListService } from "./plant-list.service";
 import { Plant } from "./plant";
 import {GardenComponent} from "../../../src/garden-component";
@@ -34,7 +35,7 @@ export class PlantListComponent implements OnInit{
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
 
-    constructor(private plantListService: PlantListService, private bedListService : BedListService, private route: ActivatedRoute) {
+    constructor(private plantListService: PlantListService, private bedListService : BedListService, private route: ActivatedRoute, private location: Location) {
         // Keep track of 'this' for static factory method
         PlantListComponent.plantListComponent = this;
 
@@ -51,9 +52,9 @@ export class PlantListComponent implements OnInit{
                     .map(queryParams => queryParams['qr'])
                     .subscribe(isQr => {
                         this.bedListService.reportBedVisit(bedName, isQr).subscribe();
+                        this.route.params.subscribe(params => this.location.replaceState("/bed/" + params['id']));
+                         //This hides the qr=true query param from the user (and removes it from browser history)
                     });
-
-                // this.bedListService.returnPageViews(bedName).subscribe();
 
                 err => {
                     console.log(err);

@@ -46,9 +46,9 @@ public class TestQRCodes {
     @Test
     public void TestCreateBufferedImages() throws IOException,WriterException{
         String bedURLs[] = new String[3];
-        bedURLs[0] = "http://localhost:2538/bed/bed1";
-        bedURLs[1] = "http://localhost:2538/bed/bed2";
-        bedURLs[2] = "http://localhost:2538/bed/bed3";
+        bedURLs[0] = "http://localhost:2538/bed/bed1?qr=true";
+        bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
+        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         System.out.println(QRCodes.createBufferedImages(bedURLs).get(0));
 
         List<BufferedImage> qrCodeImages = new ArrayList<BufferedImage>();
@@ -68,9 +68,9 @@ public class TestQRCodes {
         bedNames[2] = "bed3";
 
         String bedURLs[] = new String[3];
-        bedURLs[0] = "http://localhost:2538/bed/bed1";
-        bedURLs[1] = "http://localhost:2538/bed/bed2";
-        bedURLs[2] = "http://localhost:2538/bed/bed3";
+        bedURLs[0] = "http://localhost:2538/bed/bed1?qr=true";
+        bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
+        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         List<BufferedImage> qrCodeImages = QRCodes.createBufferedImages(bedURLs);
 
         assertEquals(qrCodeImages.size(), 3);
