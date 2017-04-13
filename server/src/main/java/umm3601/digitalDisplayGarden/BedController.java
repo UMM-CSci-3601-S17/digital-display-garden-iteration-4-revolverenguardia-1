@@ -63,6 +63,9 @@ public class BedController {
         Document visit = new Document();
         visit.append("visit", new ObjectId());
 
+        incrementBedMetadata(gardenLocation, "pageViews", uploadId);
+        incrementBedMetadata(gardenLocation, "qrScans", uploadId);
+
         return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
     }
 
@@ -78,10 +81,10 @@ public class BedController {
         Document scan = new Document();
         scan.append("scan", new ObjectId());
 
-        Document a = bedCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
+        Document a = bedCollection.findOneAndUpdate(filterDoc, push("metadata.bedVisits", visit));
         if(a == null)
             return false;
-        Document b = bedCollection.findOneAndUpdate(filterDoc, push("metadata.qrScans", scan));
+        Document b = bedCollection.findOneAndUpdate(filterDoc, push("metadata.qrVisits", scan));
 
         return null != b;
     }

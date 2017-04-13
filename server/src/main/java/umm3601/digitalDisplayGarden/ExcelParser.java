@@ -206,12 +206,12 @@ public class ExcelParser {
 
         Document emptyMetadataBedDoc = new Document();
         emptyMetadataBedDoc.append("pageViews", 0);
-        emptyMetadataBedDoc.append("visits", new BsonArray());
-        emptyMetadataBedDoc.append("qrScans", new BsonArray());
+        emptyMetadataBedDoc.append("qrScans", 0);
+        emptyMetadataBedDoc.append("bedVisits", new BsonArray());
+        emptyMetadataBedDoc.append("qrVisits", new BsonArray());
 
         for (int i = 4; i < cellValues.length; i++){
             Document doc = new Document();
-            Document bedDoc = new Document();
             for(int j = 0; j < cellValues[i].length; j++){
                 doc.append(keys[j], cellValues[i][j]);
             }
@@ -226,8 +226,6 @@ public class ExcelParser {
             doc.append("uploadId", uploadId);
 
             plantCollection.insertOne(doc);
-
-
 
         }
         //Get distinct list of beds

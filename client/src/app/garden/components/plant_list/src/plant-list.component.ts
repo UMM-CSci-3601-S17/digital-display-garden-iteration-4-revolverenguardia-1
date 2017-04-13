@@ -10,6 +10,8 @@ import { Plant } from "./plant";
 import {GardenComponent} from "../../../src/garden-component";
 import {PlantFilter} from "./plantfilter";
 import {PlantCollection} from "./plantcollection";
+import {BedListService} from "../../bed_list/src/bed-list.service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
     selector: 'plant-list',
@@ -32,16 +34,26 @@ export class PlantListComponent implements OnInit{
     // Static factory class instance variable
     private static plantListComponent: PlantListComponent;
 
-    constructor(private plantListService: PlantListService) {
+    constructor(private plantListService: PlantListService, private bedListService : BedListService, private route: ActivatedRoute) {
         // Keep track of 'this' for static factory method
         PlantListComponent.plantListComponent = this;
+
     }
 
     ngOnInit(){
         this.plantListService.getPlantsFromServer().subscribe(
             plants => {
                 this.plantCollection = new PlantCollection(plants);
-                this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
+                var bedName : string = GardenComponent.getInstance().getBedURLParameter();
+                this.filterByBedName(bedName);
+
+                this.route.queryParams
+                    .map(queryParams => queryParams['qr'])
+                    .subscribe(isQr => {
+                        this.bedListService.reportBedVisit(bedName, isQr).subscribe();
+                    });
+
+                // this.bedListService.returnPageViews(bedName).subscribe();
 
                 err => {
                     console.log(err);

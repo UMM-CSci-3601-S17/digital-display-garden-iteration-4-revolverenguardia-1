@@ -47,7 +47,7 @@ describe("Bed list", () => {
     }));
 
     it("Get Bed List Header", () => {
-        let bed: BedListComponent = new BedListComponent(null);
+        let bed: BedListComponent = new BedListComponent(null, null);
         expect(bed.BED_LIST_HEADER).toBe("ALL");
     });
 

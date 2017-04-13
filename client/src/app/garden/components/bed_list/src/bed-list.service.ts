@@ -13,7 +13,7 @@ import {ActivatedRoute} from "@angular/router";
 @Injectable()
 export class BedListService {
 
-    constructor(private http:Http, private route: ActivatedRoute) { }
+    constructor(private http:Http) { }
 
     /**
      * Requests the list of bed names (garden locations) from the server.
@@ -23,12 +23,8 @@ export class BedListService {
         return this.http.request(API_URL + "/gardenLocations").map(res => res.json());
     }
 
-    reportBedVisit(gardenLocation : string): Observable<boolean> {
-        //console.log("GOT HERE " + gardenLocation);
-        //console.log(API_URL + "qrVisit");
-        //console.log(this.route.snapshot.params["qr"])
-
-        if(this.route.snapshot.params["qr"]) {
+    reportBedVisit(gardenLocation : string, isQR : boolean): Observable<boolean> {
+        if(isQR) {
             return this.http.post(API_URL + "qrVisit", gardenLocation).map(res => res.json());
         } else {
             return this.http.post(API_URL + "bedVisit", gardenLocation).map(res => res.json());
