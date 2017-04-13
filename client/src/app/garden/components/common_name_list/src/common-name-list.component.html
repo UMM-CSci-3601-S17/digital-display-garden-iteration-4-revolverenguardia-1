@@ -15,7 +15,7 @@
                 padding: 5%;
             }
             a:hover {
-                background-color: #333;
+                background-color: #000;
             }
             #common-name-list {
                 list-style-type: none;
@@ -29,6 +29,7 @@
             }
             .searchByHeader {
                 color: white;
+                text-align: center;
                 font-weight: bolder;
                 font-size: 150%;
                 padding-top: 8%;
@@ -41,13 +42,7 @@
 
     <div id="common-name-list-view">
 
-        <!--<div id="common-name-list-header">-->
-            <!--<a class="active"-->
-               <!--(click)="handleCommonNameListClick($event.target.textContent)">{{COMMON_NAME_LIST_HEADER}}-->
-            <!--</a>-->
-        <!--</div>-->
-
-        <h4 class="searchByHeader">Search by Common Name</h4>
+        <h4 class="searchByHeader">Common Names</h4>
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
             <li *ngFor="let commonName of commonNames">
