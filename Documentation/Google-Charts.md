@@ -49,3 +49,18 @@ These functions grab *JSON Array* data from server requests in `admin.servis.ts`
 ```html
 <google-chart [data]="[NAME_OF_FUNCTION]"></google-chart>  
 ```  
+
+## Google Maps  
+In our project, we use a google map (third graph down on our admin page picture). The google map behavies a little differently than all of the other charts. Google tries to make a profit from people using their maps, so they make you use a public API key to track how many times you are contacting their server. If you make too many requests, they charge you big bucks :dollar:. We aren't making THAT many requests, and the API key isn't even linked to my credit card or anything so why not!
+
+Before starting on this, you need to take some security measures before making your key. When you get your key, post it in a google doc shared with your team, or your slack  channel. **DO NOT COMMIT AND PUSH YOUR API KEY**.
+
+### Getting an API key  
+Go to [this](https://developers.google.com/maps/documentation/javascript/get-api-key)link to get your key, copy past it into some document/slack.
+
+### Copy past the following code into `index.html`  
+```html
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"
+  type="text/javascript"></script>
+```  
+When you want to make your map work, past in your API key where it says **YOUR-KEY**. Before commiting, change `index.html` back to say **YOUR-KEY**. 
