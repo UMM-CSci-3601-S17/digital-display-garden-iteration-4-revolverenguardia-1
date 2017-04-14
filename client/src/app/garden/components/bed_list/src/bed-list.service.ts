@@ -27,7 +27,6 @@ export class BedListService {
     constructor(private http:Http) {
         this.getBedNamesFromServer().subscribe(
             bedNames => {
-                console.log("BLS - getBedNamesFromServer()")
                 this.bedCollection = new BedCollection(bedNames);
                 this.beds = this.bedCollection.getBeds();
             },
