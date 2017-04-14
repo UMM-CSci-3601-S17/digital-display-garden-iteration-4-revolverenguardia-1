@@ -41,6 +41,13 @@ public class BedController {
         bedCollection = db.getCollection("beds");
     }
 
+    /**
+     * Increment a metadata field within the given gardenLocation for the given uploadId
+     * @param gardenLocation
+     * @param field
+     * @param uploadId
+     * @return
+     */
     public boolean incrementBedMetadata(String gardenLocation, String field, String uploadId) {
 
         Document searchDocument = new Document();
@@ -53,7 +60,13 @@ public class BedController {
         return null != bedCollection.findOneAndUpdate(searchDocument, updateDocument);
     }
 
-
+    /**
+     * When a user views a web page a Bed page a Bed Visit is added.
+     * By that we mean that bed's pageViews field is incremented and a new {visit : ObjectId()} is added to visits
+     * @param gardenLocation
+     * @param uploadId
+     * @return
+     */
     public boolean addBedVisit(String gardenLocation, String uploadId) {
 
         Document filterDoc = new Document();
@@ -68,6 +81,16 @@ public class BedController {
         return null != bedCollection.findOneAndUpdate(filterDoc, push("metadata.bedVisits", visit));
     }
 
+    /**
+     * When a user scans a QR code, that QR code brings them to a page that sends a POST request
+     * to the server whose body contains which gardenLocation was visited via QR Code.
+     *
+     * This function is responsible for incrementing qrScans and adding a {scan : ObjectId()} to metadata.qrVisits
+     *
+     * @param gardenLocation
+     * @param uploadId
+     * @return
+     */
     public boolean addBedQRVisit(String gardenLocation, String uploadId) {
 
         Document filterDoc = new Document();
@@ -91,6 +114,12 @@ public class BedController {
         return null != b;
     }
 
+    /**
+     * Return pageViews of a bed
+     * @param gardenLocation
+     * @param uploadId
+     * @return
+     */
     public int getPageViews(String gardenLocation, String uploadId)
     {
         Document filterDoc = new Document();
