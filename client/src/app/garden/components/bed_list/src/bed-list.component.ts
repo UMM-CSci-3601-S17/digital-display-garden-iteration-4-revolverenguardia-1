@@ -25,17 +25,16 @@ export class BedListComponent {
      * @param bedName - the bed name to filter by
      */
     private handleBedListClick(bedName): void{
+
         // If bed name is being deselected
-        if(bedName == this.plantListService.getBedFilter()) {
-            console.log("Bed List Deselect - " + bedName);
+        if(bedName == this.plantListService.getBedFilter())
             // Then disable the filter
             this.plantListService.setBedFilter(PlantFilter.NO_FILTER);
-        }
+
         // Else, bed name is being selected
-        else {
-            console.log("Bed List Select - " + bedName);
+        else
+            // So disable the filter
             this.plantListService.setBedFilter(bedName);
-        }
     }
 
 }

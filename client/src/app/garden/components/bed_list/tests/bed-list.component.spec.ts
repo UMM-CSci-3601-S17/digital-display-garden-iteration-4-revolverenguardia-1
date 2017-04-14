@@ -1,3 +1,11 @@
+/**
+ * Tests the BedListComponent class.
+ * Currently no tests are implemented as the previous refactoring left the class
+ * with no testable code.
+ *
+ * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team Revolver en Guardia
+ */
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { Observable } from "rxjs";
 import {BedListComponent} from "../src/bed-list.component";
@@ -6,7 +14,7 @@ import {BedListService} from "../src/bed-list.service";
 import {RouterTestingModule} from "@angular/router/testing";
 
 
-describe("Bed list", () => {
+describe("Bed List Component", () => {
 
     let bedList: BedListComponent;
     let fixture: ComponentFixture<BedListComponent>;
@@ -16,7 +24,6 @@ describe("Bed list", () => {
     };
 
     beforeEach(() => {
-        // stub UserService for test purposes
         bedListServiceStub = {
             getBedNames: () => Observable.of([
                 {
@@ -46,14 +53,8 @@ describe("Bed list", () => {
         });
     }));
 
-    // it("Get Bed List Header", () => {
-    //     let bed: BedListComponent = new BedListComponent(null);
-    //     expect(bed.BED_LIST_HEADER).toBe("ALL");
-    // });
-    //
-    // it("Get Bed Names", () => {
-    //     expect(bedList.getBedNames().length).toBe(3);
-    // });
+    // No tests required because the recent refactoring left the class with nothing testable.
+    // This testing class is left as a placeholder for future possible tests.
 
 });
 

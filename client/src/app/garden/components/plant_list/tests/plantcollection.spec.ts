@@ -1,5 +1,5 @@
 /**
- * Tests the PlantFilter class to ensure that it filters plant data correctly.
+ * Tests the PlantCollection class to ensure that it handles plant data correctly.
  *
  * @author Iteration 2 - Team Omar Anwar
  * @editor Iteration 3 - Team Revolver en Guardia

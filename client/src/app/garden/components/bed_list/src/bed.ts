@@ -6,5 +6,7 @@
  * @author Iteration 2 - Team Omar Anwar
  */
 export class Bed {
+
+    constructor(public bedName: string){ }
 }
 

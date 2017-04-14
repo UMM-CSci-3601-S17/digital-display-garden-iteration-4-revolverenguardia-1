@@ -1,7 +1,5 @@
 /**
- * Provides all data and related operations for the CommonNameListComponent. This component
- * is shared within the GardenComoponent that encapsulates both this component and the
- * PlantListComponent.
+ * Interface for the common name lists for the garden.
  *
  * @author Iteration 3 - Team revolver en guardia
  */
@@ -21,20 +19,21 @@ export class CommonNameListComponent {
     }
 
     /**
-     * Should filter by the provided common name.
-     * @param commonName - the common nameconsole.log("Finish handle common name list click"); to filter by
+     * Requests that the PlantListComponent is filtered by CommonName upon
+     * a click event for a list item.
+     * @param commonName - the common name to filter by
      */
     private handleCommonNameListClick(commonName): void {
+
         // If bed name is being deselected
-        if (commonName == this.plantListService.getCommonNameFilter()) {
-            console.log("CommonName List Deselect - " + commonName);
+        if (commonName == this.plantListService.getCommonNameFilter())
             // Then disable the filter
             this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);
-        }
+
         // Else, bed name is being selected
-        else {
-            console.log("CommonName List Select - " + commonName);
+        else
+            // So enable the filter
             this.plantListService.setCommonNameFilter(commonName);
-        }
+
     }
 }

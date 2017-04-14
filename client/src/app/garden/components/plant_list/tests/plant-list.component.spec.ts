@@ -1,6 +1,7 @@
 /**
  * Tests the PlantListComponent class.
- * Currently no tests are implemented as the previous refactoring left the class empty.
+ * Currently no tests are implemented as the previous refactoring left the class with
+ * no testable code.
  *
  * @author Iteration 2 - Team Omar Anwar
  * @editor Iteration 3 - Team Revolver en Guardia
@@ -23,7 +24,6 @@ describe("Test PlantListComponent", () => {
     };
 
     beforeEach(() => {
-        // stub PlantService for test purposes
         plantListServiceStub = {
             getPlants: () => Observable.of([
                 {
@@ -66,7 +66,7 @@ describe("Test PlantListComponent", () => {
         });
     }));
 
-    // No tests required because the recent refactoring left the class entirely empty.
+    // No tests required because the recent refactoring left the class with nothing testable.
     // This testing class is left as a placeholder for future possible tests.
 
 });

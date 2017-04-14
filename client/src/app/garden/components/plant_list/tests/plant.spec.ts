@@ -8,7 +8,7 @@ import {Plant} from "../src/plant";
 describe("Test Plant Class", () => {
 
     /**
-     * Tests prpoer construction of Plant objects.
+     * Tests proper construction of Plant objects.
      * @author Iteration 3 - Team Revolver en Guardia
      */
     it("Check Proper Construction", () => {
