@@ -26,6 +26,6 @@ export class AdminService {
     }
 
     getBedMetadataForBubble(): Observable<any[]> {
-        return this.http.request(this.url + "chart/plantMetadataBubbleMap").map(res => res.json())
+        return this.http.request(this.url + "admin/charts/plantMetadataBubbleMap").map(res => res.json())
     }
 }

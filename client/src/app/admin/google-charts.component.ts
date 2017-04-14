@@ -10,41 +10,51 @@ import {Observable} from "rxjs";
 // Component class
 export class GraphComponent implements OnInit {
 
-    value : number = 3;
-    dataTable : any[][];
-    mapData : string[];
-    bubbleData: string[];
-
     constructor(private adminService: AdminService) {
     }
 
 
     ngOnInit(): void {
-        this.updateTimeVViewCountBar();
-        this.updateTimeVViewCountLine();
-        this.updateBedMetadataMap();
-        this.updateBedMetadataBubble();
+        this.updateLineChart();
+        this.updateBarChart();
+        this.updateMap();
+        this.updateBubble();
     }
 
     public updateLineChart(): void{
-        this.line_ChartData = Object.create(this.line_ChartData);
-        this.updateTimeVViewCountLine();
+        this.adminService.getViewsPerHour()
+            .subscribe(result => {
+                this.line_ChartData["dataTable"] = result;
+                this.line_ChartData = Object.create(this.line_ChartData);
+            }, err => console.log(err));
     }
 
     public updateBarChart(): void{
-        this.columnChartOptions = Object.create(this.columnChartOptions);
-        this.updateTimeVViewCountBar();
+
+        this.adminService.getViewsPerHour()
+            .subscribe(result => {
+                this.columnChartOptions["dataTable"] = result;
+                this.columnChartOptions = Object.create(this.columnChartOptions);
+                }, err => console.log(err));
     }
 
     public updateMap(): void{
-        this.mapOptions = Object.create(this.mapOptions);
-        this.updateBedMetadataMap();
+        this.adminService.getBedMetadataForMap()
+            .subscribe(result => {
+                this.mapOptions.dataTable = this.createDataTableMap(this.processMapData(result));
+                this.mapOptions = Object.create(this.mapOptions);
+            }, err => console.log(err));
     }
 
     public updateBubble(): void{
-        this.bubbleOption = Object.create(this.bubbleOption);
-        this.updateBedMetadataBubble();
+        this.adminService.getBedMetadataForBubble()
+            .subscribe(result => {
+                this.bubbleOption.dataTable = this.createDataTableBubble(result);
+                this.bubbleOption = Object.create(this.bubbleOption);
+            }, err => console.log(err));
     }
+
+
 
     public line_ChartData = {
         chartType: `LineChart`,
@@ -87,7 +97,7 @@ export class GraphComponent implements OnInit {
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     }
 
-    //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm with customer)
+    //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm locations with customer)
     public bedLocations = [[45.593823, -95.875248],
         [45.593831, -95.875525],
         [45.593113, -95.877688],
@@ -102,6 +112,7 @@ export class GraphComponent implements OnInit {
         [45.593357, -95.875850],
         [45.593461, -95.875177]];
 
+    //TODO: Same as previous todo, these are kind of random bubbles
     public bedLocationsForBubble = [[36,33], [37,25], [49,16], [54,56], [61,24], [61,40],
         [19,14], [30,4], [34,10], [42,25.5], [46.5,29], [46.1,45.3]]
 
@@ -140,11 +151,13 @@ export class GraphComponent implements OnInit {
                 height: '100%'
             },
             hAxis: {
+                title: null,
                 gridlines: {count: 0},
                 minValue: 0,
                 maxValue: 100,
                 viewWindow: {min: 0, max: 100}},
             vAxis: {
+                title: null,
                 gridlines: {count: 0},
                 minValue: 0,
                 maxValue: 100,
@@ -160,42 +173,18 @@ export class GraphComponent implements OnInit {
     }
 
 
-    protected updateTimeVViewCountBar()
-    {
-        this.adminService.getViewsPerHour()
-            .subscribe(result => { this.columnChartOptions["dataTable"] = result;
-                console.log(result)}, err => console.log(err));
 
 
-    }
-    protected updateTimeVViewCountLine()
-    {
-        this.adminService.getViewsPerHour()
-            .subscribe(result => { this.line_ChartData["dataTable"] = result;
-                console.log(result)}, err => console.log(err));
-    }
 
-    protected updateBedMetadataMap()
-    {
-        this.adminService.getBedMetadataForMap()
-            .subscribe(result => {
-                this.mapData = this.processMapData(result);
-                this.mapOptions.dataTable = this.createDataTableMap(this.mapData);
-                console.log(this.createDataTableMap(this.mapData));
-            }, err => console.log(err));
-    }
-
-    protected updateBedMetadataBubble()
-    {
-        this.adminService.getBedMetadataForBubble()
-            .subscribe(result => {
-                this.bubbleOption.dataTable = this.createDataTableBubble(result);
-                console.log("this should be bubble data");
-                console.log(this.createDataTableBubble(result));
-            }, err => console.log(err));
-    }
-
-
+    /**
+     * Creates the tooltip HTML for each of the beds.
+     * mapData is data from the Server that is an array of objects that look like
+     * {likes : number, disklikes : number, comments : number}
+     *
+     * This function creates a pretty HTML tooltip that is displayed when you click on a bed in the Google zMap
+     * @param mapData
+     * @returns {Array<string>}
+     */
     private processMapData(mapData : any[]) : string[]
     {
         var buffer : Array<string> = new Array<string>(mapData.length);
@@ -229,7 +218,6 @@ export class GraphComponent implements OnInit {
         dataTable[0][4] = 'Views (Size)';
         for(var i : number = 0; i < entry.length; i++)
         {
-
             dataTable[i+1][0] = entry[i]['gardenLocation'];
             dataTable[i+1][1] = this.bedLocationsForBubble[i][0];
             dataTable[i+1][2] = this.bedLocationsForBubble[i][1];
