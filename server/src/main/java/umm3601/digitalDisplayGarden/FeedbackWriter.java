@@ -44,13 +44,9 @@ public class FeedbackWriter {
     public static final int COL_PLANT_FIELDS = 8;
 
     public static final int COL_BED_GRDNLOC = 0,
-                            COL_BED_PAGEVIEWS = 1;
-    public static final int COL_BED_QRSCANS = 2;
-    public static final int COL_BED_VISITS = 3;
-    public static final int COL_BED_QRVISITS=4;
-
-
-    public static final int COL_BED_FIELDS = 5;
+                            COL_BED_PAGEVIEWS = 1,
+                            COL_BED_QRSCANS = 2;
+    public static final int COL_BED_FIELDS = 3;
 
     public static final int SHEET_COMMENTS = 0,
                             SHEET_METADATA = 1;
@@ -173,15 +169,6 @@ public class FeedbackWriter {
         cell.setCellValue("Comments");
         cell.setCellStyle(styleCentered);
 
-        /*
-        cell = row1.createCell(COL_META_QRSCANS);
-        cell.setCellValue("QR");
-        cell.setCellStyle(styleCentered);
-        cell = row2.createCell(COL_META_QRSCANS);
-        cell.setCellValue("Scans");
-        cell.setCellStyle(styleCentered);
-        */
-
         cell = row1.createCell(COL_PLANT_PAGEVIEWS);
         cell.setCellValue("Page");
         cell.setCellStyle(styleCentered);
@@ -235,8 +222,6 @@ public class FeedbackWriter {
         bedmetadataSheet.setColumnWidth(COL_BED_GRDNLOC,7400);
         bedmetadataSheet.setColumnWidth(COL_BED_PAGEVIEWS,3200);
         bedmetadataSheet.setColumnWidth(COL_BED_QRSCANS,3200);
-        bedmetadataSheet.setColumnWidth(COL_BED_VISITS,3200);
-        bedmetadataSheet.setColumnWidth(COL_BED_QRVISITS,3200);
         bedmetadataSheet.createFreezePane(0, 2);
 
 
