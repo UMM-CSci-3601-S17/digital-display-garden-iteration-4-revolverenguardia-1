@@ -1,29 +1,27 @@
 <!--
     Provides an interface to view and interact with all Common Name specific data.
 
-    @author Iteration 3 - Team revolver en guardia
+    @author Iteration 3 - Team Revolver en Guardia
 -->
 <!DOCTYPE html>
 
 <html>
     <head>
         <style>
+            /* Global References */
             a {
                 text-decoration: none;
                 display: block;
                 color: white;
                 padding: 5%;
             }
-            #common-name-list {
-                list-style-type: none;
-                height: 90%;
-                padding: 0%;
-            }
             li {
                 font-size: 150%;
                 text-align: center;
                 padding-bottom: 5%;
             }
+
+            /* Class References */
             .searchByHeader {
                 color: white;
                 text-align: center;
@@ -37,6 +35,13 @@
                 background-color: #000;
             }
 
+            /* ID References */
+            #common-name-list {
+                list-style-type: none;
+                height: 90%;
+                padding: 0%;
+            }
+
         </style>
     </head>
 
@@ -45,9 +50,9 @@
         <h4 class="searchByHeader">Common Names</h4>
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
-            <li *ngFor="let commonName of commonNames">
-                <a *ngIf="commonName._id == commonNameFilter" class="currentFilter" >{{ commonName._id }}</a>
-                <a *ngIf="commonName._id != commonNameFilter" >{{ commonName._id }}</a>
+            <li *ngFor="let commonName of commonNameListService.getCommonNames()">
+                <a *ngIf="commonName._id == plantListService.getCommonNameFilter()" class="currentFilter" >{{ commonName._id }}</a>
+                <a *ngIf="commonName._id != plantListService.getCommonNameFilter()" >{{ commonName._id }}</a>
             </li>
         </ul>
 

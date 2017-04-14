@@ -1,65 +1,39 @@
 /**
- * Provides all data and related operations for the CommonNameListComponent. This component
- * is shared within the GardenComoponent that encapsulates both this component and the
- * PlantListComponent.
+ * Interface for the common name lists for the garden.
  *
  * @author Iteration 3 - Team revolver en guardia
  */
-import {OnInit, Component} from "@angular/core";
-import {CommonName} from "./common-name";
+import {Component} from "@angular/core";
 import {CommonNameListService} from "./common-name-list.service";
+import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
-import {PlantListComponent} from "../../plant_list/src/plant-list.component";
 
 @Component({
     selector: 'common-name-list',
     templateUrl: 'common-name-list.component.html'
 })
-export class CommonNameListComponent implements OnInit {
+export class CommonNameListComponent {
 
-    // Full list of all common names for the CommonNameList
-    private commonNames: CommonName[];
-
-    // Current common name filter
-    private commonNameFilter: string;
+    constructor(private commonNameListService: CommonNameListService,
+                private plantListService: PlantListService) {
+    }
 
     /**
-     * Title for the common name list view on the HTML Common Name List Component.
-     * This is used for filtering to show all plants and is linked to the PlantFilter class.
+     * Requests that the PlantListComponent is filtered by CommonName upon
+     * a click event for a list item.
+     * @param commonName - the common name to filter by
      */
-    public readonly COMMON_NAME_LIST_HEADER: string = PlantFilter.FILTER_BY_ALL_PLANTS;
+    private handleCommonNameListClick(commonName): void {
 
-    constructor(private commonNameListService: CommonNameListService) { }
+        // If bed name is being deselected
+        if (commonName == this.plantListService.getCommonNameFilter())
+            // Then disable the filter
+            this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);
 
-    /**
-     * Should filter by the provided common name.
-     * @param commonName - the common nameconsole.log("Finish handle common name list click"); to filter by
-     */
-    private handleCommonNameListClick(commonName): void{
-        if(commonName == this.commonNameFilter)
-            this.commonNameFilter = "NO_FILTER";
+        // Else, bed name is being selected
         else
-            this.commonNameFilter = commonName;
+            // So enable the filter
+            this.plantListService.setCommonNameFilter(commonName);
 
-        PlantListComponent.getInstance().filterByCommonName(this.commonNameFilter);
-    }
-
-    /**
-     * Returns the CommonNames collection
-     * @returns {CommonName[]} The common name collection
-     */
-    public getCommonNames(): CommonName[]{
-        return this.commonNames;
-    }
-
-    ngOnInit(): void {
-        this.commonNameListService.getCommonNames().subscribe(
-            commonNames => this.commonNames = commonNames,
-            err => {
-                console.log(err);
-            }
-        );
-
-        this.commonNameFilter = PlantListComponent.getInstance().getCommonNameFilter();
     }
 }

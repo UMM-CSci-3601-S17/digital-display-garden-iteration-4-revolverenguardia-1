@@ -1,28 +1,21 @@
 /**
- * Represents a Plant detail page that contains all information related to the currently selected Plant.
+ * Represents a Plant detail page that contains all information related to the current Plant.
  *
  * @author Iteration 1 - Team Rayquaza
  * @editor Iteration 2 - Team Omar Anwar
+ * @editor Iteratoin 3 - Team Revolver en Guardia
  */
 import {Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
-import {FooterComponent} from '../../footer/src/footer.component';
 import 'rxjs/add/operator/switchMap';
-import {PlatformLocation} from "@angular/common";
 
 @Component({
     selector: 'plant-component',
     templateUrl: 'plant.component.html'
 })
 export class PlantComponent implements OnInit {
-
-    // Used to determine if a button click was a like. Also what is sent to the server.
-    public readonly LIKE: string = "like";
-
-    // Used to determine if a button click was a dislike. Also what is sent to the server.
-    public readonly DISLIKE: string = "dislike";
 
     // Has the current PlantComponent been liked or disliked?
     public rated: Boolean = false;

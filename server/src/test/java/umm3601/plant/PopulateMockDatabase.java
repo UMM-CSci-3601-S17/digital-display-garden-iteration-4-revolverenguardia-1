@@ -1,10 +1,13 @@
 package umm3601.plant;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
 import org.bson.*;
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -102,7 +105,7 @@ public class PopulateMockDatabase {
 
         Document bedMetadataDoc = new Document();
         bedMetadataDoc.append("pageViews", 0);
-        bedMetadataDoc.append("qrScans",0);
+        bedMetadataDoc.append("qrScans", 0);
         bedMetadataDoc.append("bedVisits", new BsonArray());
         bedMetadataDoc.append("qrVisits", new BsonArray());
 
@@ -135,7 +138,7 @@ public class PopulateMockDatabase {
 
         Document bedMetadataDoc1 = new Document();
         bedMetadataDoc1.append("pageViews", 0);
-        bedMetadataDoc1.append("qrScans",0);
+        bedMetadataDoc1.append("qrScans", 0);
         bedMetadataDoc1.append("bedVisits", new BsonArray());
         bedMetadataDoc1.append("qrVisits", new BsonArray());
 
@@ -235,7 +238,99 @@ public class PopulateMockDatabase {
 
 
 
+        /*
+        Plants that will include mock pageViews and visits
+        */
 
+        //EighthPlant PlantEight
+        Document plantEight = new Document();
+        plantEight.append("_id", new ObjectId("58d1c36efb0cac4e15afd101"));
+        plantEight.append("uploadId", "googleCharts uploadId");
+
+        plantEight.append("commonName", "Marigold");
+        plantEight.append("cultivar", "Fireball");
+        plantEight.append("gardenLocation", "5.0");
+        plantEight.append("id", "16053.0");
+
+        Document metadataDoc8 = new Document();
+        metadataDoc8.append("pageViews", 5);
+
+
+        BsonArray r = new BsonArray();
+        BsonDocument rateDoc1 = new BsonDocument();
+        rateDoc1.append("like",new BsonBoolean(false));
+        rateDoc1.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73865")));
+        r.add(rateDoc1);
+        metadataDoc8.append("ratings", r);
+
+        BsonDocument rateDoc2 = new BsonDocument();
+        rateDoc2.append("like",new BsonBoolean(true));
+        rateDoc2.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73866")));
+        r.add(rateDoc2);
+        metadataDoc.append("ratings", r);
+
+
+
+        BsonArray mockVisits8 = new BsonArray();
+        BsonDocument docV8 = new BsonDocument();
+        docV8.append("visit",new BsonObjectId(new ObjectId("58d1c36efb0cac4e15afd555")));
+        mockVisits8.add(docV8);
+        metadataDoc8.append("visits", mockVisits8);
+
+        plantEight.append("metadata", metadataDoc8);
+        plants.insertOne(plantEight);
+
+        //Ninth plant
+        Document plantNine = new Document();
+        plantNine.append("_id", new ObjectId("58d1c36efb0cac4e15afd102"));
+        plantNine.append("uploadId", "googleCharts uploadId");
+
+        plantNine.append("commonName", "Coreopsis");
+        plantNine.append("cultivar", "Sun Kiss");
+        plantNine.append("gardenLocation", "2S");
+        plantNine.append("id", "16037.0");
+
+        Document metadataDoc9 = new Document();
+        metadataDoc9.append("pageViews", 10);
+
+        BsonArray b = new BsonArray();
+        BsonDocument doc = new BsonDocument();
+        doc.append("like",new BsonBoolean(false));
+        doc.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73859")));
+        b.add(doc);
+        metadataDoc9.append("ratings", b);
+
+        BsonDocument doc1 = new BsonDocument();
+        doc1.append("like",new BsonBoolean(true));
+        doc1.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73860")));
+        b.add(doc1);
+        metadataDoc9.append("ratings", b);
+
+        BsonDocument doc2 = new BsonDocument();
+        doc2.append("like",new BsonBoolean(true));
+        doc2.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73861")));
+        b.add(doc2);
+        metadataDoc9.append("ratings", b);
+
+
+        BsonArray mockVisits = new BsonArray();
+        BsonDocument docV1 = new BsonDocument();
+        docV1.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73801")));
+        mockVisits.add(docV1);
+        metadataDoc9.append("visits", mockVisits);
+
+        BsonDocument docV2 = new BsonDocument();
+        docV2.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73802")));
+        mockVisits.add(docV2);
+        metadataDoc9.append("visits", mockVisits);
+
+        BsonDocument docV3 = new BsonDocument();
+        docV3.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73803")));
+        mockVisits.add(docV3);
+        metadataDoc9.append("visits", mockVisits);
+
+        plantNine.append("metadata", metadataDoc9);
+        plants.insertOne(plantNine);
     }
 }
 
