@@ -36,23 +36,19 @@ best to drop() the test database. In order to populate the database
 * liveUploadId determines which set of data to refer to within the database.
 
 ## Attempted or Completed Stories
-* Leave Comments About a Flower
-* Allow a visitor to rate a flower
-* Display counts of likes and dislikes on visitor website
-* Display counts of comments on visitor website
-* Extra: Add Bed Pages (required for QR Codes)
-* Generate QR Codes
-* Export Feedback to a File (Only plant comments are done)
-* Track the number of times a flower page is visited (Client-side not done)
-* Track the number of times a bed page is visited (Not attempted)
 
 #### Improve Admin
-* Track all forms of visitor traffic
-* Export more data
 * Allow admin users to update the spreadsheet without losing previously obtained visitor data
+* Export more data
+  * Comments: Basic Plant info, Plant Comments, Comment Date
+  * Plant Metadata: Likes, Dislikes, Comment Counts, Page Views
+  * Bed Metadata: Bed page Views, QR Scans
 
 #### Visual Aids for Visitor Traffic &mdash; Google Charts
 * Provide visual aids for visitor traffic data
+* Track all forms of visitor traffic
+  * Track the number of times a flower page is visited
+  * Track the number of times a bed page is visited
 
 #### Improve Front-end &mdash; visitor's website
 * Allow visitors to filter plants by common name &mdash; complete 
@@ -65,7 +61,6 @@ best to drop() the test database. In order to populate the database
 * Allow a visitor to rate a plant
 * Display counts of likes and dislikes on visitor website
 * Display counts of comments on visitor website
-* Extra: Add Bed Pages (required for QR Codes)
 * Generate QR Codes
 
 **Oman Anwar**
