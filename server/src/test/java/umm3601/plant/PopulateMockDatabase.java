@@ -2,6 +2,7 @@ package umm3601.plant;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -22,7 +23,7 @@ public class PopulateMockDatabase {
 
     private final static String databaseName = "data-for-testing-only";
 
-    public PopulateMockDatabase() {
+    public PopulateMockDatabase(){
 
     }
 
@@ -39,6 +40,7 @@ public class PopulateMockDatabase {
         MongoCollection plants = db.getCollection("plants");
         MongoCollection beds = db.getCollection("beds");
         db.drop();
+        plantController = new PlantController(databaseName);
 
 
         MongoCollection config = db.getCollection("config");
@@ -68,10 +70,10 @@ public class PopulateMockDatabase {
         metadataDoc.append("ratings", new BsonArray());
         metadataDoc.append("visits", visits);
 
-
+        
         alternanthera.append("metadata", metadataDoc);
         //alternanthera.append("garden", "hello!");
-        plants.insertOne(alternanthera);
+        plants.insertOne(alternanthera );
 
         //Second Plant Begonia
         Document begonia = new Document();
@@ -111,6 +113,21 @@ public class PopulateMockDatabase {
         bed7.append("uploadId", "first uploadId");
         bed7.append("metadata", bedMetadataDoc);
         beds.insertOne(bed7);
+
+        Document bed1S = new Document();
+        bed1S.append("_id", new ObjectId("58d1c36efb0cac4e15afd304"));
+        bed1S.append("gardenLocation", "1S");
+
+         bedMetadataDoc = new Document();
+        bedMetadataDoc.append("pageViews", 10);
+        bedMetadataDoc.append("qrScans",0);
+        bedMetadataDoc.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
+        bedMetadataDoc.append("qrVisits", new BsonArray());
+
+
+        bed1S.append("uploadId", "first uploadId");
+        bed1S.append("metadata", bedMetadataDoc);
+        beds.insertOne(bed1S);
 
 
         //Second Garden Location bed10.0

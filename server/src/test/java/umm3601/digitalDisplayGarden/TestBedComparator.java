@@ -54,7 +54,7 @@ public class TestBedComparator
 
         arr5.sort(cmp);
         assertArrayEquals("NE Doesn't occur before NW", arr5.toArray(new String[exampleArr5.length]),sortedArr5);
-        
+
     }
 
 }

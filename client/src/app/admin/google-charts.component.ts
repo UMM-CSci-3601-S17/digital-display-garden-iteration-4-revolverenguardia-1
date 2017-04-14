@@ -30,6 +30,21 @@ export class GraphComponent implements OnInit {
                 console.log(result)}, err => console.log(err));
     }*/
 
+    public updateLineChart(): void{
+        this.line_ChartData = Object.create(this.line_ChartData);
+        this.updateTimeVViewCountLine()
+    }
+
+    public updateBarChart(): void{
+        this.columnChartOptions = Object.create(this.columnChartOptions);
+        this.updateTimeVViewCountBar()
+    }
+
+    public updateMap(): void{
+        this.mapOptions = Object.create(this.mapOptions);
+        this.updateBedMetadataMap()
+    }
+
     public line_ChartData = {
         chartType: `LineChart`,
         dataTable: [['Hour', 'Views'],

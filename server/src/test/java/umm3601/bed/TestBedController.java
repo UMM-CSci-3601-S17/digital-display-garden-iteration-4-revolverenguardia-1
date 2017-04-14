@@ -131,4 +131,13 @@ public class TestBedController {
 
     }
 
+    @Test
+    public void TestGetPageViews()
+    {
+        int pageViews = bedController.getPageViews("7.0", "first uploadId");
+        assertEquals("Pageviews at gardenLocation 7 isn't 0", 0, pageViews);
+        pageViews = bedController.getPageViews("1S", "first uploadId");
+        assertEquals("Pageviews at gardenLocation 1S isn't 10", 10, pageViews);
+    }
+
 }

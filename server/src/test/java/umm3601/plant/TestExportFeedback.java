@@ -62,14 +62,13 @@ public class TestExportFeedback {
             feedback.writeToSheet(input, SHEET_METADATA);
         }
 
-//        input = new String[FeedbackWriter.COL_BED_FIELDS];
-//        for(int i = 0; i < bedMetadata; i++) {
-//            input[COL_BED_GRDNLOC] = "1S";
-//            input[COL_PLANT_PAGEVIEWS] = "0";
-//            input[COL_BED_VISITS] = "";
-//            input[COL_BED_QRSCANS] = "";
-//            feedback.writeToSheet(input, SHEET_BEDMETADATA);
-//        }
+        input = new String[FeedbackWriter.COL_BED_FIELDS];
+        for(int i = 0; i < bedMetadata; i++) {
+            input[COL_BED_GRDNLOC] = "1S";
+            input[COL_BED_PAGEVIEWS] = "0";
+            input[COL_BED_QRSCANS] = "0";
+            feedback.writeToSheet(input, SHEET_BEDMETADATA);
+        }
 
         feedback.complete();
         //Use that output stream and produce an input stream from the bytes to

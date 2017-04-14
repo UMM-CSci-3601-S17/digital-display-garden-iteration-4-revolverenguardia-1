@@ -159,6 +159,47 @@ public class GardenCharts
                 out.add(bed);
             }
 
+            return out.toString();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public String getBedMetadataForBubbleMap(PlantController plantController, BedController bedController, String uploadID) {
+        // Count Flower likes
+        // Count flower dislikes
+        // Count flower comments
+
+        try {
+            int likes = 0;
+            int pageViews;
+
+            String[] bedNames = plantController.getGardenLocations(uploadID);
+            JsonArray out = new JsonArray();
+
+            for (int i = 0; i < bedNames.length; i++) {
+                JsonObject bed = new JsonObject();
+                Document filter = new Document();
+                filter.append("uploadId", uploadID);
+                filter.append("gardenLocation", bedNames[i]);
+
+                FindIterable<Document> fitr = plantCollection.find(filter);
+                for (Document plant : fitr) {
+                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                    likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                }
+
+                pageViews = bedController.getPageViews(bedNames[i], uploadID);
+
+                bed.addProperty("gardenLocation", bedNames[i]);
+                bed.addProperty("likes", likes);
+                bed.addProperty("pageViews", pageViews);
+                out.add(bed);
+            }
+
             System.out.println(out);
             return out.toString();
         }

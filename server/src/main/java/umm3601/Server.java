@@ -72,25 +72,23 @@ public class Server {
 
         get("/", clientRoute);
 
-        // List plants
+
+        /*///////////////////////////////////////////////////////////////////
+         * BEGIN VISITOR ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
+
+        // Return all plants
         get("api/plants", (req, res) -> {
             res.type("application/json");
             return plantController.listPlants(req.queryMap().toMap(), getLiveUploadId());
         });
 
-        //Get a plant
+        //Get a plant by plantId
         get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
             return plantController.getPlantByPlantID(id, getLiveUploadId());
         });
-
-//        //Get feedback counts for a plant
-//        get("api/plant/:plantID/counts", (req, res) -> {
-//            res.type("application/json");
-//            String id = req.params("plantID");
-//            return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
-//        });
 
         //Get feedback counts for a plant
         get("api/plant/:plantID/counts", (req, res) -> {
@@ -121,6 +119,91 @@ public class Server {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
             return plantController.addFlowerRating(req.body(),getLiveUploadId());
+        });
+
+
+
+        post("api/bedVisit", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
+            //Increment bedCount
+            bedController.addBedVisit(body, getLiveUploadId());
+            return true;
+        });
+
+        post("api/qrVisit", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
+
+            //Increment bedCount
+            //Increment qrForBedCount
+            bedController.addBedQRVisit(body, getLiveUploadId());
+            return true;
+        });
+
+        // Posting a comment
+        post("api/plant/leaveComment", (req, res) -> {
+            res.type("application/json");
+            return plantController.storePlantComment(req.body(), getLiveUploadId());
+        });
+
+        /*///////////////////////////////////////////////////////////////////
+         * END VISITOR ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
+         * ADMIN ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
+
+        // Accept an xls file
+        post("api/import", (req, res) -> {
+
+            res.type("application/json");
+            try {
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
+                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+                Part part = req.raw().getPart("file[]");
+
+                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+
+                String id = ExcelParser.generateNewUploadId();
+                String[][] excelFile = parser.parseExcel();
+                parser.populateDatabase(excelFile, id);
+
+                return JSON.serialize(id);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        });
+
+
+        //Patch from spreadsheet
+        post("api/patch", (req, res) -> {
+
+            res.type("application/json");
+            try {
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
+                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+                Part part = req.raw().getPart("file[]");
+
+                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+
+                String oldUploadId = getLiveUploadId();
+                String newUploadId = ExcelParser.generateNewUploadId();
+                String[][] excelFile = parser.parseExcel();
+                parser.patchDatabase(excelFile, oldUploadId, newUploadId);
+
+                return JSON.serialize(newUploadId);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
         });
 
         get("api/export", (req, res) -> {
@@ -161,30 +244,6 @@ public class Server {
             return res;
         });
 
-        get("api/liveUploadId", (req, res) -> {
-            res.type("application/json");
-            return JSON.serialize(getLiveUploadId());
-        });
-
-        post("api/bedVisit", (req, res) -> {
-            res.type("application/json");
-            String body = req.body();
-            //Increment bedCount
-            bedController.addBedVisit(body, getLiveUploadId());
-            return true;
-        });
-
-        post("api/qrVisit", (req, res) -> {
-            res.type("application/json");
-            String body = req.body();
-
-            //Increment bedCount
-            //Increment qrForBedCount
-            bedController.addBedQRVisit(body, getLiveUploadId());
-            return true;
-        });
-
-
         get("api/qrcodes", (req, res) -> {
             res.type("application/zip");
 
@@ -210,23 +269,15 @@ public class Server {
             return bytes;
         });
 
-        get("api/admin/gardenPicture", (req, res) -> {
-            res.type("application/png");
-
-            String gardenPath = "/Garden.png";
-
-
-            //res.header("Content-Disposition","filename=\"" + "Garden.png" + "\"");
-
-            return plantController.getClass().getResourceAsStream(gardenPath);
-
-        });
-
-        // Posting a comment
-        post("api/plant/leaveComment", (req, res) -> {
+        get("api/liveUploadId", (req, res) -> {
             res.type("application/json");
-            return plantController.storePlantComment(req.body(), getLiveUploadId());
+            return JSON.serialize(getLiveUploadId());
         });
+
+
+        /*///////////////////////////////////////////////////////////////////
+            BEGIN CHARTS
+        *////////////////////////////////////////////////////////////////////
 
         // Views per Hour
         get("api/chart/viewsPerHour", (req, res) -> {
@@ -240,60 +291,26 @@ public class Server {
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
-        // Accept an xls file
-        post("api/import", (req, res) -> {
-
+        get("api/chart/plantMetadataBubbleMap", (req, res) -> {
             res.type("application/json");
-            try {
 
-                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
-                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
-                Part part = req.raw().getPart("file[]");
-
-                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
-
-                String id = ExcelParser.generateNewUploadId();
-                String[][] excelFile = parser.parseExcel();
-                parser.populateDatabase(excelFile, id);
-
-                return JSON.serialize(id);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
-            }
-
+            return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
         });
 
+        //Host the aerial image of the Garden
+        get("api/admin/gardenPicture", (req, res) -> {
+            res.type("application/png");
+            String gardenPath = "/Garden.png";
 
-        // Accept an xls file
-        post("api/patch", (req, res) -> {
-
-            res.type("application/json");
-            try {
-
-                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
-                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
-                Part part = req.raw().getPart("file[]");
-
-
-
-
-                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
-
-                String oldUploadId = getLiveUploadId();
-                String newUploadId = ExcelParser.generateNewUploadId();
-                String[][] excelFile = parser.parseExcel();
-                parser.patchDatabase(excelFile, oldUploadId, newUploadId);
-
-                return JSON.serialize(newUploadId);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
-            }
-
+            return plantController.getClass().getResourceAsStream(gardenPath);
         });
+
+        /*///////////////////////////////////////////////////////////////////
+            END CHARTS
+        *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
+         * END ADMIN ENDPOINTS
+         */ ///////////////////////////////////////////////////////////////////
 
 
         get("/*", clientRoute);
