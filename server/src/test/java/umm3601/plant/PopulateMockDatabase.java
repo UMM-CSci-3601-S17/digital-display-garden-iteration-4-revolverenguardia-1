@@ -184,7 +184,7 @@ public class PopulateMockDatabase {
         plantFour.append("metadata", metadataDoc3);
         plants.insertOne(plantFour);
 
-        //for testing getCommonNamesAsJson (third uploadID)
+        //for testing getCommonNamesJSON (third uploadID)
         //Fifth Plant PlantFive
         Document plantFive = new Document();
         plantFive.append("_id", new ObjectId("58d1c36efb0cac4e15afd280"));

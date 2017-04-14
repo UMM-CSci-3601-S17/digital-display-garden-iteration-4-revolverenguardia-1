@@ -1,37 +1,24 @@
 package umm3601.digitalDisplayGarden;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Sorts;
-import com.mongodb.util.JSON;
-import org.bson.BsonInvalidOperationException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import org.bson.conversions.Bson;
-import org.joda.time.DateTime;
-
-import java.io.BufferedReader;
-import java.io.OutputStream;
 import java.util.Iterator;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.exists;
 import static com.mongodb.client.model.Projections.include;
-import static com.mongodb.client.model.Updates.*;
 import static com.mongodb.client.model.Projections.fields;
 
 import java.io.IOException;
 import java.util.*;
 
-import static com.mongodb.client.model.Updates.push;
 /**
  * Created by Dogxx000 on 4/8/17.
  */
@@ -146,7 +133,7 @@ public class GardenCharts
 
                 FindIterable<Document> fitr = plantCollection.find(filter);
                 for (Document plant : fitr) {
-                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
 
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                     dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
@@ -188,7 +175,7 @@ public class GardenCharts
 
                 FindIterable<Document> fitr = plantCollection.find(filter);
                 for (Document plant : fitr) {
-                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                 }
 

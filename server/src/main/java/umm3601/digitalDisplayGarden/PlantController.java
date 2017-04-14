@@ -53,8 +53,32 @@ public class PlantController {
 
     }
 
+    /**
+     * Finds a plant and atomically increments the specified field
+     * in its metadata object. This method returns true if the plant was
+     * found successfully (false otherwise), but there is no indication of
+     * whether the field was found.
+     *
+     * @param plantID a ID number of a plant in the DB
+     * @param field a field to be incremented in the metadata object of the plant
+     * @param uploadId the uploadId of the metadata field
+     * @return true if a plant was found
+     * @throws com.mongodb.MongoCommandException when the id is valid and the field is empty
+     */
+    public boolean incrementMetadata(String plantID, String field, String uploadId) {
+
+        Document searchDocument = new Document();
+        searchDocument.append("id", plantID);
+        searchDocument.append("uploadId", uploadId);
+
+        Bson updateDocument = inc("metadata." + field, 1);
+
+        return null != plantCollection.findOneAndUpdate(searchDocument, updateDocument);
+    }
+
     // List plants
     public String listPlants(Map<String, String[]> queryParams, String uploadId) {
+        //Create a filter based on query params
         Document filterDoc = new Document();
         filterDoc.append("uploadId", uploadId);
 
@@ -103,13 +127,15 @@ public class PlantController {
         FindIterable<Document> jsonPlant;
         String returnVal;
         try {
-
             jsonPlant = plantCollection.find(and(eq("id", plantID),
                     eq("uploadId", uploadID)))
                     .projection(fields(include("id", "commonName", "cultivar", "gardenLocation")));
 
             Iterator<Document> iterator = jsonPlant.iterator();
 
+            //When you get Plant by PlantId
+            //Increase the pageViews for that plant
+            //Add a visit to the plant
             if (iterator.hasNext()) {
                 incrementMetadata(plantID, "pageViews", uploadID);
                 addVisit(plantID, uploadID);
@@ -130,7 +156,7 @@ public class PlantController {
                             PLANT_FEEDBACK_DISLIKES = 1,
                             PLANT_FEEDBACK_COMMENTS = 2;
 
-    public long[] getFeedbackForPlantByPlantID(String plantID, String uploadID) {
+    public long[] getPlantFeedbackByPlantId(String plantID, String uploadID) {
         Document filter = new Document();
         filter.put("commentOnPlant", plantID);
         filter.put("uploadId", uploadID);
@@ -164,8 +190,6 @@ public class PlantController {
         out[PLANT_FEEDBACK_COMMENTS] = comments;
 
         return out;
-
-
     }
 
     /**
@@ -182,11 +206,11 @@ public class PlantController {
      * }
      */
 
-    public String getJSONFeedbackForPlantByPlantID(String plantID, String uploadID) {
+    public String getPlantFeedbackByPlantIdJSON(String plantID, String uploadID) {
         Document out = new Document();
 
-        long[] metadataCount = getFeedbackForPlantByPlantID(plantID, uploadID);
-
+        //Get feedback then package it in a JSON(BSON) Document
+        long[] metadataCount = getPlantFeedbackByPlantId(plantID, uploadID);
 
         out.put("likeCount", metadataCount[0]);
         out.put("dislikeCount", metadataCount[1]);
@@ -194,10 +218,25 @@ public class PlantController {
         return JSON.serialize(out);
     }
 
+    public String[] getGardenLocations(String uploadID){
+        //Get distinct gardenLocations for this uploadId
 
+        Document filter = new Document();
+        filter.append("uploadId", uploadID);
+        DistinctIterable<String>  bedIterator = plantCollection.distinct("gardenLocation", filter, String.class);
+        List<String> beds = new ArrayList<String>();
+        for(String s : bedIterator)
+        {
+            beds.add(s);
+        }
+        //Then sort the gardenLocations as according to BedComparator
+        beds.sort(new BedComparator());
+        return beds.toArray(new String[beds.size()]);
+    }
 
-    public JsonArray getGardenLocationsAsJson(String uploadID){
+    public JsonArray getGardenLocationsJSON(String uploadID){
         try {
+            //Get garden locations and package them in a JsonArray
             String[] beds = getGardenLocations(uploadID);
             JsonArray out = new JsonArray();
             for(int i = 0; i < beds.length; i++)
@@ -216,20 +255,9 @@ public class PlantController {
         }
     }
 
-    public String[] getGardenLocations(String uploadID){
-        Document filter = new Document();
-        filter.append("uploadId", uploadID);
-        DistinctIterable<String>  bedIterator = plantCollection.distinct("gardenLocation", filter, String.class);
-        List<String> beds = new ArrayList<String>();
-        for(String s : bedIterator)
-        {
-            beds.add(s);
-        }
-        beds.sort(new BedComparator());
-        return beds.toArray(new String[beds.size()]);
-    }
 
-    public String getCommonNamesAsJson(String uploadID){
+
+    public String getCommonNamesJSON(String uploadID){
         AggregateIterable<Document> documents
                 = plantCollection.aggregate(
                 Arrays.asList(
@@ -238,6 +266,26 @@ public class PlantController {
                         Aggregates.sort(Sorts.ascending("_id"))
                 ));
         return JSON.serialize(documents);
+    }
+
+    /**
+     * Adds a flower visit to the database
+     * for a plant by this plantID for this uploadId
+     * @param plantID
+     * @param uploadId
+     * @return
+     */
+    public boolean addVisit(String plantID, String uploadId) {
+
+        Document filterDoc = new Document();
+        filterDoc.append("id", plantID);
+        filterDoc.append("uploadId", uploadId);
+
+        //Add a {visit : ObjectId} to the visits array
+        Document visit = new Document();
+        visit.append("visit", new ObjectId());
+
+        return null != plantCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
     }
 
     /**
@@ -309,153 +357,34 @@ public class PlantController {
         return true;
     }
 
-    public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException {
-
-        FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
-
-        FindIterable iter = commentCollection.find(
-                and(
-                        exists("commentOnPlant"),
-                        eq("uploadId", uploadId)
-                ));
-        Iterator iterator = iter.iterator();
-
-        //Loop through all comments and add their entries
-        while (iterator.hasNext()) {
-            Document comment = (Document) iterator.next();
-            Iterator<Document> onPlantItr = plantCollection.find(and(eq("id", comment.getString("commentOnPlant")), eq("uploadId", uploadId))).iterator();
-            Document onPlant;
-            onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
-            try {
-                String[] dataToWrite = new String[COL_CMT_FIELDS];
-                dataToWrite[COL_CMT_PLANTID] = onPlant.getString("id");
-                dataToWrite[COL_CMT_COMMONNAME] = onPlant.getString("commonName");
-                dataToWrite[COL_CMT_CULTIVAR] = onPlant.getString("cultivar");
-                dataToWrite[COL_CMT_GRDNLOC] = onPlant.getString("gardenLocation");
-                dataToWrite[COL_CMT_COMMENT] = comment.getString("comment");
-                dataToWrite[COL_CMT_DATE] = ((ObjectId) comment.get("_id")).getDate().toString();
-
-                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_COMMENTS);
-            } catch (Exception e) {
-                System.err.println("ERROR ON PLANT " + onPlant);
-                e.printStackTrace();
-            }
-        }
-
-        //Loop through all plants
-        iter = plantCollection.find(
-                    eq("uploadId", uploadId)
-
-        );
-        iterator = iter.iterator();
-
-        while (iterator.hasNext()) {
-            Document onPlant = (Document) iterator.next();
-
-            try {
-                String[] dataToWrite = new String[COL_PLANT_FIELDS];
-                Document metadata = (Document) onPlant.get("metadata");
-                Document feedback = Document.parse(getJSONFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
-
-
-                Integer likeCount = feedback.getInteger("likeCount");
-                Integer dislikeCount = feedback.getInteger("dislikeCount");
-                Integer commentCount = feedback.getInteger("commentCount");
-                Integer pageViews = metadata.getInteger("pageViews");
-
-                dataToWrite[COL_PLANT_PLANTID] = onPlant.getString("id");
-                dataToWrite[COL_PLANT_COMMONNAME] = onPlant.getString("commonName");
-                dataToWrite[COL_PLANT_CULTIVAR] = onPlant.getString("cultivar");
-                dataToWrite[COL_PLANT_GRDNLOC] = onPlant.getString("gardenLocation");
-
-
-                dataToWrite[COL_PLANT_LIKES] = likeCount.toString();
-                dataToWrite[COL_PLANT_DISLIKES] = dislikeCount.toString();
-                dataToWrite[COL_PLANT_COMMENTS] = commentCount.toString();
-                dataToWrite[COL_PLANT_PAGEVIEWS] = pageViews.toString();
-
-                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-                System.err.println("ERROR ON PLANT " + onPlant);
-            }
-        }
-
-        //Loop through all beds
-        iter = bedCollection.find(
-                eq("uploadId", uploadId)
-
-        );
-        iterator = iter.iterator();
-
-        while (iterator.hasNext()) {
-            Document onBed = (Document) iterator.next();
-
-            try {
-                String[] dataToWrite = new String[COL_BED_FIELDS];
-                Document metadata = (Document) onBed.get("metadata");
-                //Document stuff = Document.parse(getGardenLocationsAsJson(onBed.getString("id")));
-
-
-                Integer pageViews = metadata.getInteger("pageViews");
-                Integer qrScans = metadata.getInteger("qrScans");
-
-                dataToWrite[COL_BED_GRDNLOC] = onBed.getString("gardenLocation");
-
-
-                //This wil only write one objectId to the Excel Sheet under visits
-//                Document visit = visits.get(0);
-//                String bedVisit = visit.get("visit").toString();
-
-
-                dataToWrite[COL_BED_PAGEVIEWS] = pageViews.toString();
-                dataToWrite[COL_BED_QRSCANS] = qrScans.toString();
-
-                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_BEDMETADATA);
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-                System.err.println("ERROR ON BED " + onBed);
-            }
-        }
-
-        feedbackWriter.complete();
-        return true;
-    }
-
     /**
      * Adds a like or dislike to the specified plant.
      *
-     * @param id a hexstring specifiying the oid
+     * @param plantId a hexstring specifiying the oid
      * @param like true if this is a like, false if this is a dislike
      * @param uploadID Dataset to find the plant
      * @return true iff the operation succeeded.
      */
 
-    public boolean addFlowerRating(String id, boolean like, String uploadID) {
-        System.out.println("id=" + id + " like=" + like + " uploadId=" + uploadID);
+    public boolean addFlowerRating(String plantId, boolean like, String uploadID) {
+
+        //Get a plant by this plantId and uploadId
         Document filterDoc = new Document();
-
-
-        filterDoc.append("id", id);
+        filterDoc.append("id", plantId);
         filterDoc.append("uploadId", uploadID);
 
         Document plantOID;
-
         Iterator<Document> itr = plantCollection.find(filterDoc).iterator();
         if(itr.hasNext()) {
             plantOID = itr.next();
         }
         else
         {
-            System.err.println("Plant not found with plantId " + id + " for uploadId " + uploadID);
+            System.err.println("Plant not found with plantId " + plantId + " for uploadId " + uploadID);
             return false;
         }
-        
 
+        //Push a new {like : bool, ratingOnObjectOfId : ObjectId} to metadata.ratings for this plant
         Document rating = new Document();
         rating.append("like", like);
         rating.append("ratingOnObjectOfId", new ObjectId(plantOID.get("_id").toString()));
@@ -510,43 +439,140 @@ public class PlantController {
 
 
 
-
-
-
-
     /**
-     * Finds a plant and atomically increments the specified field
-     * in its metadata object. This method returns true if the plant was
-     * found successfully (false otherwise), but there is no indication of
-     * whether the field was found.
-     *
-     * @param plantID a ID number of a plant in the DB
-     * @param field a field to be incremented in the metadata object of the plant
-     * @param uploadId the uploadId of the metadata field
-     * @return true if a plant was found
-     * @throws com.mongodb.MongoCommandException when the id is valid and the field is empty
+     * Write metadata and comment information to excel spreadsheet.
+     * @param outputStream
+     * @param uploadId
+     * @return
+     * @throws IOException
      */
-    public boolean incrementMetadata(String plantID, String field, String uploadId) {
+    public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException {
 
-        Document searchDocument = new Document();
-        searchDocument.append("id", plantID);
-        searchDocument.append("uploadId", uploadId);
+        FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
 
-        Bson updateDocument = inc("metadata." + field, 1);
+        writeToCommentSheet(feedbackWriter, uploadId);
+        writeToPlantMetadataSheet(feedbackWriter, uploadId);
+        writeToBedMetadataSheet(feedbackWriter, uploadId);
 
-        return null != plantCollection.findOneAndUpdate(searchDocument, updateDocument);
+        feedbackWriter.complete();
+        return true;
     }
 
-    public boolean addVisit(String plantID, String uploadId) {
+    private void writeToCommentSheet(FeedbackWriter feedbackWriter, String uploadId)
+    {
+        //Find all comments of this uploadId
+        FindIterable iter = commentCollection.find(
+                and(
+                        exists("commentOnPlant"),
+                        eq("uploadId", uploadId)
+                ));
+        Iterator iterator = iter.iterator();
 
-        Document filterDoc = new Document();
-        filterDoc.append("id", plantID);
-        filterDoc.append("uploadId", uploadId);
+        //Loop through each comment and add them as entries
+        while (iterator.hasNext()) {
+            Document comment = (Document) iterator.next();
 
-        Document visit = new Document();
-        visit.append("visit", new ObjectId());
+            //Get the plant that this comment was for
+            Iterator<Document> onPlantItr = plantCollection.find(and(eq("id", comment.getString("commentOnPlant")), eq("uploadId", uploadId))).iterator();
 
-        return null != plantCollection.findOneAndUpdate(filterDoc, push("metadata.visits", visit));
+            Document onPlant;
+            onPlant = onPlantItr.next(); //NOTE: this should _not_ create an exception, and if it does, the database is corrupt
+            try {
+                //Prepare data to write to Comment Sheet
+                String[] dataToWrite = new String[COL_CMT_FIELDS];
+                dataToWrite[COL_CMT_PLANTID] = onPlant.getString("id");
+                dataToWrite[COL_CMT_COMMONNAME] = onPlant.getString("commonName");
+                dataToWrite[COL_CMT_CULTIVAR] = onPlant.getString("cultivar");
+                dataToWrite[COL_CMT_GRDNLOC] = onPlant.getString("gardenLocation");
+                dataToWrite[COL_CMT_COMMENT] = comment.getString("comment");
+                dataToWrite[COL_CMT_DATE] = ((ObjectId) comment.get("_id")).getDate().toString();
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_COMMENTS);
+            } catch (Exception e) {
+                System.err.println("ERROR ON PLANT " + onPlant);
+                e.printStackTrace();
+            }
+        }
     }
+
+    private void writeToPlantMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
+    {
+        //Loop through all plants
+        FindIterable iter = plantCollection.find(
+                eq("uploadId", uploadId)
+
+        );
+        Iterator iterator = iter.iterator();
+
+        while (iterator.hasNext()) {
+            Document onPlant = (Document) iterator.next();
+
+            try {
+                String[] dataToWrite = new String[COL_PLANT_FIELDS];
+                Document metadata = (Document) onPlant.get("metadata");
+                Document feedback = Document.parse(getPlantFeedbackByPlantIdJSON(onPlant.getString("id"), uploadId));
+
+
+                Integer likeCount = feedback.getInteger("likeCount");
+                Integer dislikeCount = feedback.getInteger("dislikeCount");
+                Integer commentCount = feedback.getInteger("commentCount");
+                Integer pageViews = metadata.getInteger("pageViews");
+
+                dataToWrite[COL_PLANT_PLANTID] = onPlant.getString("id");
+                dataToWrite[COL_PLANT_COMMONNAME] = onPlant.getString("commonName");
+                dataToWrite[COL_PLANT_CULTIVAR] = onPlant.getString("cultivar");
+                dataToWrite[COL_PLANT_GRDNLOC] = onPlant.getString("gardenLocation");
+
+
+                dataToWrite[COL_PLANT_LIKES] = likeCount.toString();
+                dataToWrite[COL_PLANT_DISLIKES] = dislikeCount.toString();
+                dataToWrite[COL_PLANT_COMMENTS] = commentCount.toString();
+                dataToWrite[COL_PLANT_PAGEVIEWS] = pageViews.toString();
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_METADATA);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.err.println("ERROR ON PLANT " + onPlant);
+            }
+        }
+    }
+
+    private void writeToBedMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
+    {
+        FindIterable iter = bedCollection.find(
+                eq("uploadId", uploadId)
+
+        );
+        Iterator iterator = iter.iterator();
+
+        while (iterator.hasNext()) {
+            Document onBed = (Document) iterator.next();
+
+            try {
+                String[] dataToWrite = new String[COL_BED_FIELDS];
+                Document metadata = (Document) onBed.get("metadata");
+                //Document stuff = Document.parse(getGardenLocationsJSON(onBed.getString("id")));
+
+
+                Integer pageViews = metadata.getInteger("pageViews");
+                Integer qrScans = metadata.getInteger("qrScans");
+
+                dataToWrite[COL_BED_GRDNLOC] = onBed.getString("gardenLocation");
+                dataToWrite[COL_BED_PAGEVIEWS] = pageViews.toString();
+                dataToWrite[COL_BED_QRSCANS] = qrScans.toString();
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_BEDMETADATA);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.err.println("ERROR ON BED " + onBed);
+            }
+        }
+    }
+
+
 
 }
