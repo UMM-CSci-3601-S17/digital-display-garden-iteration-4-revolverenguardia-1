@@ -1,5 +1,5 @@
 # Digital Display Garden
-[![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi)
+[![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-3-revolverenguardia.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-3-revolverenguardia)
 Software Design S2017, Iteration 3, Team _Revolver en Guardia_ 
 
 This repository is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
@@ -13,7 +13,7 @@ Cloning the project inside IntelliJ:
 
 - When prompted to create a new IntelliJ project, select **yes**.
 - Select **import project from existing model** and select **Gradle.**
-  - Make sure **Use default Gradle wrapper** is selected.
+- Make sure **Use default Gradle wrapper** is selected.
 - Click **Finish.**
 
 :fire: If IntelliJ ever prompts you to compile typescript files into
@@ -28,8 +28,7 @@ When you load the project on a new machine, tell Gradle to Refresh linked Gradle
 > Run the client  
 
 If you have data in the database from a previous version it would be
-best to drop() the test database.
-In order to populate the database
+best to drop() the test database. In order to populate the database
 * Run the Server and Client
 * go to localhost:9000/admin (or whatever ip/port the client is running on)
 * Import the data set from the Excel spreadsheet (.xlsx)
@@ -47,7 +46,35 @@ In order to populate the database
 * Track the number of times a flower page is visited (Client-side not done)
 * Track the number of times a bed page is visited (Not attempted)
 
-Finished by Claude Arabo
+#### Improve Admin
+* Track all forms of visitor traffic
+* Export more data
+* Allow admin users to update the spreadsheet without losing previously obtained visitor data
+
+#### Visual Aids for Visitor Traffic &mdash; Google Charts
+* Provide visual aids for visitor traffic data
+
+#### Improve Front-end &mdash; visitor's website
+* Allow visitors to filter plants by common name
+* Provide visitors with social media links
+* Improve the overall UIs
+
+#### Finished by previous iteration groups
+**Grimaldi**
+* Leave comments about plants
+* Allow a visitor to rate a plant
+* Display counts of likes and dislikes on visitor website
+* Display counts of comments on visitor website
+* Extra: Add Bed Pages (required for QR Codes)
+* Generate QR Codes
+
+**Oman Anwar**
+* Present plant data in a list
+* Filter by bed number
+* Display specific plant information
+* Gather metadata from plant information pages; obtain likes, dislikes, page-views, and comments from plant pages, and store them on the server
+
+**Claude Arabo**
 * Import Excel Spreadsheet to Database
 
 ## Documentation
@@ -69,27 +96,22 @@ Finished by Claude Arabo
 * **zxing** is used for generating QR codes (supports reading them if we want) 
 * **joda** is used for making an unique LiveUploadID
 
-### Source of branches at end of Iteration 2 
+### Source of branches at end of Iteration 3 
 
-Most of these branches can be deleted in the next Iterations' forks of this repo.
-
-* **fix-tests** Very behind, fixed tests at beginning of iteration
-* **comments** Implements capability for comments
-* **rating-flowers** Implements capability for flower likes and dislikes
-* **improving-deployment** Changes API_URL
-* **chg-dialog** Changes plant information to be displayed from DialogComponent to PlantComponent
-* **rm-unnecessary** Removes unnecessary files, imports, config from files
-* **count** Implement the ability to count and display count for feedback on a plant
-* **bed-pages** Creates pages for beds (BedComponent)
-* **feedback-export** Implements ability to export comments to spreadsheet (xlsx)
-* **QR-Generation** Implements ability to generate QRCodes and request a .zip from the server.
-* **qr+text-export** A merge of QR-Generation and feedback-export with bug fixes  
-* **fixing-deployment**
-* **prettify** Makes things look nicer
-* **testing-client** Tests
-* **testing-PlantController** Tests
-* **update-plantController-for-uploadIds**
-* **improving-navigation**
+* **database-patching**
+* **export-more-data**
+* **fix-footer**
+* **GoogleCharts**
+* **google-charts(actual-data)**
+* **home-page**
+* **measure-qrscans**
+* **merge-all**
+* **merge-grimanwar**
+* **testing-PlantController**
+* **testing-admin**
+* **testing-client**
+* **visitor-interface-overhaul**
+* **vistor-interface-overhaul**
 * **master**
 
 ## Resources
