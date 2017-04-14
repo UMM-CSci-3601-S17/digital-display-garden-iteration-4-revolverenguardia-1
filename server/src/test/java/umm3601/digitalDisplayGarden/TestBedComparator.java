@@ -40,25 +40,21 @@ public class TestBedComparator
 
         BedComparator cmp = new BedComparator();
 
-        System.out.println("A1");
         arr1.sort(cmp);
         assertArrayEquals("1 Doesn't occur before 1N", arr1.toArray(new String[exampleArr1.length]),sortedArr1);
-        System.out.println("A2");
+
         arr2.sort(cmp);
         assertArrayEquals("2 Doesn't occur after 1", arr2.toArray(new String[exampleArr2.length]),sortedArr2);
 
-        System.out.println("A3");
         arr3.sort(cmp);
-        System.out.println("ARRAY!? " + Arrays.toString(arr3.toArray(new String[exampleArr3.length])));
         assertArrayEquals("1N,1E,1S,1W Doesn't sort properly", arr3.toArray(new String[exampleArr3.length]),sortedArr3);
 
-        System.out.println("A4");
         arr4.sort(cmp);
         assertArrayEquals("2 Doesn't occur after LG", arr4.toArray(new String[exampleArr4.length]),sortedArr4);
-        System.out.println("A5");
+
         arr5.sort(cmp);
         assertArrayEquals("NE Doesn't occur before NW", arr5.toArray(new String[exampleArr5.length]),sortedArr5);
-
+        
     }
 
 }
