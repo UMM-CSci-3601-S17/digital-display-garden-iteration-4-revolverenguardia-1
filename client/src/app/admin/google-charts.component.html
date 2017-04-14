@@ -32,8 +32,8 @@
 </div>
 
 <div id = "chartDiv" padding="5%">
-    <google-chart [data] = "bubbleChartOption"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" onClick = "window.location.reload()" >
+    <google-chart [data] = "bubbleOption"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateBubble()" >
         <span aria-hidden="true"></span>
         Update Graph
     </button>

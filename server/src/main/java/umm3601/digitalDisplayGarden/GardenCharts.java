@@ -200,7 +200,7 @@ public class GardenCharts
                 out.add(bed);
             }
 
-            System.out.println(out);
+//            System.out.println(out);
             return out.toString();
         }
         catch(Exception e)
