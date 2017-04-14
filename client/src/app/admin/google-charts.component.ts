@@ -75,9 +75,16 @@ export class GraphComponent implements OnInit {
         [45.593831, -95.875525],
         [45.593113, -95.877688],
         [45.593008, -95.876990],
-        [45.593512, -95.876351]];
+        [45.593512, -95.876351],
+        [45.593284, -95.877349],
+        [45.593689, -95.874984],
+        [45.593712, -95.875958],
+        [45.593826, -95.875539],
+        [45.593560, -95.875597],
+        [45.593592, -95.875406],
+        [45.593357, -95.875850],
+        [45.593461, -95.875177]];
 
-    public bedNames = ['5', '6', '7', '9', '10', '11', '13'];
 
     public mapOptions = {
         chartType: `Map`,
@@ -194,8 +201,8 @@ export class GraphComponent implements OnInit {
         {
 
 
-            dataTable[i+1][0] = this.bedLocations[i % 5][0];
-            dataTable[i+1][1] = this.bedLocations[i % 5][1];
+            dataTable[i+1][0] = this.bedLocations[i][0];
+            dataTable[i+1][1] = this.bedLocations[i][1];
             dataTable[i+1][2] = toolWindow[i];
             console.log(toolWindow[i]);
         }
