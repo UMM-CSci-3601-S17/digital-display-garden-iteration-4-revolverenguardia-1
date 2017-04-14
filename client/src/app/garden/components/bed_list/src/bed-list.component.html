@@ -2,12 +2,15 @@
     Provides an interface to view and interact with all Bed specific data.
 
     @author Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
 -->
 <!DOCTYPE html>
 
 <html>
     <head>
         <style>
+
+            /* Global References */
             a {
                 text-decoration: none;
                 display: block;
@@ -19,11 +22,8 @@
                 text-align: center;
                 padding-bottom: 5%;
             }
-            #bed-list {
-                list-style-type: none;
-                height: 90%;
-                padding: 0%;
-            }
+
+            /* Class References */
             .searchByHeader {
                 color: white;
                 text-align: center;
@@ -37,6 +37,13 @@
                 background-color: #000;
             }
 
+            /* ID References */
+            #bed-list {
+                list-style-type: none;
+                height: 90%;
+                padding: 0%;
+            }
+
         </style>
     </head>
 
@@ -45,9 +52,9 @@
             <h4 class="searchByHeader">Beds</h4>
 
             <ul id="bed-list">
-                <li *ngFor="let bed of bedListService.getBedNames()">
-                    <a *ngIf="bed._id == plantListService.getBedFilter()" [routerLink]="['/bed/all']" class="currentFilter" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
-                    <a *ngIf="bed._id != plantListService.getBedFilter()" [routerLink]="['/bed', bed._id]" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
+                <li *ngFor="let bed of bedListService.getBedNames()" (click)="handleBedListClick($event.target.textContent)">
+                    <a *ngIf="bed._id == plantListService.getBedFilter()" [routerLink]="['/bed/all']" class="currentFilter">{{ bed._id }}</a>
+                    <a *ngIf="bed._id != plantListService.getBedFilter()" [routerLink]="['/bed', bed._id]" >{{ bed._id }}</a>
                 </li>
             </ul>
 

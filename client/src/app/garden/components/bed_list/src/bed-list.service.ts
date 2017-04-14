@@ -1,8 +1,9 @@
 /**
- * The BedListService's primary function is to request all bed names from the server.
+ * The BedListService requests all bed names from the server.
  * These bed names are then loaded into the BedListComponent for viewing and interaction.
  *
  * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team Revolver en Guardia
  */
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
@@ -13,8 +14,14 @@ import {BedCollection} from "./bedcollection";
 @Injectable()
 export class BedListService {
 
+    /**
+     * Master collection of beds
+     */
     private bedCollection: BedCollection;
 
+    /**
+     * Collection of beds shown in the BedListComponent
+     */
     private beds: Bed[];
 
     constructor(private http:Http) {
@@ -39,8 +46,8 @@ export class BedListService {
     }
 
     /**
-     * TODO: Update Comment
-     * @returns {Bed[]}
+     * Gets the Beds shown within the BedListComponent
+     * @returns {Bed[]} - Beds displayed in BedListComponent
      */
     public getBedNames(): Bed[]{
         return this.beds;
