@@ -75,9 +75,16 @@ export class GraphComponent implements OnInit {
         [45.593831, -95.875525],
         [45.593113, -95.877688],
         [45.593008, -95.876990],
-        [45.593512, -95.876351]];
+        [45.593512, -95.876351],
+        [45.593284, -95.877349],
+        [45.593689, -95.874984],
+        [45.593712, -95.875958],
+        [45.593826, -95.875539],
+        [45.593560, -95.875597],
+        [45.593592, -95.875406],
+        [45.593357, -95.875850],
+        [45.593461, -95.875177]];
 
-    public bedNames = ['5', '6', '7', '9', '10', '11', '13'];
 
     public mapOptions = {
         chartType: `Map`,
@@ -93,14 +100,19 @@ export class GraphComponent implements OnInit {
 
     public bubbleChartOption = {
         chartType: `BubbleChart`,
-        dataTable: [['Bed: ', 'X', 'Y', 'Likes (Colour)', 'Views (Size)'],
-            ['1', 36,  33,      120,   47],
-            ['2', 37,  25,      130,   11],
-            ['3', 49,  16,      50,   22],
-            ['4', 54,  56,      230,   51],
-            ['5', 61,  24,      210,   117],
-            ['6', 62,  40,      100,   3],
-            ['7', 19,  14,      80,   44]
+        dataTable: [['Bed: ', 'X',    'Y', 'Likes (Colour)', 'Views (Size)'],
+                    ['10',    36,      33,                7,             35],
+                    ['11',    37,      25,               28,             33],
+                    ['13',    49,      16,               18,             50],
+                    ['1N',    54,      56,                6,             25],
+                    ['1S',    61,      24,               33,             80],
+                    ['2N',    61,      40,               24,             90],
+                    ['2S',    19,      14,               40,            100],
+                    ['5' ,    30,       4,               19,             31],
+                    ['6' ,    34,      10,               27,            100],
+                    ['7' ,    42,    25.5,               35,             42],
+                    ['9' ,    46.5,    29,                9,              5],
+                    ['LG',    46.1,  45.3,               39,             39]
         ],
         options: {
             backgroundColor: 'none',
@@ -189,8 +201,8 @@ export class GraphComponent implements OnInit {
         {
 
 
-            dataTable[i+1][0] = this.bedLocations[i % 5][0];
-            dataTable[i+1][1] = this.bedLocations[i % 5][1];
+            dataTable[i+1][0] = this.bedLocations[i][0];
+            dataTable[i+1][1] = this.bedLocations[i][1];
             dataTable[i+1][2] = toolWindow[i];
             console.log(toolWindow[i]);
         }
