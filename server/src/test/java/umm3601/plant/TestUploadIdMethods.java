@@ -26,7 +26,7 @@ public class TestUploadIdMethods {
     @Test
     public void listingOfUploadIds() throws IOException {
 
-        String uploadIds = "[ \"first uploadId\" , \"second uploadId\"]";
+        String uploadIds = "[ \"first uploadId\" , \"googleCharts uploadId\" , \"second uploadId\" , \"third uploadId\"]";
 
         String actualUploadId = ExcelParser.listUploadIds(databaseName);
 

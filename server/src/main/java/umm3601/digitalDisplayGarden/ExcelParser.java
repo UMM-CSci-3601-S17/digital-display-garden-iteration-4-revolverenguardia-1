@@ -1,10 +1,7 @@
 package umm3601.digitalDisplayGarden;
 
 import com.mongodb.MongoClient;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.util.JSON;
@@ -197,9 +194,21 @@ public class ExcelParser {
     public void populateDatabase(String[][] cellValues, String uploadId){
         MongoClient mongoClient = new MongoClient();
         MongoDatabase test = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = test.getCollection("plants");
+        MongoCollection plantCollection = test.getCollection("plants");
+        MongoCollection bedCollection = test.getCollection("beds");
 
         String[] keys = getKeys(cellValues);
+
+        Document emptyMetadataDoc = new Document();
+        emptyMetadataDoc.append("pageViews", 0);
+        emptyMetadataDoc.append("visits", new BsonArray());
+        emptyMetadataDoc.append("ratings", new BsonArray());
+
+        Document emptyMetadataBedDoc = new Document();
+        emptyMetadataBedDoc.append("pageViews", 0);
+        emptyMetadataBedDoc.append("qrScans", 0);
+        emptyMetadataBedDoc.append("bedVisits", new BsonArray());
+        emptyMetadataBedDoc.append("qrVisits", new BsonArray());
 
         for (int i = 4; i < cellValues.length; i++){
             Document doc = new Document();
@@ -211,15 +220,26 @@ public class ExcelParser {
                 continue;
 
             // Initialize the empty metadata
-            Document metadataDoc = new Document();
-            metadataDoc.append("pageViews", 0);
-            metadataDoc.append("visits", new BsonArray());
-            metadataDoc.append("ratings", new BsonArray());
 
-            doc.append("metadata", metadataDoc);
+
+            doc.append("metadata", emptyMetadataDoc);
             doc.append("uploadId", uploadId);
 
-            plants.insertOne(doc);
+            plantCollection.insertOne(doc);
+
+        }
+        //Get distinct list of beds
+        Document uploadIdFilter = new Document();
+        uploadIdFilter.append("uploadId", uploadId);
+        DistinctIterable<String>  bedIterator = plantCollection.distinct("gardenLocation", uploadIdFilter, String.class);
+
+        //Add beds to bed collection with empty metadata
+        for(String gardenLocation : bedIterator) {
+            Document bedDoc = new Document();
+            bedDoc.append("gardenLocation", gardenLocation);
+            bedDoc.append("metadata", emptyMetadataBedDoc);
+            bedDoc.append("uploadId", uploadId);
+            bedCollection.insertOne(bedDoc);
         }
 
 
@@ -234,14 +254,15 @@ public class ExcelParser {
 
         MongoClient mongoClient = new MongoClient();
         MongoDatabase test = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = test.getCollection("plants");
-        MongoCollection comments = test.getCollection("comments");
+        MongoCollection plantCollection = test.getCollection("plants");
+        MongoCollection commentCollection = test.getCollection("comments");
+        MongoCollection bedCollection = test.getCollection("beds");
 
         //Migrate (copy) all plants/comments of the previous uploadID and add them
 
         Document filterByOldUploadId = new Document();
         filterByOldUploadId.put("uploadId", oldUploadId);
-        FindIterable<Document> plantsOldId = plants.find(filterByOldUploadId);
+        FindIterable<Document> plantsOldId = plantCollection.find(filterByOldUploadId);
 
         Document filterByNewUploadId = new Document();
         filterByNewUploadId.put("uploadId", newUploadId);
@@ -257,24 +278,38 @@ public class ExcelParser {
 
             //Looks for a plant that has the same plantId with the new uploadId and migrates old metadata over
             //If a plant with no such plantId can be found, it will ignore it.
-            plants.findOneAndUpdate(newPlantFilter,set("metadata", oldMetadata));
+            plantCollection.findOneAndUpdate(newPlantFilter,set("metadata", oldMetadata));
         }
 
-        FindIterable<Document> commentsOldId = comments.find(filterByOldUploadId);
+        FindIterable<Document> commentsOldId = commentCollection.find(filterByOldUploadId);
         for(Document comment : commentsOldId)
         {
             //Take an old comment, change its' uploadId and objectID
-            plants.find(filterByNewUploadId);
+            //PROBLEM: updating _id means that that object's effective date is _now_
+            //So when you patch old comments, the date they will be said to be made is the time of patch
             comment.put("uploadId", newUploadId);
+
+            //for now we should at least keep this as without this old comments arent saved
             comment.put("_id", new ObjectId());
 
             //Only re-upload a comment if the plant it points to still exists
             Document newPlantFilter = new Document(filterByNewUploadId);
             newPlantFilter.put("id", comment.get("commentOnPlant"));
-            if(plants.find(newPlantFilter).first() != null) {
+            if(plantCollection.find(newPlantFilter).first() != null) {
 
-                comments.insertOne(comment);
+                commentCollection.insertOne(comment);
             }
+        }
+
+        FindIterable<Document> bedsOldId = bedCollection.find(filterByOldUploadId);
+        for(Document bed : bedsOldId)
+        {
+            Document oldMetadata = ((Document)bed.get("metadata"));
+            bed.put("uploadId", newUploadId);
+            bed.put("_id", new ObjectId());
+
+            Document newBedFilter = new Document(filterByNewUploadId);
+            bedCollection.findOneAndUpdate(newBedFilter,set("metadata", oldMetadata));
         }
 
         setLiveUploadId(newUploadId, databaseName);

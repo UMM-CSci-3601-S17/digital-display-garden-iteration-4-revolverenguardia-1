@@ -1,5 +1,7 @@
 package umm3601.digitalDisplayGarden;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
@@ -30,6 +32,7 @@ public class PlantController {
     private final MongoCollection<Document> plantCollection;
     private final MongoCollection<Document> commentCollection;
     private final MongoCollection<Document> configCollection;
+    private final MongoCollection<Document> bedCollection;
 
     public PlantController(String databaseName) throws IOException {
         // Set up our server address
@@ -46,7 +49,8 @@ public class PlantController {
         plantCollection = db.getCollection("plants");
         commentCollection = db.getCollection("comments");
         configCollection = db.getCollection("config");
-        
+        bedCollection = db.getCollection("beds");
+
     }
 
     // List plants
@@ -122,23 +126,11 @@ public class PlantController {
 
     }
 
-    /**
-     *
-     * @param plantID The plant to get feedback of
-     * @param uploadID Dataset to find the plant
-     *
-     * @return JSON for the number of comments, likes, and dislikes
-     * Of the form:
-     * {
-     *     commentCount: number
-     *     likeCount: number
-     *     dislikeCount: number
-     * }
-     */
+    public static final int PLANT_FEEDBACK_LIKES = 0,
+                            PLANT_FEEDBACK_DISLIKES = 1,
+                            PLANT_FEEDBACK_COMMENTS = 2;
 
-    public String getFeedbackForPlantByPlantID(String plantID, String uploadID) {
-        Document out = new Document();
-
+    public long[] getFeedbackForPlantByPlantID(String plantID, String uploadID) {
         Document filter = new Document();
         filter.put("commentOnPlant", plantID);
         filter.put("uploadId", uploadID);
@@ -166,23 +158,62 @@ public class PlantController {
                     dislikes++;
             }
         }
+        long[] out = new long[3];
+        out[PLANT_FEEDBACK_LIKES] = likes;
+        out[PLANT_FEEDBACK_DISLIKES] = dislikes;
+        out[PLANT_FEEDBACK_COMMENTS] = comments;
+
+        return out;
 
 
-        out.put("commentCount", comments);
-        out.put("likeCount", likes);
-        out.put("dislikeCount", dislikes);
+    }
+
+    /**
+     *
+     * @param plantID The plant to get feedback of
+     * @param uploadID Dataset to find the plant
+     *
+     * @return JSON for the number of comments, likes, and dislikes
+     * Of the form:
+     * {
+     *     commentCount: number
+     *     likeCount: number
+     *     dislikeCount: number
+     * }
+     */
+
+    public String getJSONFeedbackForPlantByPlantID(String plantID, String uploadID) {
+        Document out = new Document();
+
+        long[] metadataCount = getFeedbackForPlantByPlantID(plantID, uploadID);
+
+
+        out.put("likeCount", metadataCount[0]);
+        out.put("dislikeCount", metadataCount[1]);
+        out.put("commentCount", metadataCount[2]);
         return JSON.serialize(out);
     }
 
-    public String getGardenLocationsAsJson(String uploadID){
-        AggregateIterable<Document> documents
-                = plantCollection.aggregate(
-                Arrays.asList(
-                        Aggregates.match(eq("uploadId", uploadID)), //!! Order is important here
-                        Aggregates.group("$gardenLocation"),
-                        Aggregates.sort(Sorts.ascending("_id"))
-                ));
-        return JSON.serialize(documents);
+
+
+    public JsonArray getGardenLocationsAsJson(String uploadID){
+        try {
+            String[] beds = getGardenLocations(uploadID);
+            JsonArray out = new JsonArray();
+            for(int i = 0; i < beds.length; i++)
+            {
+                JsonObject bed = new JsonObject();
+                bed.addProperty("_id", beds[i]);
+                out.add(bed);
+            }
+
+            return out;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public String[] getGardenLocations(String uploadID){
@@ -194,7 +225,19 @@ public class PlantController {
         {
             beds.add(s);
         }
+        beds.sort(new BedComparator());
         return beds.toArray(new String[beds.size()]);
+    }
+
+    public String getCommonNamesAsJson(String uploadID){
+        AggregateIterable<Document> documents
+                = plantCollection.aggregate(
+                Arrays.asList(
+                        Aggregates.match(eq("uploadId", uploadID)), //!! Order is important here
+                        Aggregates.group("$commonName"),
+                        Aggregates.sort(Sorts.ascending("_id"))
+                ));
+        return JSON.serialize(documents);
     }
 
     /**
@@ -312,7 +355,7 @@ public class PlantController {
             try {
                 String[] dataToWrite = new String[COL_PLANT_FIELDS];
                 Document metadata = (Document) onPlant.get("metadata");
-                Document feedback = Document.parse(getFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
+                Document feedback = Document.parse(getJSONFeedbackForPlantByPlantID(onPlant.getString("id"), uploadId));
 
 
                 Integer likeCount = feedback.getInteger("likeCount");
@@ -337,6 +380,45 @@ public class PlantController {
             {
                 e.printStackTrace();
                 System.err.println("ERROR ON PLANT " + onPlant);
+            }
+        }
+
+        //Loop through all beds
+        iter = bedCollection.find(
+                eq("uploadId", uploadId)
+
+        );
+        iterator = iter.iterator();
+
+        while (iterator.hasNext()) {
+            Document onBed = (Document) iterator.next();
+
+            try {
+                String[] dataToWrite = new String[COL_BED_FIELDS];
+                Document metadata = (Document) onBed.get("metadata");
+                //Document stuff = Document.parse(getGardenLocationsAsJson(onBed.getString("id")));
+
+
+                Integer pageViews = metadata.getInteger("pageViews");
+                Integer qrScans = metadata.getInteger("qrScans");
+
+                dataToWrite[COL_BED_GRDNLOC] = onBed.getString("gardenLocation");
+
+
+                //This wil only write one objectId to the Excel Sheet under visits
+//                Document visit = visits.get(0);
+//                String bedVisit = visit.get("visit").toString();
+
+
+                dataToWrite[COL_BED_PAGEVIEWS] = pageViews.toString();
+                dataToWrite[COL_BED_QRSCANS] = qrScans.toString();
+
+                feedbackWriter.writeToSheet(dataToWrite, FeedbackWriter.SHEET_BEDMETADATA);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.err.println("ERROR ON BED " + onBed);
             }
         }
 

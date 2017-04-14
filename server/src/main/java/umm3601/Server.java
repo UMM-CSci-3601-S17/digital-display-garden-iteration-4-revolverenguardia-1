@@ -3,6 +3,8 @@ package umm3601;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
+import umm3601.digitalDisplayGarden.BedController;
+import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.digitalDisplayGarden.PlantController;
 
 import java.io.*;
@@ -40,6 +42,8 @@ public class Server {
         staticFiles.location("/public");
 
         PlantController plantController = new PlantController(databaseName);
+        GardenCharts chartMaker = new GardenCharts(databaseName);
+        BedController bedController = new BedController(databaseName);
 
         options("/*", (request, response) -> {
 
@@ -68,13 +72,18 @@ public class Server {
 
         get("/", clientRoute);
 
-        // List plants
+
+        /*///////////////////////////////////////////////////////////////////
+         * BEGIN VISITOR ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
+
+        // Return all plants
         get("api/plants", (req, res) -> {
             res.type("application/json");
             return plantController.listPlants(req.queryMap().toMap(), getLiveUploadId());
         });
 
-        //Get a plant
+        //Get a plant by plantId
         get("api/plant/:plantID", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
@@ -85,13 +94,19 @@ public class Server {
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
+            return plantController.getJSONFeedbackForPlantByPlantID(id,getLiveUploadId());
         });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
             res.type("application/json");
             return plantController.getGardenLocationsAsJson(getLiveUploadId());
+        });
+
+        //List all Common Names
+        get("api/commonNames", (req, res) -> {
+            res.type("application/json");
+            return plantController.getCommonNamesAsJson(getLiveUploadId());
         });
 
         // List all uploadIds
@@ -106,74 +121,24 @@ public class Server {
             return plantController.addFlowerRating(req.body(),getLiveUploadId());
         });
 
-        get("api/export", (req, res) -> {
-            // Note that after flush() or close() is called on
-            // res.raw().getOutputStream(), the response can no longer be
-            // modified. Since writeComment(..) closes the OutputStream
-            // when it is done, it needs to be the last line of this function.
-            //REVISED to attempt to fix bug where first write always breaks.
-            // If an exception is thrown (specifically within workbook.write() within complete() in FeedbackWriter
-            // This loop will attempt to write feedback twice, writing to an intermediate buffer.
-            // If the write succeeds, then write it to the response output stream
-            int error = 3;
-            while(error > 0) {
-                try {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    plantController.writeFeedback(buffer, req.queryMap().toMap().get("uploadId")[0]);
-
-                    res.type("application/vnd.ms-excel");
-                    res.header("Content-Disposition", "attachment; filename=\"plant-comments.xlsx\"");
-
-                    OutputStream out = res.raw().getOutputStream();
-                    out.write(buffer.toByteArray());
-                    out.flush();
-                    out.close();
-                    error = 0;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    error--;
-                    if(error == 0)
-                    {
-                        //If all attempts fail, produce an Internal Server Error 500
-                        throw e;
-                    }
-                }
-            }
 
 
-            return res;
-        });
-
-        get("api/liveUploadId", (req, res) -> {
+        post("api/bedVisit", (req, res) -> {
             res.type("application/json");
-            return JSON.serialize(getLiveUploadId());
+            String body = req.body();
+            //Increment bedCount
+            bedController.addBedVisit(body, getLiveUploadId());
+            return true;
         });
 
+        post("api/qrVisit", (req, res) -> {
+            res.type("application/json");
+            String body = req.body();
 
-
-        get("api/qrcodes", (req, res) -> {
-            res.type("application/zip");
-
-            String liveUploadID = getLiveUploadId();
-            System.err.println("liveUploadID=" + liveUploadID);
-            String zipPath = QRCodes.CreateQRCodesFromAllBeds(
-                    liveUploadID,
-                    plantController.getGardenLocations(liveUploadID),
-                    API_URL + "/bed/");
-            System.err.println(zipPath);
-            if(zipPath == null)
-                return null;
-
-            res.header("Content-Disposition","attachment; filename=\"" + zipPath + "\"");
-
-            //Get bytes from the file
-            File zipFile = new File(zipPath);
-            byte[] bytes = spark.utils.IOUtils.toByteArray(new FileInputStream(zipFile));
-
-            //Delete local .zip file
-            Files.delete(Paths.get(zipPath));
-
-            return bytes;
+            //Increment bedCount
+            //Increment qrForBedCount
+            bedController.addBedQRVisit(body, getLiveUploadId());
+            return true;
         });
 
         // Posting a comment
@@ -181,6 +146,13 @@ public class Server {
             res.type("application/json");
             return plantController.storePlantComment(req.body(), getLiveUploadId());
         });
+
+        /*///////////////////////////////////////////////////////////////////
+         * END VISITOR ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
+         * ADMIN ENDPOINTS
+         *////////////////////////////////////////////////////////////////////
 
         // Accept an xls file
         post("api/import", (req, res) -> {
@@ -208,7 +180,7 @@ public class Server {
         });
 
 
-        // Accept an xls file
+        //Patch from spreadsheet
         post("api/patch", (req, res) -> {
 
             res.type("application/json");
@@ -217,9 +189,6 @@ public class Server {
                 MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
                 req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
                 Part part = req.raw().getPart("file[]");
-
-
-
 
                 ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
 
@@ -236,6 +205,112 @@ public class Server {
             }
 
         });
+
+        get("api/export", (req, res) -> {
+            // Note that after flush() or close() is called on
+            // res.raw().getOutputStream(), the response can no longer be
+            // modified. Since writeComment(..) closes the OutputStream
+            // when it is done, it needs to be the last line of this function.
+            //REVISED to attempt to fix bug where first write always breaks.
+            // If an exception is thrown (specifically within workbook.write() within complete() in FeedbackWriter
+            // This loop will attempt to write feedback twice, writing to an intermediate buffer.
+            // If the write succeeds, then write it to the response output stream
+            int error = 3;
+            while(error > 0) {
+                try {
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    plantController.writeFeedback(buffer, req.queryMap().toMap().get("uploadId")[0]);
+
+                    res.type("application/vnd.ms-excel");
+                    res.header("Content-Disposition", "attachment; filename=\"Garden-Visitor data.xlsx\"");
+
+                    OutputStream out = res.raw().getOutputStream();
+                    out.write(buffer.toByteArray());
+                    out.flush();
+                    out.close();
+                    error = 0;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error--;
+                    if(error == 0)
+                    {
+                        //If all attempts fail, produce an Internal Server Error 500
+                        throw e;
+                    }
+                }
+            }
+
+
+            return res;
+        });
+
+        get("api/qrcodes", (req, res) -> {
+            res.type("application/zip");
+
+            String liveUploadID = getLiveUploadId();
+            System.err.println("liveUploadID=" + liveUploadID);
+            String zipPath = QRCodes.CreateQRCodesFromAllBeds(
+                    liveUploadID,
+                    plantController.getGardenLocations(liveUploadID),
+                    API_URL + "/bed/");
+            System.err.println(zipPath);
+            if(zipPath == null)
+                return null;
+
+            res.header("Content-Disposition","attachment; filename=\"" + zipPath + "\"");
+
+            //Get bytes from the file
+            File zipFile = new File(zipPath);
+            byte[] bytes = spark.utils.IOUtils.toByteArray(new FileInputStream(zipFile));
+
+            //Delete local .zip file
+            Files.delete(Paths.get(zipPath));
+
+            return bytes;
+        });
+
+        get("api/liveUploadId", (req, res) -> {
+            res.type("application/json");
+            return JSON.serialize(getLiveUploadId());
+        });
+
+
+        /*///////////////////////////////////////////////////////////////////
+            BEGIN CHARTS
+        *////////////////////////////////////////////////////////////////////
+
+        // Views per Hour
+        get("api/chart/viewsPerHour", (req, res) -> {
+            res.type("application/json");
+            return chartMaker.getViewsPerHour(getLiveUploadId());
+        });
+
+        get("api/chart/plantMetadataMap", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
+        });
+
+        get("api/chart/plantMetadataBubbleMap", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
+        });
+
+        //Host the aerial image of the Garden
+        get("api/admin/gardenPicture", (req, res) -> {
+            res.type("application/png");
+            String gardenPath = "/Garden.png";
+
+            return plantController.getClass().getResourceAsStream(gardenPath);
+        });
+
+        /*///////////////////////////////////////////////////////////////////
+            END CHARTS
+        *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
+         * END ADMIN ENDPOINTS
+         */ ///////////////////////////////////////////////////////////////////
 
 
         get("/*", clientRoute);

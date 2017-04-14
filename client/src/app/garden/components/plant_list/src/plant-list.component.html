@@ -1,0 +1,69 @@
+<!--
+    Provides an interface to view and interact with the PlantListComponent shown within
+    the GardenComponent.
+
+    @author Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
+-->
+<!DOCTYPE html>
+<html>
+    <style>
+
+
+        /* Global References */
+        body {
+            display: inline;
+        }
+        a {
+            font-size: 150%;
+            display: block;
+            text-decoration: none;
+            padding: 32px 0px 32px 0px;
+            text-align: center;
+            color: #48000E;
+        }
+        a.active {
+            padding: 8px 0px 8px 0px;
+            background-color: #196B1D;
+            color: white;
+        }
+        a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /* ID References */
+        #plant-list{
+            list-style-type: none;
+            padding: 0;
+            background-color: #f1f1f1;
+            height: 100%;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+        #plant-list-view{
+            height: 82%;
+            margin-right: 11px;
+            margin-left: 59px;
+        }
+
+    </style>
+
+    <div id="plant-list-view">
+
+        <div id="plant-list-header" (click)="handlePlantListClick($event.target.textContent)">
+            <a class="active">Plants</a>
+        </div>
+
+        <ul id="plant-list" >
+            <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
+                <a>
+                    <h4>{{ plant.commonName }}</h4>
+                    {{ plant.cultivar}}
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</html>

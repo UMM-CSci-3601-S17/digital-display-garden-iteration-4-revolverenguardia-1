@@ -12,11 +12,13 @@ public class FeedbackWriter {
 
     OutputStream outputStream;
     XSSFWorkbook workbook;
+    XSSFSheet bedmetadataSheet;
 
     XSSFSheet commentSheet;
     XSSFSheet metadataSheet;
     int commentRowCount;
     int metadataRowCount;
+    int bedmetadataRowCount;
 
 
     XSSFCellStyle styleCentered;
@@ -41,8 +43,14 @@ public class FeedbackWriter {
                                 COL_PLANT_PAGEVIEWS = 7;
     public static final int COL_PLANT_FIELDS = 8;
 
+    public static final int COL_BED_GRDNLOC = 0,
+                            COL_BED_PAGEVIEWS = 1,
+                            COL_BED_QRSCANS = 2;
+    public static final int COL_BED_FIELDS = 3;
+
     public static final int SHEET_COMMENTS = 0,
                             SHEET_METADATA = 1;
+    public static final int SHEET_BEDMETADATA = 2;
 
     public FeedbackWriter(OutputStream outputStream) throws IOException{
         this.outputStream = outputStream;
@@ -57,7 +65,8 @@ public class FeedbackWriter {
         styleWordWrap.setAlignment(HorizontalAlignment.LEFT);
 
         prepareCommentSheet();
-        prepareMetadataSheet();
+        preparePlantMetadata();
+        prepareBedMetadataSheet();
 
     }
 
@@ -117,9 +126,9 @@ public class FeedbackWriter {
         commentRowCount = 2;
     }
 
-    private void prepareMetadataSheet()
+    private void preparePlantMetadata()
     {
-        this.metadataSheet = workbook.createSheet("Metadata");
+        this.metadataSheet = workbook.createSheet("Plant Metadata");
 
         Row row1 = metadataSheet.createRow(0);
         Row row2 = metadataSheet.createRow(1);
@@ -160,15 +169,6 @@ public class FeedbackWriter {
         cell.setCellValue("Comments");
         cell.setCellStyle(styleCentered);
 
-        /*
-        cell = row1.createCell(COL_META_QRSCANS);
-        cell.setCellValue("QR");
-        cell.setCellStyle(styleCentered);
-        cell = row2.createCell(COL_META_QRSCANS);
-        cell.setCellValue("Scans");
-        cell.setCellStyle(styleCentered);
-        */
-
         cell = row1.createCell(COL_PLANT_PAGEVIEWS);
         cell.setCellValue("Page");
         cell.setCellStyle(styleCentered);
@@ -187,6 +187,50 @@ public class FeedbackWriter {
         metadataSheet.setAutoFilter(rangeAddress);
         metadataRowCount = 2;
     }
+
+    private void prepareBedMetadataSheet()
+    {
+        this.bedmetadataSheet = workbook.createSheet("Bed Metadata");
+
+        Row row1 = bedmetadataSheet.createRow(0);
+        Row row2 = bedmetadataSheet.createRow(1);
+
+        Cell cell;
+
+        cell = row1.createCell(COL_BED_GRDNLOC);
+        cell.setCellValue("Garden");
+        cell.setCellStyle(styleCentered);
+        cell = row2.createCell(COL_BED_GRDNLOC);
+        cell.setCellValue("Location");
+        cell.setCellStyle(styleCentered);
+
+        cell = row1.createCell(COL_BED_PAGEVIEWS);
+        cell.setCellValue("Page");
+        cell.setCellStyle(styleCentered);
+        cell = row2.createCell(COL_BED_PAGEVIEWS);
+        cell.setCellValue("Views");
+        cell.setCellStyle(styleCentered);
+
+        cell = row1.createCell(COL_BED_QRSCANS);
+        cell.setCellValue("QR");
+        cell.setCellStyle(styleCentered);
+        cell = row2.createCell(COL_BED_QRSCANS);
+        cell.setCellValue("Scans");
+        cell.setCellStyle(styleCentered);
+
+
+        bedmetadataSheet.setColumnWidth(COL_BED_GRDNLOC,7400);
+        bedmetadataSheet.setColumnWidth(COL_BED_PAGEVIEWS,3200);
+        bedmetadataSheet.setColumnWidth(COL_BED_QRSCANS,3200);
+        bedmetadataSheet.createFreezePane(0, 2);
+
+
+        CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:C1200");
+        bedmetadataSheet.setAutoFilter(rangeAddress);
+        bedmetadataRowCount = 2;
+    }
+
+
 
 
     /**
@@ -213,6 +257,11 @@ public class FeedbackWriter {
                 row = sheet.createRow(metadataRowCount++);
                 //Custom row stylings for Metadata Sheet entries
 //                row.setHeight((short)450);
+                break;
+
+            case SHEET_BEDMETADATA:
+                sheet =  bedmetadataSheet;
+                row = sheet.createRow(bedmetadataRowCount++);
                 break;
 
             default:

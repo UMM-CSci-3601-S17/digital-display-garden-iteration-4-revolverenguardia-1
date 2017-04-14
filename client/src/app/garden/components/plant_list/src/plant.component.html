@@ -1,0 +1,101 @@
+<!--
+    Provides an interface to view and interact with all Plant specific data.
+
+    @author Iteration 1 - Team Rayquaza
+    @editor Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
+-->
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+
+            /* Global References */
+            h1{
+                position: relative;
+            }
+
+            /* Class References */
+            .image{
+                position: relative;
+                width:100%;
+                overflow: hidden;
+            }
+            .footer-whitespace{
+                min-height: 60px;
+            }
+
+            /* Id References */
+            #back-button{
+                background-color: #FFD63F;
+            }
+            #dislike-button{
+                background-color: #1D8214;
+                color: white
+            }
+            #comment-box{
+                width: 95%;
+                font-size: medium;
+                resize:vertical;
+                margin-top:8px;
+                margin-bottom: 8px;
+                min-height: 60px
+            }
+            #comment-button{
+                background-color: #FFD63F;
+            }
+
+        </style>
+    </head>
+
+    <a id="back-button" href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span></a>
+
+    <div class="image">
+        <img src="../res/wroc.jpg" width="100%"/>
+    </div>
+
+    <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
+
+    <div *ngIf="plant !== null" class= "text-center">
+
+        <h3>{{plant.cultivar}}</h3>
+        <h4> Common Name: {{plant.commonName}}</h4>
+        <h4> Bed Number: {{plant.gardenLocation}}</h4>
+
+        <div *ngIf="!rated">
+            <a id="dislike-button" class="btn btn-default" (click)="this.rate(true)" >
+                <span class="glyphicon glyphicon-thumbs-up"> </span> Like
+            </a>
+            <a class="btn btn-primary" (click)="this.rate(false)">
+                <span class="glyphicon glyphicon-thumbs-down"> </span> Dislike
+            </a>
+        </div>
+
+        <div *ngIf="rated">
+            <h3>Thanks for your feedback!</h3>
+        </div>
+
+        <div *ngIf="!commented">
+            <textarea id="comment-box" [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
+            <br>
+            <a id="comment-button" class="btn btn-default" (click)="this.comment(commentText)">
+                Leave a comment
+            </a>
+        </div>
+
+        <div *ngIf="commented">
+            <h3>Your comment has been submitted.</h3>
+        </div>
+
+        <!--Whitespace at end of page-->
+        <div class="footer-whitespace"></div>
+
+    </div>
+
+    <footer-component></footer-component>
+
+</html>
+
+

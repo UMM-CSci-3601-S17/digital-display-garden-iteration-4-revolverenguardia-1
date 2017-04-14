@@ -16,14 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static umm3601.Server.API_URL;
+
 import static umm3601.digitalDisplayGarden.QRCodes.createQRFromBedURL;
 
 /**
  * Created by Brian on 4/5/2017.
  */
 public class TestQRCodes {
+
+    String Test_Url = "http://localhost:2538" ;
     String path = "test";
 
     @Test
@@ -34,21 +35,20 @@ public class TestQRCodes {
         bedNames[2] = "bed3";
         bedNames[3] = "bed4";
 
-        String urlPrefix = API_URL + "/bed/";
+        String urlPrefix = this.Test_Url+ "/bed/";
 
 
         //Check to see that it makes a bed url of length 4
         assertEquals("this should be 4",4, QRCodes.formBedURLs(bedNames,urlPrefix).length);
-        assertEquals("this should be a url to bed1","http://localhost:2538/bed/bed1", QRCodes.formBedURLs(bedNames,urlPrefix)[0]);
-
+        assertEquals("this should be a url to bed1","http://localhost:2538/bed/bed1?qr=true", QRCodes.formBedURLs(bedNames,urlPrefix)[0]);
     }
 
     @Test
     public void TestCreateBufferedImages() throws IOException,WriterException{
         String bedURLs[] = new String[3];
-        bedURLs[0] = "http://localhost:2538/bed/bed1";
-        bedURLs[1] = "http://localhost:2538/bed/bed2";
-        bedURLs[2] = "http://localhost:2538/bed/bed3";
+        bedURLs[0]= "http://localhost:2538/bed/bed1?qr=true";
+        bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
+        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         System.out.println(QRCodes.createBufferedImages(bedURLs).get(0));
 
         List<BufferedImage> qrCodeImages = new ArrayList<BufferedImage>();
@@ -68,9 +68,9 @@ public class TestQRCodes {
         bedNames[2] = "bed3";
 
         String bedURLs[] = new String[3];
-        bedURLs[0] = "http://localhost:2538/bed/bed1";
-        bedURLs[1] = "http://localhost:2538/bed/bed2";
-        bedURLs[2] = "http://localhost:2538/bed/bed3";
+        bedURLs[0] = "http://localhost:2538/bed/bed1?qr=true";
+        bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
+        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         List<BufferedImage> qrCodeImages = QRCodes.createBufferedImages(bedURLs);
 
         assertEquals(qrCodeImages.size(), 3);
