@@ -1,5 +1,7 @@
 package umm3601.digitalDisplayGarden;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
@@ -194,15 +196,24 @@ public class PlantController {
 
 
 
-    public String getGardenLocationsAsJson(String uploadID){
-        AggregateIterable<Document> documents
-                = plantCollection.aggregate(
-                Arrays.asList(
-                        Aggregates.match(eq("uploadId", uploadID)), //!! Order is important here
-                        Aggregates.group("$gardenLocation"),
-                        Aggregates.sort(Sorts.ascending("_id"))
-                ));
-        return JSON.serialize(documents);
+    public JsonArray getGardenLocationsAsJson(String uploadID){
+        try {
+            String[] beds = getGardenLocations(uploadID);
+            JsonArray out = new JsonArray();
+            for(int i = 0; i < beds.length; i++)
+            {
+                JsonObject bed = new JsonObject();
+                bed.addProperty("_id", beds[i]);
+                out.add(bed);
+            }
+
+            return out;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public String[] getGardenLocations(String uploadID){
@@ -214,6 +225,7 @@ public class PlantController {
         {
             beds.add(s);
         }
+        beds.sort(new BedComparator());
         return beds.toArray(new String[beds.size()]);
     }
 

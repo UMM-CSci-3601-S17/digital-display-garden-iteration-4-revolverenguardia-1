@@ -40,7 +40,6 @@ public class TestQRCodes {
         //Check to see that it makes a bed url of length 4
         assertEquals("this should be 4",4, QRCodes.formBedURLs(bedNames,urlPrefix).length);
         assertEquals("this should be a url to bed1","http://localhost:2538/bed/bed1?qr=true", QRCodes.formBedURLs(bedNames,urlPrefix)[0]);
-
     }
 
     @Test

@@ -1,6 +1,7 @@
 package umm3601.plant;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.PlantController;
@@ -26,7 +27,7 @@ public class TestGardenLocations {
         GardenLocation[] gardenLocations;
         Gson gson = new Gson();
 
-        String json = plantController.getGardenLocationsAsJson("first uploadId");
+        JsonArray json = plantController.getGardenLocationsAsJson("first uploadId");
         gardenLocations = gson.fromJson(json, GardenLocation[].class);
         assertEquals("Incorrect number of unique garden locations in \"first uploadId\"", 1, gardenLocations.length);
         assertEquals("Incorrect zero index", "10.0", gardenLocations[0]._id);
