@@ -51,4 +51,12 @@ export class BedListService {
     public getBedNames(): Bed[]{
         return this.beds;
     }
+
+    reportBedVisit(gardenLocation : string, isQR : boolean): Observable<boolean> {
+        if(isQR) {
+            return this.http.post(API_URL + "qrVisit", gardenLocation).map(res => res.json());
+        } else {
+            return this.http.post(API_URL + "bedVisit", gardenLocation).map(res => res.json());
+        }
+    }
 }
