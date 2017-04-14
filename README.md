@@ -55,6 +55,14 @@ best to drop() the test database. In order to populate the database
 * Provide visitors with social media links &mdash; complete
 * Improve the overall UIs &mdash; additional improvements can be made
 
+#### Refactoring and Stories to polish
+Change all ObjectIds that are generated with the sole purpose of dates into some sort of Date object
+  This has become a problem, because eveyr object must have a unique ObjectId.
+  When the database is patched, all of the objects are duplicated and therefore have new ObjectIds
+  Which means all old data's dates (under the new uploadId) becomes new ObjectIds.
+
+
+
 #### Finished by previous iteration groups
 **Grimaldi**
 * Leave comments about plants
