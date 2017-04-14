@@ -14,7 +14,7 @@ We are using a library called [ng2-google-charts](https://github.com/gmazzamuto/
 To add *ng2-google-charts* to your project, locate `package.json` in the client directory.
 When you are there, copy the following line of code into `dependencies` section.
 
-```ng2-google-charts": "^2.1.0" ```
+```ng2-google-charts": "^2.1.0"```
 
 Next, clean, and rebuild gradle, and you should be good to go!
 
