@@ -1,6 +1,6 @@
 /**
  * The FilterGardenSidebarComponent is anchored on the left side of the screen
- * in a vertical orientation and provides an interface to filter the PlantListComponent.
+ * in a vertical orientation that provides an interface to filter the PlantListComponent.
  * @author Iteration 3 - Team Revolver en Guardia
  */
 import { Component } from '@angular/core';
