@@ -94,19 +94,19 @@ public class Server {
         get("api/plant/:plantID/counts", (req, res) -> {
             res.type("application/json");
             String id = req.params("plantID");
-            return plantController.getJSONFeedbackForPlantByPlantID(id,getLiveUploadId());
+            return plantController.getPlantFeedbackByPlantIdJSON(id,getLiveUploadId());
         });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
             res.type("application/json");
-            return plantController.getGardenLocationsAsJson(getLiveUploadId());
+            return plantController.getGardenLocationsJSON(getLiveUploadId());
         });
 
         //List all Common Names
         get("api/commonNames", (req, res) -> {
             res.type("application/json");
-            return plantController.getCommonNamesAsJson(getLiveUploadId());
+            return plantController.getCommonNamesJSON(getLiveUploadId());
         });
 
         // List all uploadIds

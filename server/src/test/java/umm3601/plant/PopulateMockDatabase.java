@@ -9,6 +9,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 import org.bson.*;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import umm3601.digitalDisplayGarden.PlantController;
@@ -61,14 +62,14 @@ public class PopulateMockDatabase {
         alternanthera.append("source", "PA");
         alternanthera.append("SSeedVVeg", "S");
 
-        BsonArray visits = new BsonArray();
-        ObjectId visit1 = new ObjectId("58e48858efbd6027e34b4c52");
-        visits.add(new BsonObjectId(visit1));
+//        BsonArray visits = new BsonArray();
+//        ObjectId visit1 = new ObjectId("58e48858efbd6027e34b4c52");
+//        visits.add(new BsonObjectId(visit1));
 
         Document metadataDoc = new Document();
         metadataDoc.append("pageViews", 0);
         metadataDoc.append("ratings", new BsonArray());
-        metadataDoc.append("visits", visits);
+        metadataDoc.append("visits", new BsonArray());
 
         
         alternanthera.append("metadata", metadataDoc);
@@ -184,7 +185,7 @@ public class PopulateMockDatabase {
         plantFour.append("metadata", metadataDoc3);
         plants.insertOne(plantFour);
 
-        //for testing getCommonNamesAsJson (third uploadID)
+        //for testing getCommonNamesJSON (third uploadID)
         //Fifth Plant PlantFive
         Document plantFive = new Document();
         plantFive.append("_id", new ObjectId("58d1c36efb0cac4e15afd280"));
@@ -327,6 +328,7 @@ public class PopulateMockDatabase {
         BsonDocument docV3 = new BsonDocument();
         docV3.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73803")));
         mockVisits.add(docV3);
+
         metadataDoc9.append("visits", mockVisits);
 
         plantNine.append("metadata", metadataDoc9);

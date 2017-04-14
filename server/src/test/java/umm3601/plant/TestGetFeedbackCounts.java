@@ -40,7 +40,7 @@ public class TestGetFeedbackCounts {
         plantController.storePlantComment(json, "first uploadId");
 
 
-        String counts = plantController.getJSONFeedbackForPlantByPlantID("16001.0","first uploadId");
+        String counts = plantController.getPlantFeedbackByPlantIdJSON("16001.0","first uploadId");
 
         System.out.println(counts);
 

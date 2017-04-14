@@ -1,37 +1,24 @@
 package umm3601.digitalDisplayGarden;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Sorts;
-import com.mongodb.util.JSON;
-import org.bson.BsonInvalidOperationException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import org.bson.conversions.Bson;
-import org.joda.time.DateTime;
-
-import java.io.BufferedReader;
-import java.io.OutputStream;
 import java.util.Iterator;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.exists;
 import static com.mongodb.client.model.Projections.include;
-import static com.mongodb.client.model.Updates.*;
 import static com.mongodb.client.model.Projections.fields;
 
 import java.io.IOException;
 import java.util.*;
 
-import static com.mongodb.client.model.Updates.push;
 /**
  * Created by Dogxx000 on 4/8/17.
  */
@@ -68,35 +55,38 @@ public class GardenCharts
             ArrayList<Date> dates = new ArrayList<Date>();
 
             //Get a plant by plantID
-            FindIterable doc = plantCollection.find();
+            FindIterable doc = plantCollection.find(filter);
 
             Iterator iterator = doc.iterator();
             while(iterator.hasNext()) {
                 Document result = (Document) iterator.next();
+
 
                 //Get metadata.rating array
                 List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
 
                 //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
 
-                for(Document i : ratings){
-                    dates.add(((ObjectId) i.get("visit")).getDate());
+                for(int i = 0; i < ratings.size(); i++){
+                    Document d = ratings.get(i);
+                    dates.add(((ObjectId) d.get("visit")).getDate());
                 }
 
             }
-            System.out.println(dates.toString());
+
+//            System.out.println(dates.toString());
 
             HashMap<Integer, Integer> hours = new HashMap<Integer, Integer>();
             for (Date date : dates){
                 System.out.print("Date: " + date.toString() + " | ");
 
                 int hour = date.getHours();
-                System.out.print("Hour: " + hour + " | ");
+                //System.out.print("Hour: " + hour + " | ");
 
                 if(hours.get(hour) == null) hours.put(hour, 0);
                 int visits = hours.get(hour);
                 hours.put(hour, visits += 1);
-                System.out.println(hours.get(hour));
+                //System.out.println(hours.get(hour));
             }
 
 //            System.out.println("hours: " + hours.toString());
@@ -146,7 +136,7 @@ public class GardenCharts
 
                 FindIterable<Document> fitr = plantCollection.find(filter);
                 for (Document plant : fitr) {
-                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
 
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                     dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
@@ -188,7 +178,7 @@ public class GardenCharts
 
                 FindIterable<Document> fitr = plantCollection.find(filter);
                 for (Document plant : fitr) {
-                    long[] feedback = plantController.getFeedbackForPlantByPlantID(plant.getString("id"), uploadID);
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                 }
 
