@@ -1,7 +1,7 @@
 # :movie_camera: :es: *Revolver En Guardia* :es: :movie_camera:  
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-3-revolverenguardia.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-3-revolverenguardia)   We are *Revolver En Guardia* :es: :movie_camera:!  
 [![IMAGE ALT TEXT HERE](Documentation/Graphics/RevolverEnGuardia.png)](https://youtu.be/Szy2T0uHCU0)   
-Our team members are: 
+Our team members are:
 * Skye
 * Dan
 * Brian
@@ -9,7 +9,9 @@ Our team members are:
 * Andy
 * Lenny
 
-Software Design S2017, Iteration 3, Team _Revolver en Guardia_
+Software Design S2017, Iteration 3, Team _Revolver en Guardia_  
+You can find our website [here](http://revolverenguardia.dungeon.website:2538/)  
+Our IP address is: 138.197.120.23
 
 This repository is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
 which is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-1-claudearabo).
