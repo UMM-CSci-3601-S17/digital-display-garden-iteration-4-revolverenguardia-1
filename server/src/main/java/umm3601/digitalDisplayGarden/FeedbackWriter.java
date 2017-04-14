@@ -20,7 +20,6 @@ public class FeedbackWriter {
     int metadataRowCount;
     int bedmetadataRowCount;
 
-
     XSSFCellStyle styleCentered;
     XSSFCellStyle styleWordWrap;
 
@@ -33,6 +32,7 @@ public class FeedbackWriter {
                                 COL_CMT_DATE = 5;
     public static final int COL_CMT_FIELDS = 6;
 
+    //Plant Metadata Sheet Column Designations
     public static final int COL_PLANT_PLANTID = 0,
                                 COL_PLANT_COMMONNAME = 1,
                                 COL_PLANT_CULTIVAR = 2,
@@ -43,14 +43,15 @@ public class FeedbackWriter {
                                 COL_PLANT_PAGEVIEWS = 7;
     public static final int COL_PLANT_FIELDS = 8;
 
+    //Bed Metadata Sheet Column Designations
     public static final int COL_BED_GRDNLOC = 0,
                             COL_BED_PAGEVIEWS = 1,
                             COL_BED_QRSCANS = 2;
     public static final int COL_BED_FIELDS = 3;
 
     public static final int SHEET_COMMENTS = 0,
-                            SHEET_METADATA = 1;
-    public static final int SHEET_BEDMETADATA = 2;
+                            SHEET_METADATA = 1,
+                            SHEET_BEDMETADATA = 2;
 
     public FeedbackWriter(OutputStream outputStream) throws IOException{
         this.outputStream = outputStream;
@@ -120,6 +121,8 @@ public class FeedbackWriter {
         commentSheet.setColumnWidth(COL_CMT_DATE,6800);
         commentSheet.createFreezePane(0, 2);
 
+        //AutoFilter is the thing that makes that Sorting line on the spreadsheet
+        //This range defines what columns are used as keys and how many rows to care about.
         CellRangeAddress rangeAddress = CellRangeAddress.valueOf("A2:F1200");
         commentSheet.setAutoFilter(rangeAddress);
 
@@ -234,8 +237,8 @@ public class FeedbackWriter {
 
 
     /**
-     * Adds the given information as a new row to the commentSheet.
-     * @param data: an array of strings to write to different cells of a new row in a commentSheet
+     * Adds the given information as a new row to the provided sheet
+     * @param data: an array of strings to write to different cells of a new row in the sheet
      */
     public void writeToSheet(String[] data, int SHEET){
         XSSFSheet sheet;
@@ -255,20 +258,20 @@ public class FeedbackWriter {
             case SHEET_METADATA:
                 sheet =  metadataSheet;
                 row = sheet.createRow(metadataRowCount++);
-                //Custom row stylings for Metadata Sheet entries
-//                row.setHeight((short)450);
+                //Custom row stylings for Plant Metadata Sheet entries
                 break;
 
             case SHEET_BEDMETADATA:
                 sheet =  bedmetadataSheet;
                 row = sheet.createRow(bedmetadataRowCount++);
+                //Custom row stylings for Bed Metadata Sheet entries
                 break;
 
             default:
                 throw new IndexOutOfBoundsException("Sheet " + SHEET + " not understood, getSHEET is being called with incorrect input.");
         }
 
-
+        //Write the data
         for(int i = 0; i < data.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellValue(data[i]);
