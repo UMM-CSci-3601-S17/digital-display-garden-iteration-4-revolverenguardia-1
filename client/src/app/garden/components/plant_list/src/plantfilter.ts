@@ -1,8 +1,9 @@
 /**
  * Will filter any given collection of plants based on the provided methods.
- * Used for future reuse and extensibility.
+ * Used for future reuse and extensibility of filtering support.
  *
  * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Revolver en Guardia
  */
 import {Plant} from "./plant";
 
@@ -21,11 +22,11 @@ export class PlantFilter {
      */
     public static filterByBedName(bedName: string, plants: Plant[]): Plant[]{
 
-        // Do not filter original plant list
+        // If do not filter original plant list
         if(bedName == PlantFilter.NO_FILTER)
             return plants;
 
-        // Apply filter
+        // Else, apply filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
@@ -45,12 +46,12 @@ export class PlantFilter {
      */
     public static filterByCommonName(commonName: string, plants: Plant[]): Plant[]{
 
-        // Do not filter original plant list
+        // If do not filter original plant list
         if(commonName == PlantFilter.NO_FILTER)
             // Return original plant list
             return plants;
 
-        // Apply filter
+        // Else, apply filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {

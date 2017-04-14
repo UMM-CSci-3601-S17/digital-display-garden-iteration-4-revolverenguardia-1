@@ -1,21 +1,18 @@
 /**
  * Provides the ability to request Plant data to be sent from the server. This class also contains
- * the primary Plant Collection that will be used to store the full list of plant data. Any filtered
- * plant data should be have Plant references stored within their respective classes. In addition,
+ * the primary Plant Collection that will be used to store the full list of plant data. In addition,
  * this PlantListService also provides the ability to filter the plants contained within the
- * PlantListComponent.
+ * PlantListComponent by bed and common name.
  *
- * @author Iteration 3 - Team revolver en guardia
+ * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team revolver en guardia
  */
 import {Injectable} from '@angular/core';
 import { Http } from '@angular/http';
 import { Plant } from './plant';
 import { Observable } from "rxjs";
 import {PlantCollection} from "./plantcollection";
-import {PlantListComponent} from "./plant-list.component";
 import {PlantFilter} from "./plantfilter";
-import {GardenComponent} from "../../../src/garden-component";
-
 
 @Injectable()
 export class PlantListService {
@@ -38,10 +35,9 @@ export class PlantListService {
     constructor(private http:Http) {
         this.getPlantsFromServer().subscribe(
             plants => {
-                console.log("PLS - getPlantsFromServer()");
+                // Setup master collection and displayed filtered plants
                 this.plantCollection = new PlantCollection(plants);
                 this.filteredPlants = this.plantCollection.getPlants();
-                // this.filteredPlants.push(new Plant("PlantID1", "AmazingPlant1", "Cultivar1", "Source1", "GardenLocation1"));
                 err => {
                     console.log(err);
                 }
@@ -63,39 +59,62 @@ export class PlantListService {
      * @returns {Observable<R>}
      */
     public getPlantById(id: string): Observable<Plant> {
-        console.log("Requesting: " + API_URL + "plant/" + id);
         return this.http.request(this.URL + "/" + id).map(res => res.json());
     }
 
+    /**
+     * Requests that the PlantListComponent be updated according to the currently set filters.
+     */
     private filterPlants(): void{
+        // Filter from the master plant collection
         let plantsBeingFiltered: Plant[] = this.plantCollection.getPlants();
 
+        // Apply filters to plant list
         plantsBeingFiltered = PlantFilter.filterByBedName(this.bedFilter, plantsBeingFiltered);
         plantsBeingFiltered = PlantFilter.filterByCommonName(this.commonNameFilter, plantsBeingFiltered);
 
+        // Bind the filtered plants to be displayed
         this.filteredPlants = plantsBeingFiltered;
-
-        console.log(this.filteredPlants.length + " Plants in PlantList")
     }
 
+    /**
+     * Returns the filtered plants displayed within the PlantListComponent.
+     * @returns {Plant[]} - filtered plants shown in PlantListComponent
+     */
     public getFilteredPlants(): Plant[]{
         return this.filteredPlants;
     }
 
-    public setBedFilter(filter: string): void{
-        this.bedFilter = filter;
+    /**
+     * Filter the plants by the provided bed filter.
+     * @param bedFilter - bed to filter by
+     */
+    public setBedFilter(bedFilter: string): void{
+        this.bedFilter = bedFilter;
         this.filterPlants();
     }
 
-    public setCommonNameFilter(filter: string): void{
-        this.commonNameFilter = filter;
+    /**
+     * Filter the plants by the provided common name filter.
+     * @param commonNameFilter - common name to filter by
+     */
+    public setCommonNameFilter(commonNameFilter: string): void{
+        this.commonNameFilter = commonNameFilter;
         this.filterPlants();
     }
 
+    /**
+     * Returns the current bed filter for the plants.
+     * @returns {string} - bed filter for plants
+     */
     public getBedFilter(): string{
         return this.bedFilter;
     }
 
+    /**
+     * Returns the current common name filter for the plants.
+     * @returns {string} - common name filter for plants
+     */
     public getCommonNameFilter(): string{
         return this.commonNameFilter;
     }

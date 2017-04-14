@@ -9,13 +9,15 @@ import {Observable} from "rxjs";
 import {CommonName} from "./common-name";
 import {Http} from "@angular/http";
 import {CommonNameCollection} from "./commonnamecollection";
+import {PlantFilter} from "../../plant_list/src/plantfilter";
+import {Plant} from "../../plant_list/src/plant";
 
 @Injectable()
 export class CommonNameListService {
 
     private commonNameCollection: CommonNameCollection;
 
-    private commonNames: CommonName[];
+    public commonNames: CommonName[];
 
     constructor(private http:Http) {
         this.getCommonNamesFromServer().subscribe(

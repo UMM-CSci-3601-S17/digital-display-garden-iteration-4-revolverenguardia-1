@@ -6,4 +6,6 @@
  * @author Iteration 3 - Team revolver en guardia
  */
 export class CommonName {
+
+    constructor(public commonName: string){ }
 }

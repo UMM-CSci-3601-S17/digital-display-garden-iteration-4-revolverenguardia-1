@@ -19,13 +19,16 @@ describe("Common name list", () => {
         commonNameListServiceStub = {
             getCommonNames: () => Observable.of([
                 {
-                    _id: "CommonName1",
+                    id: "CommonName1",
+                    commonName: "CommonName1"
                 },
                 {
-                    _id: "CommonName2",
+                    id: "CommonName2",
+                    commonName: "CommonName2"
                 },
                 {
-                    _id: "CommonName3",
+                    id: "CommonName3",
+                    commonName: "CommonName3"
                 }
             ])
         };

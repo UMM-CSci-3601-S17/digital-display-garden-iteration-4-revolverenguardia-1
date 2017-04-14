@@ -17,15 +17,16 @@ import {PlantFilter} from "../../plant_list/src/plantfilter";
 export class CommonNameListComponent {
 
     constructor(private commonNameListService: CommonNameListService,
-                private plantListService: PlantListService) { }
+                private plantListService: PlantListService) {
+    }
 
     /**
      * Should filter by the provided common name.
      * @param commonName - the common nameconsole.log("Finish handle common name list click"); to filter by
      */
-    private handleCommonNameListClick(commonName): void{
+    private handleCommonNameListClick(commonName): void {
         // If bed name is being deselected
-        if(commonName == this.plantListService.getCommonNameFilter()) {
+        if (commonName == this.plantListService.getCommonNameFilter()) {
             console.log("CommonName List Deselect - " + commonName);
             // Then disable the filter
             this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);

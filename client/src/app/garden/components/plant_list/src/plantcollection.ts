@@ -1,6 +1,6 @@
 /**
  * Represents a collection of plants.
- * Used for future reuse and extensibility.
+ * Used for future reuse and extensibility of manipulating Plant data.
  *
  * @author Iteration 2 - Team Omar Anwar
  */
