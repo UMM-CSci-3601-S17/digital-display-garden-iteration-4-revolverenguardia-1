@@ -23,11 +23,34 @@
                 width:100%;
                 overflow: hidden;
             }
+            .footer-whitespace{
+                min-height: 60px;
+            }
+
+            /* Id References */
+            #back-button{
+                background-color: #FFD63F;
+            }
+            #dislike-button{
+                background-color: #1D8214;
+                color: white
+            }
+            #comment-box{
+                width: 95%;
+                font-size: medium;
+                resize:vertical;
+                margin-top:8px;
+                margin-bottom: 8px;
+                min-height: 60px
+            }
+            #comment-button{
+                background-color: #FFD63F;
+            }
 
         </style>
     </head>
 
-    <a href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg" style="background-color: #f1f1f1"><span class="glyphicon glyphicon-arrow-left"></span></a>
+    <a id="back-button" href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span></a>
 
     <div class="image">
         <img src="../res/wroc.jpg" width="100%"/>
@@ -42,7 +65,7 @@
         <h4> Bed Number: {{plant.gardenLocation}}</h4>
 
         <div *ngIf="!rated">
-            <a class="btn btn-default" (click)="this.rate(true)" style="background-color: #1D8214; color: white">
+            <a id="dislike-button" class="btn btn-default" (click)="this.rate(true)" >
                 <span class="glyphicon glyphicon-thumbs-up"> </span> Like
             </a>
             <a class="btn btn-primary" (click)="this.rate(false)">
@@ -55,9 +78,9 @@
         </div>
 
         <div *ngIf="!commented">
-            <textarea [(ngModel)]="commentText" rows="5" wrap="on" style="width: 95%;font-size: medium;resize:vertical;width=100%; margin-top:8px; margin-bottom: 8px; min-height: 60px"></textarea>
+            <textarea id="comment-box" [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
             <br>
-            <a class="btn btn-default" (click)="this.comment(commentText)" style="background-color: #f1f1f1">
+            <a id="comment-button" class="btn btn-default" (click)="this.comment(commentText)">
                 Leave a comment
             </a>
         </div>
@@ -67,7 +90,7 @@
         </div>
 
         <!--Whitespace at end of page-->
-        <div style="min-height: 60px"></div>
+        <div class="footer-whitespace"></div>
 
     </div>
 
