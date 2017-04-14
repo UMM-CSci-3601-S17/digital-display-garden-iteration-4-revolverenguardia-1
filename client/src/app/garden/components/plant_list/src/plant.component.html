@@ -46,7 +46,7 @@
         </style>
     </head>
 
-    <a href="javascript:history.go(-1)" class="alignleft" class="btn btn-default" style="background-color: #f1f1f1"><span></span>Back</a>
+    <a href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg" style="background-color: #f1f1f1"><span class="glyphicon glyphicon-arrow-left"></span></a>
 
     <div class="image">
         <img src="../res/wroc.jpg" width="100%"/>
@@ -56,7 +56,7 @@
 
     <div *ngIf="plant !== null" class= "text-center">
 
-        <h1 >{{plant.cultivar}}</h1>
+        <h3>{{plant.cultivar}}</h3>
         <h4> Common Name: {{plant.commonName}}</h4>
         <h4> Bed Number: {{plant.gardenLocation}}</h4>
 

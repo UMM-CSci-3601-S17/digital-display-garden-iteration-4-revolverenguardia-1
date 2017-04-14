@@ -5,6 +5,7 @@
  */
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
+import {PlantListService} from "../components/plant_list/src/plant-list.service";
 
 @Component({
     selector: 'garden-component',
@@ -19,7 +20,7 @@ export class GardenComponent implements OnInit {
     private static gardenComponent: GardenComponent;
 
 
-    constructor(private route: ActivatedRoute){
+    constructor(private route: ActivatedRoute, private pls: PlantListService){
         GardenComponent.gardenComponent = this;
     }
 

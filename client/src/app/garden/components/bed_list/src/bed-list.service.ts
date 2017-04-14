@@ -8,17 +8,41 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Bed} from "./bed";
 import {Http} from "@angular/http";
+import {BedCollection} from "./bedcollection";
 
 @Injectable()
 export class BedListService {
 
-    constructor(private http:Http) { }
+    private bedCollection: BedCollection;
+
+    private beds: Bed[];
+
+    constructor(private http:Http) {
+        this.getBedNamesFromServer().subscribe(
+            bedNames => {
+                console.log("BLS - getBedNamesFromServer()")
+                this.bedCollection = new BedCollection(bedNames);
+                this.beds = this.bedCollection.getBeds();
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
 
     /**
      * Requests the list of bed names (garden locations) from the server.
      * @returns {Observable<R>} - the bed name collection from the server
      */
-    getBedNames(): Observable<Bed[]> {
+    private getBedNamesFromServer(): Observable<Bed[]> {
         return this.http.request(API_URL + "/gardenLocations").map(res => res.json());
+    }
+
+    /**
+     * TODO: Update Comment
+     * @returns {Bed[]}
+     */
+    public getBedNames(): Bed[]{
+        return this.beds;
     }
 }

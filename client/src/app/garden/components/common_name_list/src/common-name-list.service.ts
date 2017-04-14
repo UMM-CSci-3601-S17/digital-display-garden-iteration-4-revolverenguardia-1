@@ -8,17 +8,37 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {CommonName} from "./common-name";
 import {Http} from "@angular/http";
+import {CommonNameCollection} from "./commonnamecollection";
 
 @Injectable()
 export class CommonNameListService {
 
-    constructor(private http:Http) { }
+    private commonNameCollection: CommonNameCollection;
+
+    private commonNames: CommonName[];
+
+    constructor(private http:Http) {
+        this.getCommonNamesFromServer().subscribe(
+            commonNames => {
+                console.log("NLS - getCommonNamesFromServer()");
+                this.commonNameCollection = new CommonNameCollection(commonNames);
+                this.commonNames = this.commonNameCollection.getCommonNames();
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
 
     /**
      * Requests the list of common names from the server.
      * @returns {Observable<R>} - the common name collection from the server
      */
-    getCommonNames(): Observable<CommonName[]> {
+    getCommonNamesFromServer(): Observable<CommonName[]> {
         return this.http.request(API_URL + "/commonNames").map(res => res.json());
+    }
+
+    public getCommonNames(): CommonName[]{
+        return this.commonNames;
     }
 }

@@ -50,7 +50,7 @@ describe("Common name list", () => {
     // });
     //
     // it("Get the Number of Common Names", () => {
-    //     expect(commonNameList.getCommonNames().length).toBe(3);
+    //     expect(commonNameList.getCommonNamesFromServer().length).toBe(3);
     // });
 
 });

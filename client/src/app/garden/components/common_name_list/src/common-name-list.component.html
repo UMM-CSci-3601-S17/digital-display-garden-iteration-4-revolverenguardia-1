@@ -45,9 +45,9 @@
         <h4 class="searchByHeader">Common Names</h4>
 
         <ul id="common-name-list" (click)="handleCommonNameListClick($event.target.textContent)">
-            <li *ngFor="let commonName of commonNames">
-                <a *ngIf="commonName._id == commonNameFilter" class="currentFilter" >{{ commonName._id }}</a>
-                <a *ngIf="commonName._id != commonNameFilter" >{{ commonName._id }}</a>
+            <li *ngFor="let commonName of commonNameListService.getCommonNames()">
+                <a *ngIf="commonName._id == plantListService.getCommonNameFilter()" class="currentFilter" >{{ commonName._id }}</a>
+                <a *ngIf="commonName._id != plantListService.getCommonNameFilter()" >{{ commonName._id }}</a>
             </li>
         </ul>
 

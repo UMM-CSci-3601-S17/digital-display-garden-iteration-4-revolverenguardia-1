@@ -56,7 +56,7 @@
         </div>
 
         <ul id="plant-list" >
-            <li *ngFor="let plant of filteredPlants" [routerLink]="['/plant', plant.id]">
+            <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
                 <a (click)="this.handlePlantListClick(plant)">
                     <h4>{{ plant.commonName }}</h4>
                     {{ plant.cultivar}}

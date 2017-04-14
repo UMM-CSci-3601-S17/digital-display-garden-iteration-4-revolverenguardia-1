@@ -45,9 +45,9 @@
             <h4 class="searchByHeader">Beds</h4>
 
             <ul id="bed-list">
-                <li *ngFor="let bed of bedNames" [routerLink]="['/bed', bed._id]">
-                    <a *ngIf="bed._id == bedFilter" class="currentFilter" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
-                    <a *ngIf="bed._id != bedFilter" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
+                <li *ngFor="let bed of bedListService.getBedNames()">
+                    <a *ngIf="bed._id == plantListService.getBedFilter()" [routerLink]="['/bed/all']" class="currentFilter" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
+                    <a *ngIf="bed._id != plantListService.getBedFilter()" [routerLink]="['/bed', bed._id]" (click)="handleBedListClick($event.target.textContent)" >{{ bed._id }}</a>
                 </li>
             </ul>
 

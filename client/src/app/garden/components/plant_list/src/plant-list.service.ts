@@ -17,16 +17,37 @@ import {PlantFilter} from "./plantfilter";
 import {GardenComponent} from "../../../src/garden-component";
 
 
-
 @Injectable()
 export class PlantListService {
 
+    // URL for server plant collection
     private readonly URL: string = API_URL + "plant";
 
-    // The common name filter we have currently filtered by
-    private currentCommonNameFilter = "ALL";
+    // Master collection of all plants
+    private plantCollection: PlantCollection;
 
-    constructor(private http:Http) { }
+    // Plants to display within the PlantListComponent
+    private filteredPlants: Plant[] = [];
+
+    // Current common name filter for plants within PlantListComponent
+    private commonNameFilter: string = PlantFilter.NO_FILTER;
+
+    // Current bed filter for plants within PlantListComponent
+    private bedFilter: string = PlantFilter.NO_FILTER;
+
+    constructor(private http:Http) {
+        this.getPlantsFromServer().subscribe(
+            plants => {
+                console.log("PLS - getPlantsFromServer()");
+                this.plantCollection = new PlantCollection(plants);
+                this.filteredPlants = this.plantCollection.getPlants();
+                // this.filteredPlants.push(new Plant("PlantID1", "AmazingPlant1", "Cultivar1", "Source1", "GardenLocation1"));
+                err => {
+                    console.log(err);
+                }
+            }
+        );
+    }
 
     /**
      * Requests that the plant collection be sent from the server.
@@ -41,16 +62,42 @@ export class PlantListService {
      * @param id
      * @returns {Observable<R>}
      */
-    getPlantById(id: string): Observable<Plant> {
+    public getPlantById(id: string): Observable<Plant> {
         console.log("Requesting: " + API_URL + "plant/" + id);
         return this.http.request(this.URL + "/" + id).map(res => res.json());
     }
 
-    setCommonNameFilter(filter: string): void{
-        this.currentCommonNameFilter = filter;
+    private filterPlants(): void{
+        let plantsBeingFiltered: Plant[] = this.plantCollection.getPlants();
+
+        plantsBeingFiltered = PlantFilter.filterByBedName(this.bedFilter, plantsBeingFiltered);
+        plantsBeingFiltered = PlantFilter.filterByCommonName(this.commonNameFilter, plantsBeingFiltered);
+
+        this.filteredPlants = plantsBeingFiltered;
+
+        console.log(this.filteredPlants.length + " Plants in PlantList")
     }
 
-    getCommonNameFilter(): string{
-        return this.currentCommonNameFilter;
+    public getFilteredPlants(): Plant[]{
+        return this.filteredPlants;
     }
+
+    public setBedFilter(filter: string): void{
+        this.bedFilter = filter;
+        this.filterPlants();
+    }
+
+    public setCommonNameFilter(filter: string): void{
+        this.commonNameFilter = filter;
+        this.filterPlants();
+    }
+
+    public getBedFilter(): string{
+        return this.bedFilter;
+    }
+
+    public getCommonNameFilter(): string{
+        return this.commonNameFilter;
+    }
+
 }

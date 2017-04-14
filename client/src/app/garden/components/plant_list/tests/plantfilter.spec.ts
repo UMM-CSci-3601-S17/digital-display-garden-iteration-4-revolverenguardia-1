@@ -3,7 +3,7 @@ import {Plant} from "../src/plant";
 describe("Plant list", () => {
 
     it("Check Bed List Header", () => {
-        expect(PlantFilter.FILTER_BY_ALL_PLANTS).toBe("ALL");
+        expect(PlantFilter.NO_FILTER).toBe("ALL");
     });
 
     it("Filter by Bed Name", () => {

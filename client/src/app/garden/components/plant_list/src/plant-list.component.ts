@@ -16,7 +16,7 @@ import {PlantCollection} from "./plantcollection";
     templateUrl: 'plant-list.component.html'
 })
 
-export class PlantListComponent implements OnInit{
+export class PlantListComponent {
 
     // The list of filtered plant to display within the HTML
     private filteredPlants: Plant[] = [];
@@ -37,34 +37,8 @@ export class PlantListComponent implements OnInit{
         PlantListComponent.plantListComponent = this;
     }
 
-    ngOnInit(){
-        this.plantListService.getPlantsFromServer().subscribe(
-            plants => {
-                this.plantCollection = new PlantCollection(plants);
-                this.filterByBedName(GardenComponent.getInstance().getBedURLParameter());
-                this.filterByCommonName(this.plantListService.getCommonNameFilter());
-                err => {
-                    console.log(err);
-                }
-            }
-        );
-    }
-
     public filterByBedName(bedName: string): void{
 
-        // Check that we haven't already filtered
-        if(this.currentBedFilter != bedName) {
-
-            this.currentBedFilter = bedName;
-
-            if(this.currentBedFilter === PlantFilter.FILTER_BY_ALL_PLANTS)
-                this.filteredPlants = this.plantCollection.getPlants();
-
-            // Filter by the bed name
-            else {
-                this.filteredPlants = PlantFilter.filterByBedName(bedName, this.plantCollection.getPlants());
-            }
-        }
     }
 
     public getCommonNameFilter(): string{
@@ -76,11 +50,7 @@ export class PlantListComponent implements OnInit{
      * @param commonName - the common name to filter the PlantListComponent's data by
      */
     public filterByCommonName(commonName: string): void{
-        // Store filter to help handle page persistence
-        this.plantListService.setCommonNameFilter(commonName);
 
-        if(commonName != PlantFilter.FILTER_BY_ALL_PLANTS)
-            this.filteredPlants = PlantFilter.filterByCommonName(commonName, this.plantCollection.getPlants());
     }
 
     /**
