@@ -15,7 +15,7 @@ export class FilterGardenSidebarComponent {
     /**
      * Width of the navigation bars
      */
-    public static readonly NAV_BAR_WIDTH: number = 260;
+    public readonly NAV_BAR_WIDTH: number = 260;
 
     /**
      * Width of the bed navigation bar.
@@ -31,7 +31,7 @@ export class FilterGardenSidebarComponent {
      * Opens the bed navigation bar by decreasing its width to 0.
      */
     public openBedNav(): void{
-        this.bedNavWidth = FilterGardenSidebarComponent.NAV_BAR_WIDTH;
+        this.bedNavWidth = this.NAV_BAR_WIDTH;
     }
 
     /**
@@ -45,7 +45,7 @@ export class FilterGardenSidebarComponent {
      * Opens the bed navigation bar by increasing its width to NAV_BAR_WIDTH.
      */
     public openCommonNameNav(): void{
-        this.commonNameNavWidth = FilterGardenSidebarComponent.NAV_BAR_WIDTH;
+        this.commonNameNavWidth = this.NAV_BAR_WIDTH;
     }
 
     /**

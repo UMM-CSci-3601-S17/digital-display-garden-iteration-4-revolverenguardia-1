@@ -39,7 +39,7 @@ describe("Test Display Properties of Filter Sidebar", () => {
      * @author Iteration 3 - Team Revolver en Guardia
      */
     it("Check Display Width Constant", () => {
-        expect(FilterGardenSidebarComponent.NAV_BAR_WIDTH).toBe(260);
+        expect(filterGardenSidebarComponent.NAV_BAR_WIDTH).toBe(260);
     });
 
     /**
