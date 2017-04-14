@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -43,15 +42,11 @@ public class TestBedController {
         MongoDatabase db = mongoClient.getDatabase(databaseName);
         MongoCollection beds = db.getCollection("beds");
 
-//        String bedJson = "{ \"_id\" : \"ObjectId(\"58edb5ac0b82b43e307ff9f1\")\", \"gardenLocation\" : \"7.0\", \"metadata\" : " +
-//                "{ \"pageViews\" : \"2\", \"visits\" : [ { \"visit\" : \"ObjectId(\"58edb5e90b82b43e307ffa18\")\" }, { \"visit\" : \"ObjectId(\"58edb5ec0b82b43e307ffa1b\")\" } ], \"qrScans\" : [ ] }, \"uploadId\" : \"first uploadId\" }";
-
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
         Iterator iterator = doc.iterator();
         Document result = (Document) iterator.next();
 
         int bedPageViews =  (int)((Document) result.get("metadata")).get("pageViews");
-        System.out.println(bedPageViews);
 
         assertEquals("this bed should only have 1 pageView",1, bedPageViews);
 
@@ -87,5 +82,53 @@ public class TestBedController {
 
     }
 
+    @Test
+    public void TestQRScansAndQRVisits(){
+        //first lets test qr scans
+        bedController.incrementBedMetadata("7.0","qrScans","first uploadId");
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase db = mongoClient.getDatabase(databaseName);
+        MongoCollection beds = db.getCollection("beds");
+
+        FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
+        Iterator iterator = doc.iterator();
+        Document result = (Document) iterator.next();
+
+        int qrScans =  (int)((Document) result.get("metadata")).get("qrScans");
+
+        assertEquals("this bed should have been scanned once ",1, qrScans);
+
+
+        //now we have 1 qrScan for this gardenLocation so the next method that is called should have 2 scans but
+        // report only 1 scan in qrVisits Document
+
+        // make sure that qr bed visits works
+        bedController.addBedQRVisit("7.0","first uploadId");
+
+        FindIterable doc1 = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
+        Iterator iterator1 = doc1.iterator();
+        Document result1 = (Document) iterator1.next();
+
+        List<Document> qrVisits =  (List<Document>)((Document) result1.get("metadata")).get("qrVisits");
+        int qrScans2 =  (int) ((Document)result1.get("metadata")).get("qrScans");
+
+        //should also increment the pageViews as it is actually visiting the page
+        int pageViews =  (int) ((Document)result1.get("metadata")).get("pageViews");
+        assertEquals("this should have 1 visit via qr scanning",1 ,qrVisits.size());
+
+        Document qrvisit = qrVisits.get(0);
+        ObjectId objectId = new ObjectId();
+
+        String s = qrvisit.get("scan").toString();
+
+        //after already having 1 qr scan the qr visit should increment qrScans
+        assertEquals("there should be two qr scans now",2,qrScans2);
+        assertEquals("there should be one pageView via the qr scanned ",1,pageViews);
+        //checking to see that the type of visit is an of type/structure of ObjectID
+        assertEquals("they should both be of type org.bson.types.ObjectId ",objectId.getClass().getName(),qrvisit.get("scan").getClass().getName());
+        assertEquals("the object id produced from a visit must be 24 characters",24,s.length());
+
+
+    }
 
 }
