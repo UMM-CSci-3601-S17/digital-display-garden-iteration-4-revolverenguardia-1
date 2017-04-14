@@ -38,7 +38,7 @@ public class TestViewsPerHour{
 
             //Will use the mock database with the inputed upload id and track the hour the plant was visited
 
-        //System.out.println(gardenCharts.getViewsPerHour("googleCharts uploadId"));
+        //System.out.println(gardenCharts.getPlantViewsPerHour("googleCharts uploadId"));
         //[["Hour","Views"],["0",0],["1",0],["2",0],["3",0],["4",0],["5",0],["6",0],["7",0],["8",0],["9",0],["10",0],["11",0],["12",0],["13",0],["14",0],["15",0],["16",0],["17",0],["18",0],["19",1],["20",0],["21",0],["22",3],["23",0]]
 
         //System.out.println(plantController.getJSONFeedbackForPlantByPlantID("16053.0","googleCharts uploadId"));
@@ -50,7 +50,7 @@ public class TestViewsPerHour{
         assertEquals("the plant 16053 should have like:true and like:false","{ \"likeCount\" : 1 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json1 );
         assertEquals("the plant 16037 should have like:true and like:false","{ \"likeCount\" : 2 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json2);
 
-//        String string = gardenCharts.getViewsPerHour("googleCharts uploadId");
+//        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
 //        JsonArray json = TestUTILS.stringToJSONArray(string);
 //
 //        ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);

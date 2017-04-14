@@ -282,7 +282,7 @@ public class Server {
         // Views per Hour
         get("api/chart/viewsPerHour", (req, res) -> {
             res.type("application/json");
-            return chartMaker.getViewsPerHour(getLiveUploadId());
+            return chartMaker.getPlantViewsPerHour(getLiveUploadId());
         });
 
         get("api/chart/plantMetadataMap", (req, res) -> {

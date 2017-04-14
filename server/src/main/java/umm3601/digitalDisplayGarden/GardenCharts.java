@@ -39,7 +39,7 @@ public class GardenCharts
         configCollection = db.getCollection("config");
     }
 
-    public String getViewsPerHour(String uploadID) {
+    public String getPlantViewsPerHour(String uploadID) {
 
         try {
             Object[][] dataTable = new Object[24 + 1][2];
@@ -50,23 +50,19 @@ public class GardenCharts
             dataTable[0][0] = "Hour";
             dataTable[0][1] = "Views";
 
-
-            // DB STUFF
             ArrayList<Date> dates = new ArrayList<Date>();
 
-            //Get a plant by plantID
+            //Get all plants
             FindIterable doc = plantCollection.find(filter);
 
             Iterator iterator = doc.iterator();
             while(iterator.hasNext()) {
                 Document result = (Document) iterator.next();
 
-
                 //Get metadata.rating array
                 List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
 
                 //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
-
                 for(int i = 0; i < ratings.size(); i++){
                     Document d = ratings.get(i);
                     dates.add(((ObjectId) d.get("visit")).getDate());
@@ -74,22 +70,23 @@ public class GardenCharts
 
             }
 
-//            System.out.println(dates.toString());
-
+            //Create a Map between Hours and page visit times
             HashMap<Integer, Integer> hours = new HashMap<Integer, Integer>();
             for (Date date : dates){
-                System.out.print("Date: " + date.toString() + " | ");
-
                 int hour = date.getHours();
-                //System.out.print("Hour: " + hour + " | ");
 
-                if(hours.get(hour) == null) hours.put(hour, 0);
-                int visits = hours.get(hour);
-                hours.put(hour, visits += 1);
-                //System.out.println(hours.get(hour));
+                if(hours.get(hour) == null) {
+                    hours.put(hour, 1);
+                }
+                else
+                {
+                    int visits = hours.get(hour);
+                    hours.put(hour, visits + 1);
+                }
+
+
             }
 
-//            System.out.println("hours: " + hours.toString());
 
             for(int i = 0; i < 25; i++){
                 if(hours.get(i) == null){
@@ -97,15 +94,12 @@ public class GardenCharts
                 }
             }
 
-//            System.out.println("hours: " + hours.toString());
-            // DB STUFF
 
             for (int i = 1; i < 24 + 1; i++) {
                 dataTable[i][0] = Integer.toString(i - 1);
-                dataTable[i][1] = hours.get(i - 1).intValue(); //TODO: put REAL data here
+                dataTable[i][1] = hours.get(i - 1).intValue();
             }
 
-//            System.out.println(makeJSON(dataTable));
             return makeJSON(dataTable);
         }
         catch(Exception e)
@@ -115,6 +109,15 @@ public class GardenCharts
         }
     }
 
+    /**
+     * Form a JSON to pass to the client to render in the Google Maps Bed Metadata Map
+     *
+     * This returns an array with an entry for each gardenLocation
+     * {gardenLocation : string, likes : number, dislikes : number, comments : number}
+     * @param plantController
+     * @param uploadID
+     * @return
+     */
     public String getBedMetadataForMap(PlantController plantController, String uploadID) {
         // Count Flower likes
         // Count flower dislikes
@@ -134,8 +137,8 @@ public class GardenCharts
                 filter.append("uploadId", uploadID);
                 filter.append("gardenLocation", bedNames[i]);
 
-                FindIterable<Document> fitr = plantCollection.find(filter);
-                for (Document plant : fitr) {
+                FindIterable<Document> iter = plantCollection.find(filter);
+                for (Document plant : iter) {
                     long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
 
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
@@ -145,7 +148,7 @@ public class GardenCharts
                 bed.addProperty("gardenLocation", bedNames[i]);
                 bed.addProperty("likes", likes);
                 bed.addProperty("dislikes", dislikes);
-                bed.addProperty("comments", comments);
+                bed.addProperty("comments", comments);//TODO: could be refactored to include pageViews
                 out.add(bed);
             }
 
@@ -158,6 +161,16 @@ public class GardenCharts
         }
     }
 
+    /**
+     * Form a JSON to pass to the client to render in the BubbleMap google chart.
+     *
+     * This returns an array with an entry for each gardenLocation
+     * {gardenLocation : string, likes : number, pageViews : number}
+     * @param plantController in order to getGardenLocations and PlantFeedback to count likes
+     * @param bedController in order to get Page views for a bed
+     * @param uploadID
+     * @return
+     */
     public String getBedMetadataForBubbleMap(PlantController plantController, BedController bedController, String uploadID) {
         // Count Flower likes
         // Count flower dislikes
@@ -176,8 +189,8 @@ public class GardenCharts
                 filter.append("uploadId", uploadID);
                 filter.append("gardenLocation", bedNames[i]);
 
-                FindIterable<Document> fitr = plantCollection.find(filter);
-                for (Document plant : fitr) {
+                FindIterable<Document> iter = plantCollection.find(filter);
+                for (Document plant : iter) {
                     long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
                     likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                 }
@@ -190,7 +203,6 @@ public class GardenCharts
                 out.add(bed);
             }
 
-            System.out.println(out);
             return out.toString();
         }
         catch(Exception e)
@@ -201,8 +213,16 @@ public class GardenCharts
     }
 
 
+    /**
+     * Creates a two dimensional Json array from an Object[][] in.
+     *
+     * Valid Objects to put in the Object[][] are Strings, Numbers (bool, integer, double, etc.), and JsonElements
+     *
+     * @param in
+     * @return
+     */
+        public String makeJSON(Object[][] in) {
 
-        public String makeJSON(Object[][] in) { //TODO write a test for thsi
         JsonArray outerArray = new JsonArray();
         for(int i = 0; i < in.length; i++)
         {

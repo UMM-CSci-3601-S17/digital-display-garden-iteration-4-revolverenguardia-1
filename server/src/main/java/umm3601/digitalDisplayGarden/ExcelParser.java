@@ -220,8 +220,6 @@ public class ExcelParser {
                 continue;
 
             // Initialize the empty metadata
-
-
             doc.append("metadata", emptyMetadataDoc);
             doc.append("uploadId", uploadId);
 
@@ -382,17 +380,25 @@ public class ExcelParser {
 
     }
 
+    /**
+     * Deletes all data associated with an uploadId
+     * @param uploadId
+     * @param db
+     */
     public static void clearUpload(String uploadId, String db)
     {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase test = mongoClient.getDatabase(db);
         MongoCollection plantCollection = test.getCollection("plants");
         MongoCollection commentCollection = test.getCollection("comments");
+        MongoCollection bedCollection = test.getCollection("beds");
+        
         Document uploadIdFilter = new Document();
         uploadIdFilter.put("uploadId", uploadId);
 
         plantCollection.deleteMany(uploadIdFilter);
         commentCollection.deleteMany(uploadIdFilter);
+        bedCollection.deleteMany(uploadIdFilter);
     }
 
     /**
@@ -418,6 +424,11 @@ public class ExcelParser {
 //        return JSON.serialize(plantCollection.distinct("uploadId","".getClass()));
     }
 
+    /**
+     * The primary method of getting the liveUploadId
+     * @param db
+     * @return
+     */
     public static String getLiveUploadId(String db) {
 
         MongoClient mongoClient = new MongoClient();
