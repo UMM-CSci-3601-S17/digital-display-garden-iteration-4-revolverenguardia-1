@@ -24,12 +24,13 @@
                 overflow: hidden;
             }
             .footer-whitespace{
-                min-height: 60px;
+                min-height: 90px;
             }
 
             /* Id References */
             #back-button{
-                background-color: #FFD63F;
+                background-color: #feb92f;
+                color : #7a0019
             }
             #dislike-button{
                 background-color: #1D8214;
@@ -44,7 +45,8 @@
                 min-height: 60px
             }
             #comment-button{
-                background-color: #FFD63F;
+                background-color: #feb92f;
+                color : #7a0019
             }
 
         </style>
@@ -80,7 +82,7 @@
         <div *ngIf="!commented">
             <textarea id="comment-box" [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
             <br>
-            <a id="comment-button" class="btn btn-default" (click)="this.comment(commentText)">
+            <a id="comment-button" class="btn btn-lg" (click)="this.comment(commentText)">
                 Leave a comment
             </a>
         </div>
@@ -93,6 +95,7 @@
         <div class="footer-whitespace"></div>
 
     </div>
+
 
     <footer-component></footer-component>
 
