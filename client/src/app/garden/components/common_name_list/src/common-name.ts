@@ -1,9 +1,15 @@
 /**
  * Empty class for easy-to-read naming conventions for Common Names.
- * If this is to be removed we should update how the common names are reported from the server.
- * (Instead of _id:"1S" it should be _id:'unique_id', common_name:"Angelonia")
+ * Also provides a level of extensibility for the future in case any
+ * extra data is to be stored or operations performed on the CommonName.
  *
  * @author Iteration 3 - Team revolver en guardia
  */
 export class CommonName {
+
+    /**
+     * Creates a CommonName object with the specified common name.
+     * @param commonName - common name to use
+     */
+    constructor(public commonName: string){ }
 }

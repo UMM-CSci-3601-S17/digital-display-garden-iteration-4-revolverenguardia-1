@@ -1,3 +1,9 @@
+/**
+ * Tests the PlantComponent to check that it handles metadata correctly.
+ *
+ * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team Revolver en Guardia
+ */
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { Plant } from "../src/plant";
 import { PlantComponent } from "../src/plant.component";
@@ -8,7 +14,7 @@ import {ActivatedRoute} from "@angular/router";
 import {RouterTestingModule} from "@angular/router/testing";
 import {FooterComponent} from "../../footer/src/footer.component";
 
-describe("Plant component", () => {
+describe("Plant Component", () => {
 
     let plantComponent: PlantComponent;
     let fixture: ComponentFixture<PlantComponent>;
@@ -105,6 +111,10 @@ describe("Plant component", () => {
         });
     }));
 
+    /**
+     * Tests that a plant can be liked.
+     * @author Iteration 2 - Team Omar Anwar
+     */
     it("Can Like A Plant", () => {
 
         let wasRated: Boolean = plantComponent.isRated();
@@ -116,6 +126,10 @@ describe("Plant component", () => {
 
     });
 
+    /**
+     * Tests that a plant can be disliked.
+     * @author Iteration 2 - Team Omar Anwar
+     */
     it("Can Dislike A Plant", () => {
 
         let wasRated: Boolean = plantComponent.isRated();
@@ -127,6 +141,10 @@ describe("Plant component", () => {
 
     });
 
+    /**
+     * Tests that a plant can be commented on.
+     * @author Iteration 2 - Team Omar Anwar
+     */
     it("Can Comment On A Plant", () => {
 
         let wasCommented: Boolean = plantComponent.isCommented();
