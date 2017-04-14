@@ -100,8 +100,10 @@ public class PopulateMockDatabase {
 
         Document bedMetadataDoc = new Document();
         bedMetadataDoc.append("pageViews", 0);
-        bedMetadataDoc.append("visits", new BsonArray());
-        bedMetadataDoc.append("qrScans", new BsonArray());
+        bedMetadataDoc.append("qrScans",0);
+        bedMetadataDoc.append("bedVisits", new BsonArray());
+        bedMetadataDoc.append("qrVisits", new BsonArray());
+
 
         bed7.append("uploadId", "first uploadId");
         bed7.append("metadata", bedMetadataDoc);
@@ -116,8 +118,9 @@ public class PopulateMockDatabase {
 
         Document bedMetadataDoc1 = new Document();
         bedMetadataDoc1.append("pageViews", 0);
-        bedMetadataDoc1.append("visits", new BsonArray());
-        bedMetadataDoc1.append("qrScans", new BsonArray());
+        bedMetadataDoc1.append("qrScans",0);
+        bedMetadataDoc1.append("bedVisits", new BsonArray());
+        bedMetadataDoc1.append("qrVisits", new BsonArray());
 
         bed10.append("uploadId", "second uploadId");
         bed10.append("metadata", bedMetadataDoc1);
