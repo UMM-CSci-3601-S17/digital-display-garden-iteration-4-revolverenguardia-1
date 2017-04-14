@@ -19,8 +19,6 @@ export class BedListComponent {
     constructor(private bedListService: BedListService,
                 private plantListService: PlantListService) { }
 
-    bedName : string;
-
     /**
      * Filters by the provided bed name.
      * @param bedName - the bed name to filter by
@@ -36,12 +34,6 @@ export class BedListComponent {
         else
             // So disable the filter
             this.plantListService.setBedFilter(bedName);
-
-        if (this.bedName != bedName)
-        {
-            this.bedName = bedName;
-            this.bedListService.reportBedVisit(bedName, false).subscribe();
-        }
 
     }
 
