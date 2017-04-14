@@ -106,7 +106,7 @@ best to drop() the test database. In order to populate the database
 * **home-page**
 * **measure-qrscans**
 * **merge-all**
-* **merge-grimanwar**
+* **merge-grimanwar** Merged Grimaldi's back-end and OmanAnwar's front-end
 * **testing-PlantController**
 * **testing-admin**
 * **testing-client**
