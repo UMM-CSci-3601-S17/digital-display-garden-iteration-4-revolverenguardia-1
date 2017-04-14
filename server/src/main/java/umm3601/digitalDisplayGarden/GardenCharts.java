@@ -55,35 +55,38 @@ public class GardenCharts
             ArrayList<Date> dates = new ArrayList<Date>();
 
             //Get a plant by plantID
-            FindIterable doc = plantCollection.find();
+            FindIterable doc = plantCollection.find(filter);
 
             Iterator iterator = doc.iterator();
             while(iterator.hasNext()) {
                 Document result = (Document) iterator.next();
+
 
                 //Get metadata.rating array
                 List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
 
                 //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
 
-                for(Document i : ratings){
-                    dates.add(((ObjectId) i.get("visit")).getDate());
+                for(int i = 0; i < ratings.size(); i++){
+                    Document d = ratings.get(i);
+                    dates.add(((ObjectId) d.get("visit")).getDate());
                 }
 
             }
-            System.out.println(dates.toString());
+
+//            System.out.println(dates.toString());
 
             HashMap<Integer, Integer> hours = new HashMap<Integer, Integer>();
             for (Date date : dates){
                 System.out.print("Date: " + date.toString() + " | ");
 
                 int hour = date.getHours();
-                System.out.print("Hour: " + hour + " | ");
+                //System.out.print("Hour: " + hour + " | ");
 
                 if(hours.get(hour) == null) hours.put(hour, 0);
                 int visits = hours.get(hour);
                 hours.put(hour, visits += 1);
-                System.out.println(hours.get(hour));
+                //System.out.println(hours.get(hour));
             }
 
 //            System.out.println("hours: " + hours.toString());
