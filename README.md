@@ -55,9 +55,9 @@ best to drop() the test database. In order to populate the database
 * Provide visual aids for visitor traffic data
 
 #### Improve Front-end &mdash; visitor's website
-* Allow visitors to filter plants by common name
-* Provide visitors with social media links
-* Improve the overall UIs
+* Allow visitors to filter plants by common name &mdash; complete 
+* Provide visitors with social media links &mdash; complete
+* Improve the overall UIs &mdash; additional improvements can be made
 
 #### Finished by previous iteration groups
 **Grimaldi**
@@ -100,7 +100,7 @@ best to drop() the test database. In order to populate the database
 
 * **database-patching**
 * **export-more-data**
-* **fix-footer**
+* **fix-footer** Fixed footer content and style in the very beginning of the iteration
 * **GoogleCharts**
 * **google-charts(actual-data)**
 * **home-page**
@@ -110,8 +110,7 @@ best to drop() the test database. In order to populate the database
 * **testing-PlantController**
 * **testing-admin**
 * **testing-client**
-* **visitor-interface-overhaul**
-* **vistor-interface-overhaul**
+* **visitor-interface-overhaul / vistor-interface-overhaul** Added the ability to filter by common name and improved the UIs of the visitor's website 
 * **master**
 
 ## Resources
