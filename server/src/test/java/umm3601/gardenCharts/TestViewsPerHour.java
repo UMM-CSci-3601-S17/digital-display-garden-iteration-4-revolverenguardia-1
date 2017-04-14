@@ -54,14 +54,14 @@ public class TestViewsPerHour{
 
         ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
 
-        //System.out.println(arrayList.get(20));
-        //System.out.println(arrayList.get(23));
+//        System.err.println(arrayList.get(20));
+//        System.err.println(arrayList.get(23));
 
         Object object1 = arrayList.get(20).toString();
         Object object2 = arrayList.get(23).toString();
 
-        assertEquals("at the 19th hour there should be 1 visit","[\"19\",1]",object1);
-        assertEquals("at the 22nd hour there should be 3 visits","[\"22\",3]",object2);
+        assertEquals("at the 19th hour there should be 1 visit","[\"12\",1]",object1);
+        assertEquals("at the 22nd hour there should be 3 visits","[\"3\",3]",object2);
     }
 
 
