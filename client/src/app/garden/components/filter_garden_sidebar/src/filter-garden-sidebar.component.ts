@@ -15,7 +15,7 @@ export class FilterGardenSidebarComponent {
     /**
      * Width of the navigation bars
      */
-    public readonly NAV_BAR_WIDTH: number = 260;
+    public readonly NAV_BAR_WIDTH = 260;
 
     /**
      * Width of the bed navigation bar.
