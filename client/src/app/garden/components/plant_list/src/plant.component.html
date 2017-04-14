@@ -3,7 +3,7 @@
 
     @author Iteration 1 - Team Rayquaza
     @editor Iteration 2 - Team Omar Anwar
-    @editor Iteration 3 - Revolver en guardia
+    @editor Iteration 3 - Team Revolver en Guardia
 -->
 
 <!DOCTYPE html>
@@ -23,30 +23,34 @@
                 width:100%;
                 overflow: hidden;
             }
-            .footer{
-                position: fixed;
-                right: 0;
-                left: 0;
-                bottom: 0;
-                padding: 1rem;
-                text-align: center;
-                background-color: #466a31;
-                color: white;
-                font-size: large;
+            .footer-whitespace{
+                min-height: 60px;
             }
-            .footer a:link{
-                color: #fbe453;
+
+            /* Id References */
+            #back-button{
+                background-color: #FFD63F;
             }
-            .footer a:visited{
-                color: #d2af51;
+            #dislike-button{
+                background-color: #1D8214;
+                color: white
             }
-            .footer a:hover{
-                color: #fef6c5;
+            #comment-box{
+                width: 95%;
+                font-size: medium;
+                resize:vertical;
+                margin-top:8px;
+                margin-bottom: 8px;
+                min-height: 60px
             }
+            #comment-button{
+                background-color: #FFD63F;
+            }
+
         </style>
     </head>
 
-    <a href="javascript:history.go(-1)" class="alignleft" class="btn btn-default" style="background-color: #f1f1f1"><span></span>Back</a>
+    <a id="back-button" href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span></a>
 
     <div class="image">
         <img src="../res/wroc.jpg" width="100%"/>
@@ -56,12 +60,12 @@
 
     <div *ngIf="plant !== null" class= "text-center">
 
-        <h1 >{{plant.cultivar}}</h1>
+        <h3>{{plant.cultivar}}</h3>
         <h4> Common Name: {{plant.commonName}}</h4>
         <h4> Bed Number: {{plant.gardenLocation}}</h4>
 
         <div *ngIf="!rated">
-            <a class="btn btn-default" (click)="this.rate(true)" style="background-color: #1D8214; color: white">
+            <a id="dislike-button" class="btn btn-default" (click)="this.rate(true)" >
                 <span class="glyphicon glyphicon-thumbs-up"> </span> Like
             </a>
             <a class="btn btn-primary" (click)="this.rate(false)">
@@ -74,9 +78,9 @@
         </div>
 
         <div *ngIf="!commented">
-            <textarea [(ngModel)]="commentText" rows="5" wrap="on" style="width: 95%;font-size: medium;resize:vertical; margin-top:8px; margin-bottom: 8px; min-height: 60px"></textarea>
+            <textarea id="comment-box" [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
             <br>
-            <a class="btn btn-default" (click)="this.comment(commentText)" style="background-color: #f1f1f1">
+            <a id="comment-button" class="btn btn-default" (click)="this.comment(commentText)">
                 Leave a comment
             </a>
         </div>
@@ -86,7 +90,7 @@
         </div>
 
         <!--Whitespace at end of page-->
-        <div style="min-height: 60px"></div>
+        <div class="footer-whitespace"></div>
 
     </div>
 

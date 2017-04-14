@@ -2,6 +2,7 @@
  * Represents a Plant and all of its respective data used throughout the Digital Display Garden.
  *
  * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team Revolver en Guardia
  */
 export class Plant {
 
@@ -41,34 +42,3 @@ export class Plant {
     }
 
 }
-
-
-// export class Plant {
-//     id: string;
-//     plantID: string;
-//     plantType: string;
-//     commonName: string;
-//     cultivar: string;
-//     source: string;
-//     gardenLocation: string;
-//     year: number;
-//     pageURL: string;
-//     plantImageURLs: string[];
-//     recognitions: string[];
-//
-//     constructor () {
-//         this.id="";
-//         this.plantID="";
-//         this.plantType="";
-//         this.commonName="";
-//         this.cultivar="";
-//         this.source="";
-//         this.gardenLocation="";
-//         this.year=1987;
-//         this.pageURL="";
-//         this.plantImageURLs=[];
-//         this.recognitions=[];
-//     }
-// }
-
-

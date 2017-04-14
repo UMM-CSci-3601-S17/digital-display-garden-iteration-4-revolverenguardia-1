@@ -1,7 +1,16 @@
+<!--
+    Provides an interface to view PlantListComponent filtering options.
+
+    @author Iteration 1 - Team Rayquaza
+    @editor Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
+-->
 <!DOCTYPE html>
 <html>
 <head>
     <style>
+
+        /* Class References */
         .sidenav {
             height: 100%;
             width: 0;
@@ -14,7 +23,6 @@
             transition: 0.5s;
             padding-top: 40px;
         }
-
         .sidenav a {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
@@ -23,11 +31,9 @@
             display: block;
             transition: 0.3s;
         }
-
         .sidenav a:hover, .offcanvas a:focus{
             color: #f1f1f1;
         }
-
         .sidenav .closebtn {
             color: #f1f1f1;
             float: right;
@@ -37,14 +43,20 @@
             margin-left: 50px;
             margin-top: 0;
         }
-
-        @media screen and (max-height: 450px) {
-            .sidenav {padding-top: 15px;}
-            .sidenav a {font-size: 18px;}
+        .navigation-bar{
+            width: 100vh;
+            position: fixed;
+            -webkit-transform-origin: left top;
+            -webkit-transform:rotate(-90deg) translateX(-100%);
+        }
+        .active {
+            background-color: #196B1D;
+        }
+        .clearFilter{
+            background-color: #7a0019;
         }
 
-        /* ----------------------- */
-
+        /* Global References */
         ul {
             list-style-type: none;
             margin: 0;
@@ -52,11 +64,9 @@
             overflow: hidden;
             background-color: #333;
         }
-
         li {
             float: right;
         }
-
         li a {
             display: block;
             color: white;
@@ -65,22 +75,18 @@
             text-decoration: none;
             font-size: 14px;
         }
-
         li a:hover:not(.active) {
             background-color: #111;
         }
 
-        .nav{
-            width: 100vh;
-            position: fixed;
-            -webkit-transform-origin: left top;
-            -webkit-transform:rotate(-90deg) translateX(-100%);
+        /* Other References */
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
         }
 
-        .active {
-            background-color: #196B1D;
-        }
     </style>
+
 </head>
 
     <div id="bedSidenav" class="sidenav" [style.width.px]="bedNavWidth">
@@ -88,18 +94,18 @@
         <bed-list></bed-list>
     </div>
 
-    <div id="nameSidenav" class="sidenav" [style.width.px]="nameNavWidth">
-        <a class="closebtn" (click)="closeNameNav()">&times;</a>
+    <div id="nameSidenav" class="sidenav" [style.width.px]="commonNameNavWidth">
+        <a class="closebtn" (click)="closeCommonNameNav()">&times;</a>
         <common-name-list></common-name-list>
     </div>
 
-    <div class="nav">
+    <div class="navigation-bar">
         <ul>
             <li><a class="active">Filters</a></li>
             <li (click)="openBedNav()"><a>Bed</a></li>
-            <li (click)="openNameNav()"><a>Common Name</a></li>
+            <li (click)="openCommonNameNav()"><a>Common Name</a></li>
+            <li class="clearFilter"><a href="/bed/all">Clear</a></li>
         </ul>
     </div>
-
 
 </html>

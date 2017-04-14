@@ -1,18 +1,18 @@
 /**
  * Will filter any given collection of plants based on the provided methods.
- * Used for future reuse and extensibility.
+ * Used for future reuse and extensibility of filtering support.
  *
  * @author Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Revolver en Guardia
  */
 import {Plant} from "./plant";
 
 export class PlantFilter {
 
     /**
-     * Title for the bed list view on the HTML Bed List Component.
-     * This is used for filtering to show all plants.
+     * Denotes that no filter should be applied
      */
-    public static readonly FILTER_BY_ALL_PLANTS = "ALL";
+    public static readonly NO_FILTER: string = "ALL";
 
     /**
      * Filters the provided plant collection by the provided bed name.
@@ -22,6 +22,11 @@ export class PlantFilter {
      */
     public static filterByBedName(bedName: string, plants: Plant[]): Plant[]{
 
+        // If do not filter original plant list
+        if(bedName == PlantFilter.NO_FILTER)
+            return plants;
+
+        // Else, apply filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
@@ -41,11 +46,12 @@ export class PlantFilter {
      */
     public static filterByCommonName(commonName: string, plants: Plant[]): Plant[]{
 
-        // Don't filter
-        if(commonName === "NO_FILTER")
+        // If do not filter original plant list
+        if(commonName == PlantFilter.NO_FILTER)
+            // Return original plant list
             return plants;
 
-        // Filter
+        // Else, apply filter
         let filteredPlants: Plant[] = [];
 
         plants.forEach((plant, index) => {
