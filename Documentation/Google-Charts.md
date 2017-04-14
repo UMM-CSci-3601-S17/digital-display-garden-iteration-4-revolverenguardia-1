@@ -1,4 +1,4 @@
-# Google Charts
+# Google Charts :chart_with_upwards_trend:
 Everything you need to know about using Google Charts in this and project or any other Angular 2 project.
 ### Helpful Resources:
 * [Google Charts Website:](https://developers.google.com/chart/) A good introduction into what google charts can do.
@@ -44,6 +44,12 @@ You need to include it at the top of your updateFunction. Examples of these func
 We made the mistake of having another set of functions called `update[BLAH]()`.
 Examples of these include: `updateTimeVViewCountLine()`, and `updateBedMetadataMap()`.
 These functions grab *JSON Array* data from server requests in `admin.servis.ts`and manipulate it to fit the required `dataTable` syntax if needed.  
+### `google-component.html`  
+*ng2-google-charts* makes dealing with google charts in html very straightforward. All that is critial is the following structure:  
+```html
+<google-chart [data]="[NAME_OF_FUNCTION]"></google-chart>  
+```  
+
 
 
 138.197.120.23
