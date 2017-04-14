@@ -67,6 +67,7 @@ Change all ObjectIds that are generated with the sole purpose of dates into some
 2. People's location in the Garden when they enter the digital garden.  
 3. Making a map of where people walk through the garden.   
 4. Top 20 plants that have the most comments, the top 20 plants that have the most likes, and the top 20 that have the most dislikes.  
+5. A static function has been written in ExcelParser that deletes an uploadId, but there is no endpoint or client UI to make this happen.
 
 :soon: Currently, all coordinates on the Map and the bubbleChart is hard coded. WCROC admin staff should have the ability to add new coordinate and bed to the Map and bubbleChart.   
 :soon: An option for them to download the charts maybe useful to them in the future.
