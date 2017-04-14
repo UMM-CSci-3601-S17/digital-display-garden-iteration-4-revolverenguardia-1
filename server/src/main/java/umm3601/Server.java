@@ -85,19 +85,19 @@ public class Server {
             return plantController.getPlantByPlantID(id, getLiveUploadId());
         });
 
-        //Get feedback counts for a plant
-        get("api/plant/:plantID/counts", (req, res) -> {
-            res.type("application/json");
-            String id = req.params("plantID");
-            return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
-        });
-
 //        //Get feedback counts for a plant
 //        get("api/plant/:plantID/counts", (req, res) -> {
 //            res.type("application/json");
 //            String id = req.params("plantID");
-//            return plantController.getJSONFeedbackForPlantByPlantID(id, plantController.getLiveUploadId());
+//            return plantController.getFeedbackForPlantByPlantID(id, getLiveUploadId());
 //        });
+
+        //Get feedback counts for a plant
+        get("api/plant/:plantID/counts", (req, res) -> {
+            res.type("application/json");
+            String id = req.params("plantID");
+            return plantController.getJSONFeedbackForPlantByPlantID(id,getLiveUploadId());
+        });
 
         //List all Beds
         get("api/gardenLocations", (req, res) -> {
