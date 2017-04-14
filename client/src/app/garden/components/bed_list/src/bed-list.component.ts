@@ -20,8 +20,7 @@ export class BedListComponent {
                 private plantListService: PlantListService) { }
 
     /**
-     * TODO: Update Comment
-     * Should filter by the provided bed name.
+     * Filters by the provided bed name.
      * @param bedName - the bed name to filter by
      */
     private handleBedListClick(bedName): void{
