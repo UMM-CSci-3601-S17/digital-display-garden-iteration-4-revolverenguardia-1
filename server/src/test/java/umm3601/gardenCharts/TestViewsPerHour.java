@@ -10,6 +10,7 @@ import umm3601.plant.PopulateMockDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
@@ -54,8 +55,9 @@ public class TestViewsPerHour{
 
         ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
 
-//        System.err.println(arrayList.get(20));
-//        System.err.println(arrayList.get(23));
+        System.err.println(arrayList.get(20));
+        System.err.println(arrayList.get(23));
+        System.err.println(new Date()); // What time is it in travis land
 
         Object object1 = arrayList.get(20).toString();
         Object object2 = arrayList.get(23).toString();
