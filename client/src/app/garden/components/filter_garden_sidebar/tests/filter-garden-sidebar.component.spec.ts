@@ -34,13 +34,6 @@ describe("Test Display Properties of Filter Sidebar", () => {
         });
     }));
 
-    /**
-     * Tests that display width constant is set correctly.
-     * @author Iteration 3 - Team Revolver en Guardia
-     */
-    it("Check Display Width Constant", () => {
-        expect(filterGardenSidebarComponent.NAV_BAR_WIDTH).toBe(260);
-    });
 
     /**
      * Tests display width for the Bed Nav Bar.
