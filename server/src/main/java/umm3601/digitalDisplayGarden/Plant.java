@@ -15,14 +15,3 @@ public class Plant {
     public String SaSeedVaVeg;
 
 }
-
-
-//    public String _id;
-//    public String commonName;
-//    public String cultivar;
-//    public String gardenLocation;
-//    public String Comments;
-//    public String SaSeedVaVeg;
-//    public String id;
-//    public String source;
-//    public String HBaHangaBasketCaContainerWaWall;
