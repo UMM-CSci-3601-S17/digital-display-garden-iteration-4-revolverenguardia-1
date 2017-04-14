@@ -124,14 +124,15 @@ public class GardenCharts
         // Count flower comments
 
         try {
-            int likes = 0;
-            int dislikes = 0;
-            int comments = 0;
+
 
             String[] bedNames = plantController.getGardenLocations(uploadID);
             JsonArray out = new JsonArray();
 
             for (int i = 0; i < bedNames.length; i++) {
+                int likes = 0;
+                int dislikes = 0;
+                int comments = 0;
                 JsonObject bed = new JsonObject();
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
