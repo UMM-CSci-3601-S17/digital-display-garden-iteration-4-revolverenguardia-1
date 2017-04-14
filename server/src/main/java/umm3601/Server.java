@@ -73,9 +73,9 @@ public class Server {
         get("/", clientRoute);
 
 
-        /** ///////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
          * BEGIN VISITOR ENDPOINTS
-         */ ///////////////////////////////////////////////////////////////////
+         *////////////////////////////////////////////////////////////////////
 
         // Return all plants
         get("api/plants", (req, res) -> {
@@ -147,12 +147,12 @@ public class Server {
             return plantController.storePlantComment(req.body(), getLiveUploadId());
         });
 
-        /** ///////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
          * END VISITOR ENDPOINTS
-         */ ///////////////////////////////////////////////////////////////////
-        /** ///////////////////////////////////////////////////////////////////
+         *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
          * ADMIN ENDPOINTS
-         */ ///////////////////////////////////////////////////////////////////
+         *////////////////////////////////////////////////////////////////////
 
         // Accept an xls file
         post("api/import", (req, res) -> {
@@ -269,6 +269,16 @@ public class Server {
             return bytes;
         });
 
+        get("api/liveUploadId", (req, res) -> {
+            res.type("application/json");
+            return JSON.serialize(getLiveUploadId());
+        });
+
+
+        /*///////////////////////////////////////////////////////////////////
+            BEGIN CHARTS
+        *////////////////////////////////////////////////////////////////////
+
         // Views per Hour
         get("api/chart/viewsPerHour", (req, res) -> {
             res.type("application/json");
@@ -281,6 +291,12 @@ public class Server {
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
+        get("api/chart/plantMetadataBubbleMap", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
+        });
+
         //Host the aerial image of the Garden
         get("api/admin/gardenPicture", (req, res) -> {
             res.type("application/png");
@@ -289,14 +305,10 @@ public class Server {
             return plantController.getClass().getResourceAsStream(gardenPath);
         });
 
-
-
-        get("api/liveUploadId", (req, res) -> {
-            res.type("application/json");
-            return JSON.serialize(getLiveUploadId());
-        });
-
-        /** ///////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
+            END CHARTS
+        *////////////////////////////////////////////////////////////////////
+        /*///////////////////////////////////////////////////////////////////
          * END ADMIN ENDPOINTS
          */ ///////////////////////////////////////////////////////////////////
 

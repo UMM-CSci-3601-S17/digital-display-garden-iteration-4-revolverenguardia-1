@@ -91,6 +91,30 @@ public class BedController {
         return null != b;
     }
 
+    public int getPageViews(String gardenLocation, String uploadId)
+    {
+        Document filterDoc = new Document();
+        filterDoc.append("gardenLocation", gardenLocation);
+        filterDoc.append("uploadId", uploadId);
+
+        Iterator<Document> bedItr = bedCollection.find(filterDoc).iterator();
+
+        try {
+            if(bedItr.hasNext()) {
+                Document bed = bedItr.next();
+                Document bedMetadata = (Document)bed.get("metadata");
+
+                return bedMetadata.getInteger("pageViews");
+            }
+            else throw new RuntimeException("No bed found for gardenLocation=" + gardenLocation + " uploadId=" + uploadId);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
 
 
 
