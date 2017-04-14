@@ -49,7 +49,3 @@ These functions grab *JSON Array* data from server requests in `admin.servis.ts`
 ```html
 <google-chart [data]="[NAME_OF_FUNCTION]"></google-chart>  
 ```  
-
-
-
-138.197.120.23
