@@ -106,12 +106,6 @@ public class Server {
             return plantController.getCommonNamesJSON(getLiveUploadId());
         });
 
-        // List all uploadIds
-        get("api/uploadIds", (req, res) -> {
-            res.type("application/json");
-            return ExcelParser.listUploadIds(databaseName);
-        });
-
         post("api/plant/rate", (req, res) -> {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
@@ -152,7 +146,7 @@ public class Server {
          *////////////////////////////////////////////////////////////////////
 
         // Accept an xls file
-        post("api/import", (req, res) -> {
+        post("api/admin/import", (req, res) -> {
 
             res.type("application/json");
             try {
@@ -178,7 +172,7 @@ public class Server {
 
 
         //Patch from spreadsheet
-        post("api/patch", (req, res) -> {
+        post("api/admin/patch", (req, res) -> {
 
             res.type("application/json");
             try {
@@ -203,7 +197,7 @@ public class Server {
 
         });
 
-        get("api/export", (req, res) -> {
+        get("api/admin/export", (req, res) -> {
             // Note that after flush() or close() is called on
             // res.raw().getOutputStream(), the response can no longer be
             // modified. Since writeComment(..) closes the OutputStream
@@ -212,7 +206,7 @@ public class Server {
             // If an exception is thrown (specifically within workbook.write() within complete() in FeedbackWriter
             // This loop will attempt to write feedback twice, writing to an intermediate buffer.
             // If the write succeeds, then write it to the response output stream
-            int error = 3;
+            int error = 6;
             while(error > 0) {
                 try {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -241,16 +235,22 @@ public class Server {
             return res;
         });
 
-        get("api/qrcodes", (req, res) -> {
+        // List all uploadIds
+        get("api/admin/uploadIds", (req, res) -> {
+            res.type("application/json");
+            return ExcelParser.listUploadIds(databaseName);
+        });
+
+        get("api/admin/qrcodes", (req, res) -> {
             res.type("application/zip");
 
+            //Creates a Zip file, found at zipPath
             String liveUploadID = getLiveUploadId();
-            System.err.println("liveUploadID=" + liveUploadID);
             String zipPath = QRCodes.CreateQRCodesFromAllBeds(
                     liveUploadID,
                     plantController.getGardenLocations(liveUploadID),
                     API_URL + "/bed/");
-            System.err.println(zipPath);
+
             if(zipPath == null)
                 return null;
 
@@ -266,7 +266,7 @@ public class Server {
             return bytes;
         });
 
-        get("api/liveUploadId", (req, res) -> {
+        get("api/admin/liveUploadId", (req, res) -> {
             res.type("application/json");
             return JSON.serialize(getLiveUploadId());
         });
@@ -277,18 +277,18 @@ public class Server {
         *////////////////////////////////////////////////////////////////////
 
         // Views per Hour
-        get("api/chart/viewsPerHour", (req, res) -> {
+        get("api/admin/charts/viewsPerHour", (req, res) -> {
             res.type("application/json");
             return chartMaker.getPlantViewsPerHour(getLiveUploadId());
         });
 
-        get("api/chart/plantMetadataMap", (req, res) -> {
+        get("api/admin/charts/plantMetadataMap", (req, res) -> {
             res.type("application/json");
 
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
-        get("api/chart/plantMetadataBubbleMap", (req, res) -> {
+        get("api/admin/charts/plantMetadataBubbleMap", (req, res) -> {
             res.type("application/json");
 
             return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());

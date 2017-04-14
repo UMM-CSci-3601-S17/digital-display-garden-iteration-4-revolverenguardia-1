@@ -10,18 +10,20 @@ import {Observable} from "rxjs";
 // Component class
 export class GraphComponent implements OnInit {
 
-
-    constructor(private adminService: AdminService) {
-    }
     value : number = 3;
     dataTable : any[][];
     mapData : string[];
+
+    constructor(private adminService: AdminService) {
+    }
 
 
     ngOnInit(): void {
         this.updateTimeVViewCountBar();
         this.updateTimeVViewCountLine();
         this.updateBedMetadataMap();
+        this.updateBubbleMap();
+
     }
 
     /*updateGraph(): void{
@@ -32,17 +34,22 @@ export class GraphComponent implements OnInit {
 
     public updateLineChart(): void{
         this.line_ChartData = Object.create(this.line_ChartData);
-        this.updateTimeVViewCountLine()
+        this.updateTimeVViewCountLine();
     }
 
     public updateBarChart(): void{
         this.columnChartOptions = Object.create(this.columnChartOptions);
-        this.updateTimeVViewCountBar()
+        this.updateTimeVViewCountBar();
     }
 
     public updateMap(): void{
         this.mapOptions = Object.create(this.mapOptions);
-        this.updateBedMetadataMap()
+        this.updateBedMetadataMap();
+    }
+
+    public updateBubbleMap(): void{
+        this.bubbleChartOption = Object.create(this.bubbleChartOption);
+        //this.updateBubbleMap();
     }
 
     public line_ChartData = {
@@ -73,7 +80,7 @@ export class GraphComponent implements OnInit {
             ['22',  0],
             ['23',  0],
         ],
-        options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
+        options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     };
 
 
@@ -83,9 +90,10 @@ export class GraphComponent implements OnInit {
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
             ],
-        options: {'title': 'Time vs. View Counts', hAxis : {'title' :'Time (in Hours)'}, vAxis : {'title' :'View Counts'}},
+        options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     }
 
+    //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm with customer)
     public bedLocations = [[45.593823, -95.875248],
         [45.593831, -95.875525],
         [45.593113, -95.877688],
@@ -104,11 +112,7 @@ export class GraphComponent implements OnInit {
     public mapOptions = {
         chartType: `Map`,
         dataTable: [['Lat', 'Long', 'Views'],
-            [this.bedLocations[0][0], this.bedLocations[0][1], 'TEST'],
-            [this.bedLocations[1][0], this.bedLocations[1][1], 'TEST'],
-            [this.bedLocations[2][0], this.bedLocations[2][1], 'TEST'],
-            [this.bedLocations[3][0], this.bedLocations[3][1], 'TEST'],
-            [this.bedLocations[4][0], this.bedLocations[4][1], 'TEST']
+            [this.bedLocations[0][0], this.bedLocations[0][1], 'Update Graph'],
         ],
         options: {'zoomLevel' : '18', title : false, showInfoWindow: true}
     }
@@ -161,7 +165,6 @@ export class GraphComponent implements OnInit {
 
     protected updateTimeVViewCountBar()
     {
-        console.log("UPDATING!>");
         this.adminService.getViewsPerHour()
             .subscribe(result => { this.columnChartOptions["dataTable"] = result;
                 console.log(result)}, err => console.log(err));
