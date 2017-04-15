@@ -74,10 +74,10 @@ best to drop() the test database. In order to populate the database
 * Improve the overall UIs &mdash; additional improvements can be made
 
 #### Refactoring and Stories to polish :white_check_mark:
-Change all ObjectIds that are generated with the sole purpose of dates into some sort of Date object
-  This has become a problem, because eveyr object must have a unique ObjectId.
-  When the database is patched, all of the objects are duplicated and therefore have new ObjectIds
-  Which means all old data's dates (under the new uploadId) becomes new ObjectIds.
+Change all ObjectIds that are generated with the sole purpose of dates into some sort of Date object.
+  This has become a problem, because every object must have a unique ObjectId.
+  When the database is patched, all of the objects are duplicated and therefore have new ObjectIds.
+  This means all old data's dates (under the new uploadId) has new ObjectIds.
 
 ## Future work  
 :soon: Google Charts: Some of the data Esther wants to see in our Google charts includes:  
@@ -107,11 +107,6 @@ Change all ObjectIds that are generated with the sole purpose of dates into some
 
 **Claude Arabo** :fr: 🤺 🥈
 * Import Excel Spreadsheet to Database
-
-## Documentation
-* [Excel File Requirements](Documentation/ExcelFileRequirements.md)  
-* [Excel Parser Documentation](Documentation/ExcelParser.md)
-
 
 ## Libraries used
 ### Client-Side
