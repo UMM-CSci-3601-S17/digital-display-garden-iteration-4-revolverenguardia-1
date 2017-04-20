@@ -1,5 +1,14 @@
 package umm3601;
 
+import com.mongodb.DB;
+import com.mongodb.MongoCommandException;
+import org.bson.Document;
+import spark.Route;
+import spark.utils.IOUtils;
+import com.mongodb.util.JSON;
+import umm3601.digitalDisplayGarden.ImageHandler;
+import umm3601.digitalDisplayGarden.PlantController;
+
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
@@ -7,15 +16,23 @@ import umm3601.digitalDisplayGarden.BedController;
 import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.digitalDisplayGarden.PlantController;
 
+import java.awt.*;
+import java.awt.image.RenderedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import static spark.Spark.*;
 
 import umm3601.digitalDisplayGarden.ExcelParser;
 import umm3601.digitalDisplayGarden.QRCodes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
 
@@ -27,6 +44,8 @@ public class Server {
     public static String databaseName = "test";
 
     private static String excelTempDir = "/tmp/digital-display-garden";
+
+    private static String imageDir = "./src/main/java/umm3601/images";
 
     public static void main(String[] args) throws IOException {
 
@@ -309,6 +328,58 @@ public class Server {
          * END ADMIN ENDPOINTS
          */ ///////////////////////////////////////////////////////////////////
 
+        post("api/upload-photo", (req, res) -> {
+
+            res.type("application/json");
+            try {
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(Server.imageDir);
+                req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+
+                MongoClient mongoClient = new MongoClient( "localhost",27017 );
+
+                MongoDatabase photoDB = mongoClient.getDatabase("photoDB");
+                photoDB.getCollection("sus");
+                try {
+                    photoDB.createCollection("photoFilepathCollection");
+                } catch (MongoCommandException e) {
+
+                }
+
+
+                Part part = req.raw().getPart("file[]");
+                Part part0 = req.raw().getPart("name");
+                Part part1 = req.raw().getPart("flower");
+
+                ImageHandler handler = new ImageHandler(part.getInputStream(), part0.getInputStream(), part1.getInputStream());
+                Image img = handler.extractImage();
+                String fileName = handler.extractFileName();
+                String flowerName = handler.extractFlowerName();
+
+                Random rand = new Random();
+                File newDir = new File(Server.imageDir);
+                newDir.mkdirs();
+                String pathName = Server.imageDir + "/" + flowerName + "/" + fileName + rand.nextInt(9999999);
+                //photoDB.getCollection("photoFilepathCollection").insertOne();//(Document.parse("{ " + pathName.substring(1) + " }"));
+                File imageDir = new File(pathName);
+                imageDir.mkdirs();
+                try {
+                    ImageIO.write((RenderedImage)img,"png", imageDir);
+
+                } catch (IOException e) {
+
+                }
+
+                String id = ImageHandler.getAvailableUploadId();
+
+                return JSON.serialize(id);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        });
 
         get("/*", clientRoute);
 
