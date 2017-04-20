@@ -24,6 +24,8 @@ import {FileUploadComponent} from "./app/admin/file-upload.component";
 import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
 import {GraphComponent} from "./app/admin/google-charts.component";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import {UploadPhotoComponent } from './app/admin/upload-photo.component';
+import { ImageUploadComponent } from './app/admin/image-upload.component';
 
 import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
 import {FooterComponent} from "./app/garden/components/footer/src/footer.component";
@@ -56,6 +58,8 @@ import {RouterModule} from "@angular/router";
         FileUploadComponent,
         FooterComponent,
         GraphComponent,
+        ImageUploadComponent,
+        UploadPhotoComponent,
 
     ],
     providers: [
