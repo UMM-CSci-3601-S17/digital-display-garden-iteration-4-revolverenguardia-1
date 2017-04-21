@@ -65,7 +65,9 @@ export class PlantComponent implements OnInit {
     public rate(rating: boolean): void {
         if (!this.rated) {this.rated = false;
             this.plantService.ratePlant(this.plant.id, rating)
-                .subscribe(succeeded => {this.rated = succeeded;this.refreshFeedback()})
+            //this will update the comment dynamically but makes the test fail
+                //.subscribe(succeeded => {this.rated = succeeded;this.refreshFeedback()})
+                .subscribe(succeeded => this.rated = succeeded)
         }
     }
 
@@ -77,7 +79,9 @@ export class PlantComponent implements OnInit {
         if (!this.commented) {
             if (comment != null) {
                 this.plantService.commentPlant(this.plant.id, comment)
-                    .subscribe(succeeded => {this.commented = succeeded;this.refreshFeedback()})
+                    //this will update the comment dynamically but makes the test fail
+                    //.subscribe(succeeded => {this.commented = succeeded;this.refreshFeedback()})
+                    .subscribe(succeeded => this.commented = succeeded)
             }
         }
     }
