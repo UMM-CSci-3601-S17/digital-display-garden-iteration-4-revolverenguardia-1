@@ -4,6 +4,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.util.JSON;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -44,7 +45,7 @@ public class ExcelParser {
         this.stream = stream;
     }
 
-    public String[][] parseExcel() throws FileNotFoundException{
+    public String[][] parseExcel() throws FileNotFoundException, NotOfficeXmlFileException{
 
         String[][] arrayRepresentation = extractFromXLSX(stream);
 
@@ -62,7 +63,7 @@ public class ExcelParser {
     This file originally just printed data, that is why there are several commented out lines in the code.
     We have repurposed this method to put all data into a 2D String array and return it.
      */
-    public String[][] extractFromXLSX(InputStream excelFile) {
+    public String[][] extractFromXLSX(InputStream excelFile) throws NotOfficeXmlFileException {
         try {
             Workbook workbook = new XSSFWorkbook(excelFile);
             Sheet datatypeSheet = workbook.getSheetAt(0);
@@ -195,6 +196,7 @@ public class ExcelParser {
     // Moves row by row through the 2D array and adds content for every flower paired with keys into a document
     // Uses the document to one at a time, add flower information into the database.
     public void populateDatabase(String[][] cellValues, String uploadId){
+        setLiveUploadId(uploadId, database);
 
         String[] keys = getKeys(cellValues);
 
@@ -242,7 +244,6 @@ public class ExcelParser {
 
 
 
-        setLiveUploadId(uploadId, database);
     }
 
     public void patchDatabase(String[][] cellValues, String oldUploadId, String newUploadId){
