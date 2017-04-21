@@ -40,13 +40,21 @@ public class GardenCharts
     public String getPlantViewsPerHour(String uploadID) {
 
         try {
-            Object[][] dataTable = new Object[24 + 1][2];
+            Object[][] dataTable = new Object[24 + 1][9];
 
             Document filter = new Document();
             filter.put("uploadId", uploadID);
 
             dataTable[0][0] = "Hour";
-            dataTable[0][1] = "Views";
+            dataTable[0][1] = "Sunday";
+            dataTable[0][2] = "Monday";
+            dataTable[0][3] = "Tuesday";
+            dataTable[0][4] = "Wednesday";
+            dataTable[0][5] = "Thursday";
+            dataTable[0][6] = "Friday";
+            dataTable[0][7] = "Saturday";
+            dataTable[0][8] = "Average";
+
 
             ArrayList<Date> dates = new ArrayList<Date>();
 
@@ -111,8 +119,17 @@ public class GardenCharts
             int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
             for (int i = 1; i < 24 + 1; i++) {
                 dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
-                dataTable[i][1] = viewsPerHour[i - 1];
+                dataTable[i][8] = viewsPerHour[i - 1];
             }
+
+            for(int i = 0; i < viewsPerHourPerDayOfWeek.length; i++){
+                for(int j = 0; j < viewsPerHourPerDayOfWeek[i].length; j++){
+                    dataTable[i + 1][j + 1] = viewsPerHourPerDayOfWeek[i][j];
+                }
+            }
+
+            System.out.println();
+            print2DArray(dataTable);
 
             return makeJSON(dataTable);
         }
@@ -309,7 +326,7 @@ public class GardenCharts
         System.out.println("]");
     }
 
-    public void print2DArray(int[][] in){
+    public void print2DArray(Object[][] in){
         System.out.println("Printing 2d array");
         for(int i = 0; i < in.length; i++){
             for(int j = 0; j < in[i].length; j++){
@@ -362,7 +379,7 @@ public class GardenCharts
             }
             viewsPerHourPerDayOfWeek[i] = views1DArray;
         }
-        print2DArray(viewsPerHourPerDayOfWeek);
+        //print2DArray(viewsPerHourPerDayOfWeek);
         return viewsPerHourPerDayOfWeek;
     }
 

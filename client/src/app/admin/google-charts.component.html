@@ -7,6 +7,16 @@
     }
 </style>
 
+
+<div class="chart">
+    <google-chart [data]="comboChart"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateLineChart()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+
+
 <div class="chart" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
     <google-chart [data]="columnChartOptions"></google-chart>
     <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateBarChart()" >

@@ -16,7 +16,7 @@ export class GraphComponent implements OnInit {
 
     ngOnInit(): void {
         this.updateLineChart();
-        this.updateBarChart();
+        //this.updateBarChart();
         this.updateMap();
         this.updateBubble();
     }
@@ -24,19 +24,19 @@ export class GraphComponent implements OnInit {
     public updateLineChart(): void{
         this.adminService.getViewsPerHour()
             .subscribe(result => {
-                this.line_ChartData["dataTable"] = result;
-                this.line_ChartData = Object.create(this.line_ChartData);
+                this.comboChart["dataTable"] = result;
+                this.comboChart = Object.create(this.comboChart);
             }, err => console.log(err));
     }
-
-    public updateBarChart(): void{
-
-        this.adminService.getViewsPerHour()
-            .subscribe(result => {
-                this.columnChartOptions["dataTable"] = result;
-                this.columnChartOptions = Object.create(this.columnChartOptions);
-                }, err => console.log(err));
-    }
+    //
+    // public updateBarChart(): void{
+    //
+    //     this.adminService.getViewsPerHour()
+    //         .subscribe(result => {
+    //             this.columnChartOptions["dataTable"] = result;
+    //             this.columnChartOptions = Object.create(this.columnChartOptions);
+    //             }, err => console.log(err));
+    // }
 
     public updateMap(): void{
         this.adminService.getBedMetadataForMap()
@@ -96,6 +96,39 @@ export class GraphComponent implements OnInit {
             ],
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     }
+
+    public comboChart = {
+        chartType: 'ComboChart',
+        dataTable: [['Hour', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Average'],
+    ['1',  165,      938,         522,             998,           450,      614.6, 998, 599],
+    ['2',  135,      1120,        599,             1268,          288,      682, 998, 599],
+    ['3',  157,      1167,        587,             807,           397,      623, 876, 599],
+    ['4',  139,      1110,        615,             968,           215,      609.4, 998, 1026],
+    ['5',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['6',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['7',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['8',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['9',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+    ['10',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['11',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['12',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['1',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['2',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+    ['3',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['4',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+    ['5',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['6',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['7',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['8',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['9',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['10',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+    ['11',  136,      691,         629,             1026,          366,      569.6, 998, 599]],
+        options: {'title': 'coffee stuff',
+                  'seriesType': `bars`,
+                  'series': {7: {type: `line`}}},
+    }
+
+
 
     //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm locations with customer)
     public bedLocations = [[45.593823, -95.875248],
