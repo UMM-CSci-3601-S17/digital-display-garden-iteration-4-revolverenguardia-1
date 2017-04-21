@@ -1,6 +1,5 @@
 package umm3601.digitalDisplayGarden;
 
-import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
@@ -28,16 +27,20 @@ import javax.print.Doc;
 
 public class ExcelParser {
 
-    private String databaseName;
-
     private InputStream stream;
 
-//    public static void main(String[] args) {
-//        parseExcel();
-//    }
+    private final MongoDatabase database;
+    private final MongoCollection plantCollection;
+    private final MongoCollection bedCollection;
+    private final MongoCollection configCollection;
+    private final MongoCollection commentCollection;
 
-    public ExcelParser(InputStream stream, String databaseName){
-        this.databaseName = databaseName;
+    public ExcelParser(InputStream stream, MongoDatabase database){
+        plantCollection = database.getCollection("plants");
+        bedCollection = database.getCollection("beds");
+        configCollection = database.getCollection("config");
+        commentCollection = database.getCollection("comments");
+        this.database = database;
         this.stream = stream;
     }
 
@@ -192,10 +195,6 @@ public class ExcelParser {
     // Moves row by row through the 2D array and adds content for every flower paired with keys into a document
     // Uses the document to one at a time, add flower information into the database.
     public void populateDatabase(String[][] cellValues, String uploadId){
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(databaseName);
-        MongoCollection plantCollection = test.getCollection("plants");
-        MongoCollection bedCollection = test.getCollection("beds");
 
         String[] keys = getKeys(cellValues);
 
@@ -243,18 +242,12 @@ public class ExcelParser {
 
 
 
-        setLiveUploadId(uploadId, databaseName);
+        setLiveUploadId(uploadId, database);
     }
 
     public void patchDatabase(String[][] cellValues, String oldUploadId, String newUploadId){
 
         populateDatabase(cellValues, newUploadId);
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(databaseName);
-        MongoCollection plantCollection = test.getCollection("plants");
-        MongoCollection commentCollection = test.getCollection("comments");
-        MongoCollection bedCollection = test.getCollection("beds");
 
         //Migrate (copy) all plants/comments of the previous uploadID and add them
 
@@ -310,7 +303,7 @@ public class ExcelParser {
             bedCollection.findOneAndUpdate(newBedFilter,set("metadata", oldMetadata));
         }
 
-        setLiveUploadId(newUploadId, databaseName);
+        setLiveUploadId(newUploadId, database);
     }
 
 
@@ -349,12 +342,8 @@ public class ExcelParser {
     --------------------------- SERVER UTILITIES -------------------------------
      */
 
-    public static void setLiveUploadId(String uploadID, String db){
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(db);
-        MongoCollection configCollection = test.getCollection("config");
-
+    public static void setLiveUploadId(String uploadID, MongoDatabase database){
+        MongoCollection<Document> configCollection = database.getCollection("config");
         configCollection.deleteMany(exists("liveUploadId"));
         configCollection.insertOne(new Document().append("liveUploadId", uploadID));
     }
@@ -383,16 +372,13 @@ public class ExcelParser {
     /**
      * Deletes all data associated with an uploadId
      * @param uploadId
-     * @param db
      */
-    public static void clearUpload(String uploadId, String db)
+    public static void clearUpload(String uploadId, MongoDatabase database)
     {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(db);
-        MongoCollection plantCollection = test.getCollection("plants");
-        MongoCollection commentCollection = test.getCollection("comments");
-        MongoCollection bedCollection = test.getCollection("beds");
-        
+        MongoCollection<Document> plantCollection = database.getCollection("plants");
+        MongoCollection<Document> commentCollection = database.getCollection("comment");
+        MongoCollection<Document> bedCollection = database.getCollection("beds");
+
         Document uploadIdFilter = new Document();
         uploadIdFilter.put("uploadId", uploadId);
 
@@ -405,10 +391,8 @@ public class ExcelParser {
      *
      * @return a sorted JSON array of all the distinct uploadIds in the DB
      */
-    public static String listUploadIds(String db) {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(db);
-        MongoCollection plantCollection = test.getCollection("plants");
+    public static String listUploadIds(MongoDatabase database) {
+        MongoCollection<Document> plantCollection = database.getCollection("plants");
 
         AggregateIterable<Document> documents
                 = plantCollection.aggregate(
@@ -421,19 +405,14 @@ public class ExcelParser {
             lst.add(d.getString("_id"));
         }
         return JSON.serialize(lst);
-//        return JSON.serialize(plantCollection.distinct("uploadId","".getClass()));
     }
 
     /**
      * The primary method of getting the liveUploadId
-     * @param db
      * @return
      */
-    public static String getLiveUploadId(String db) {
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase test = mongoClient.getDatabase(db);
-        MongoCollection configCollection = test.getCollection("config");
+    public static String getLiveUploadId(MongoDatabase database) {
+        MongoCollection<Document> configCollection = database.getCollection("config");
         try
         {
             FindIterable<Document> findIterable = configCollection.find(exists("liveUploadId"));
@@ -441,7 +420,6 @@ public class ExcelParser {
             if(!iterator.hasNext())
                 return null;
             Document doc = iterator.next();
-
             return doc.getString("liveUploadId");
         }
         catch(Exception e)

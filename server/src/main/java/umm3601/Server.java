@@ -1,5 +1,7 @@
 package umm3601;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
@@ -25,6 +27,7 @@ public class Server {
     public static final String API_URL = "http://localhost:2538";
 
     public static String databaseName = "test";
+    public static MongoDatabase database;
 
     private static String excelTempDir = "/tmp/digital-display-garden";
 
@@ -38,9 +41,12 @@ public class Server {
         // a problem which is resolved in `server/build.gradle`.
         staticFiles.location("/public");
 
-        PlantController plantController = new PlantController(databaseName);
-        GardenCharts chartMaker = new GardenCharts(databaseName);
-        BedController bedController = new BedController(databaseName);
+        MongoClient client = new MongoClient();
+        database = client.getDatabase("test");
+
+        PlantController plantController = new PlantController(database);
+        GardenCharts chartMaker = new GardenCharts(database);
+        BedController bedController = new BedController(database);
 
         options("/*", (request, response) -> {
 
@@ -150,12 +156,13 @@ public class Server {
 
             res.type("application/json");
             try {
+                
 
                 MultipartConfigElement multipartConfigElement = new MultipartConfigElement(excelTempDir);
                 req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
                 Part part = req.raw().getPart("file[]");
 
-                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+                ExcelParser parser = new ExcelParser(part.getInputStream(), database);
 
                 String id = ExcelParser.generateNewUploadId();
                 String[][] excelFile = parser.parseExcel();
@@ -164,6 +171,10 @@ public class Server {
                 return JSON.serialize(id);
 
             } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+            catch (Error e) {
                 e.printStackTrace();
                 throw e;
             }
@@ -181,7 +192,7 @@ public class Server {
                 req.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
                 Part part = req.raw().getPart("file[]");
 
-                ExcelParser parser = new ExcelParser(part.getInputStream(), databaseName);
+                ExcelParser parser = new ExcelParser(part.getInputStream(), database);
 
                 String oldUploadId = getLiveUploadId();
                 String newUploadId = ExcelParser.generateNewUploadId();
@@ -238,7 +249,7 @@ public class Server {
         // List all uploadIds
         get("api/admin/uploadIds", (req, res) -> {
             res.type("application/json");
-            return ExcelParser.listUploadIds(databaseName);
+            return ExcelParser.listUploadIds(database);
         });
 
         get("api/admin/qrcodes", (req, res) -> {
@@ -322,6 +333,6 @@ public class Server {
 
     public static String getLiveUploadId()
     {
-        return ExcelParser.getLiveUploadId(databaseName);
+        return ExcelParser.getLiveUploadId(database);
     }
 }
