@@ -108,8 +108,9 @@ public class GardenCharts
             /*
                 *************** JSON GARBAGE ******************
              */
+            int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
             for (int i = 1; i < 24 + 1; i++) {
-                dataTable[i][0] = Integer.toString(i - 1);
+                dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
                 dataTable[i][1] = viewsPerHour[i - 1];
             }
 
