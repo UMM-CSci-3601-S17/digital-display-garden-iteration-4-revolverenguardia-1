@@ -25,7 +25,7 @@ import {PlantService} from "./app/garden/components/plant_list/src/plant.service
 import {GraphComponent} from "./app/admin/google-charts.component";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
-import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
+import { FilterGardenComponent } from "./app/garden/components/filter_garden_sidebar/src/filter-garden.component";
 import {FooterComponent} from "./app/garden/components/footer/src/footer.component";
 import {RouterModule} from "@angular/router";
 
@@ -45,7 +45,7 @@ import {RouterModule} from "@angular/router";
         AppComponent,
         NavbarComponent,
         GardenComponent,
-        FilterGardenSidebarComponent,
+        FilterGardenComponent,
         PlantListComponent,
         BedListComponent,
         CommonNameListComponent,
