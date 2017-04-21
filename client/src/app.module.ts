@@ -26,6 +26,8 @@ import {GraphComponent} from "./app/admin/google-charts.component";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import {UploadPhotoComponent } from './app/admin/upload-photo.component';
 import { ImageUploadComponent } from './app/admin/image-upload.component';
+import { BedDropdownComponent } from './app/admin/bed-dropdown.component';
+import { DropdownValue } from './app/admin/DropdownValue';
 
 import {FilterGardenSidebarComponent} from "./app/garden/components/filter_garden_sidebar/src/filter-garden-sidebar.component";
 import {FooterComponent} from "./app/garden/components/footer/src/footer.component";
@@ -41,7 +43,8 @@ import {RouterModule} from "@angular/router";
         PipeModule,
         Ng2GoogleChartsModule,
         PipeModule,
-        RouterModule
+        RouterModule,
+        DropdownValue
     ],
     declarations: [
         AppComponent,
@@ -60,6 +63,7 @@ import {RouterModule} from "@angular/router";
         GraphComponent,
         ImageUploadComponent,
         UploadPhotoComponent,
+        BedDropdownComponent,
 
     ],
     providers: [
