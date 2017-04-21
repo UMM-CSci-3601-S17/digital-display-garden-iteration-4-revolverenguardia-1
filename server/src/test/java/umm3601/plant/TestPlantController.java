@@ -1,6 +1,8 @@
 package umm3601.plant;
 
 import com.google.gson.Gson;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 //import sun.text.normalizer.UTF16;
@@ -19,12 +21,13 @@ public class TestPlantController {
 
     private final static String databaseName = "data-for-testing-only";
     private PlantController plantController;
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -108,7 +111,6 @@ public class TestPlantController {
         assertEquals("this should be plant 1",plantJson,plantController.getPlantByPlantID("16001.0","first uploadId"));
         assertEquals("this should be plant 2",plantJson2,plantController.getPlantByPlantID("16040.0","second uploadId"));
 
-        System.out.println(plantController.getPlantByPlantID("16005", "first uploadId").charAt(0));
         //test to see if the plant doesnt appear'
         assertEquals("this plant doesnt exist thus should return \"null\"",plantController.getPlantByPlantID("16005", "first uploadId"), "null");
 

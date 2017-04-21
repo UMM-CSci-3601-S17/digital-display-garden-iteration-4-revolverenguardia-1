@@ -10,6 +10,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.gardenCharts.testUtils;
@@ -18,11 +20,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MakeJSON {
-    public static String databaseName = "test";
+    public static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Test
     public void filledArray() throws IOException {
-        GardenCharts gardenCharts = new GardenCharts(databaseName);
+        GardenCharts gardenCharts = new GardenCharts(testDB);
         testUtils utils = new testUtils();
 
         /*
@@ -44,15 +48,15 @@ public class MakeJSON {
          */
 
         //setting array list to the result
-        System.out.println(gardenCharts.makeJSON(filledArray));
+//        System.out.println(gardenCharts.makeJSON(filledArray));
         ArrayList<Object> list = utils.JSONtoArrayList(gardenCharts.makeJSON(filledArray));
-
-        System.out.println();
-        System.out.println("ArrayList of ArrayList");
-        System.out.println();
-        utils.printDoubleArrayList(list);
-
-        System.out.println(list.get(0));
+//
+//        System.out.println();
+//        System.out.println("ArrayList of ArrayList");
+//        System.out.println();
+//        utils.printDoubleArrayList(list);
+//
+//        System.out.println(list.get(0));
 
         assertEquals("Incorrect size", 4, list.size());
 
@@ -69,7 +73,7 @@ public class MakeJSON {
 
     @Test
     public void emptyArray() throws IOException {
-        GardenCharts gardenCharts = new GardenCharts(databaseName);
+        GardenCharts gardenCharts = new GardenCharts(testDB);
         testUtils utils = new testUtils();
 
         Object[][] emptyArray = new Object[0][0];

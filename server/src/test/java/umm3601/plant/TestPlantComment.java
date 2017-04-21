@@ -19,13 +19,14 @@ import static org.junit.Assert.assertTrue;
 public class TestPlantComment {
 
     private final static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -34,9 +35,7 @@ public class TestPlantComment {
 
         assertTrue(plantController.storePlantComment(json, "second uploadId"));
 
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> commentDocuments = db.getCollection("comments");
+        MongoCollection<Document> commentDocuments = testDB.getCollection("comments");
 
         long contains = commentDocuments.count();
         assertEquals(1, contains);
@@ -55,10 +54,7 @@ public class TestPlantComment {
         String json = "{ plantId: \"58d1c36efb0cac4e15afd27\", comment : \"Here is our comment for this test\" }";
 
         assertFalse(plantController.storePlantComment(json, "second uploadId"));
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> commentDocuments = db.getCollection("comments");
+        MongoCollection<Document> commentDocuments = testDB.getCollection("comments");
 
         long contains = commentDocuments.count();
         assertEquals(0, contains);

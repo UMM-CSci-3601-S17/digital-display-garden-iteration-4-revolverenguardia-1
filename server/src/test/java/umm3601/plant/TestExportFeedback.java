@@ -1,5 +1,7 @@
 package umm3601.plant;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,15 +22,10 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class TestExportFeedback {
 
-    private final static String databaseName = "data-for-testing-only";
-    private PlantController plantController;
-
-    @Before
-    public void populateDB() throws IOException {
-        //PopulateMockDatabase db = new PopulateMockDatabase();
-        //db.clearAndPopulateDBAgain();
-        //plantController = new PlantController(databaseName);
-    }
+//    private final static String databaseName = "data-for-testing-only";
+//    public MongoClient mongoClient = new MongoClient();
+//    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
+//    private PlantController plantController;
 
     @Test
     public void testExportFeedback() throws IOException {

@@ -22,22 +22,20 @@ public class FlowerRating {
 
     private final static String databaseName = "data-for-testing-only";
     private PlantController plantController;
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
     public void AddFlowerRatingReturnsTrueWithValidInput() throws IOException{
 
         assertTrue(plantController.addFlowerRating("16001.0", true, "first uploadId"));
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = db.getCollection("plants");
+        MongoCollection plants = testDB.getCollection("plants");
 
         FindIterable doc = plants.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd202")));
         Iterator iterator = doc.iterator();
@@ -72,9 +70,7 @@ public class FlowerRating {
 
         assertTrue(plantController.addFlowerRating(json, "first uploadId"));
 
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = db.getCollection("plants");
+        MongoCollection plants = testDB.getCollection("plants");
 
         FindIterable doc = plants.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd202")));
         Iterator iterator = doc.iterator();
