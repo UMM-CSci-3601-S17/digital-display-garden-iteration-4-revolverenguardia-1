@@ -22,13 +22,15 @@ import javax.servlet.http.Part;
 
 public class Server {
 
-    public static final String API_URL = "http://localhost:2538";
+    public static final String API_URL = "https://localhost:2538";
 
     public static String databaseName = "test";
 
     private static String excelTempDir = "/tmp/digital-display-garden";
 
     public static void main(String[] args) throws IOException {
+
+        secure("https/keystore.jks", "password", null, null);
 
         port(2538);
 
