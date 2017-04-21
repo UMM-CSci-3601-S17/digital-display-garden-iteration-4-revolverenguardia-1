@@ -11,6 +11,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Plant } from './plant';
 import { Observable } from "rxjs";
+import {PlantFeedback} from "./PlantFeedback";
 
 @Injectable()
 export class PlantService {
@@ -57,4 +58,9 @@ export class PlantService {
         };
         return this.http.post(this.URL + "leaveComment", JSON.stringify(returnObject)).map(res => res.json());
     }
+
+    getFeedbackForPlantByPlantID(id: string): Observable<PlantFeedback> {
+        return this.http.request(this.URL + "/" + id + "/counts").map(res => res.json());
+    }
+
 }

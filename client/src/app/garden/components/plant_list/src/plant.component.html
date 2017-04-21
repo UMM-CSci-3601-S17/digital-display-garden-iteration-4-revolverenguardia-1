@@ -77,6 +77,15 @@
 
         <div *ngIf="rated">
             <h3>Thanks for your feedback!</h3>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
+                    {{plantFeedback.likeCount}}
+                </div>
+
+                <div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
+                    {{plantFeedback.dislikeCount}}
+                </div>
+            </div>
         </div>
 
         <div *ngIf="!commented">
@@ -89,6 +98,8 @@
 
         <div *ngIf="commented">
             <h3>Your comment has been submitted.</h3>
+
+            {{plantFeedback.commentCount}} people have left feedback
         </div>
 
         <!--Whitespace at end of page-->

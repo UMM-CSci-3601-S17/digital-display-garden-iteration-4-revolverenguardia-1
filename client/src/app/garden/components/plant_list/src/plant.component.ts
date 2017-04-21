@@ -10,6 +10,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
 import 'rxjs/add/operator/switchMap';
+import {PlantFeedback} from "./PlantFeedback";
 
 @Component({
     selector: 'plant-component',
@@ -25,6 +26,10 @@ export class PlantComponent implements OnInit {
 
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
+
+    //This will get the feedback count
+    plantFeedback: PlantFeedback = new PlantFeedback();
+
 
     /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,
@@ -46,6 +51,11 @@ export class PlantComponent implements OnInit {
         this.route.params
             .switchMap((params: Params) => this.plantService.getPlantById(params['id']))
             .subscribe(plant => this.plant = plant);
+
+        this.route.params
+            .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
+            .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
+
     }
 
     /**
@@ -55,7 +65,7 @@ export class PlantComponent implements OnInit {
     public rate(rating: boolean): void {
         if (!this.rated) {this.rated = false;
             this.plantService.ratePlant(this.plant.id, rating)
-                .subscribe(succeeded => this.rated = succeeded);
+                .subscribe(succeeded => {this.rated = succeeded;this.refreshFeedback()})
         }
     }
 
@@ -67,9 +77,16 @@ export class PlantComponent implements OnInit {
         if (!this.commented) {
             if (comment != null) {
                 this.plantService.commentPlant(this.plant.id, comment)
-                    .subscribe(succeeded => this.commented = succeeded);
+                    .subscribe(succeeded => {this.commented = succeeded;this.refreshFeedback()})
             }
         }
+    }
+
+    private refreshFeedback(): void {
+        //Update flower feedback numbers
+        this.route.params
+            .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
+            .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
     }
 
     /**
