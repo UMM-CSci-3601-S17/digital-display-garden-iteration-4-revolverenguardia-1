@@ -61,20 +61,54 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
+            html {
+                font-family: Arial;
+                font-weight: lighter;
+                font-size: 1.75em;
+                text-align: center;
+            }
+            .row-plant-list-header {
+                background-color: #283d1c;
+                color: #ffffff;
+                padding: 0.5em 0em;
+                line-height: 1em;
+            }
+            .row-plant-list-body {
+                background-color: #ffffff;
+            }
+            .row-plant-list-body a {
+                color: #3b3b3b;
+                line-height: 1.5em;
+            }
+            .row-plant-list-body li {
+                padding-top: 1.8em;
+            }
+            .row-plant-list-body ul {
+                padding-bottom: 1.8em;
+            }
+            .common-name {
+                font-size: 1em;
+            }
+            .cultivar {
+                font-weight: bold;
+            }
         </style>
     </head>
 
-    <div (click)="handlePlantListClick($event.target.textContent)">
-            <a>Plants</a>
+    <div class="row-plant-list-header">
+        <div>Plants</div>
     </div>
 
-    <ul>
-        <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
-            <a>
-                {{ plant.commonName }}
-                {{ plant.cultivar}}
-            </a>
-        </li>
-    </ul>
+    <div class="row-plant-list-body">
+        <ul>
+            <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
+                <a>
+                    <span class="common-name">{{ plant.commonName }}</span>
+                    <br>
+                    <span class="cultivar">{{ plant.cultivar}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
 </html>

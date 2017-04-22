@@ -10,6 +10,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:700' rel='stylesheet'>
         <style>
             /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
             html, body, div, span, applet, object, iframe,
@@ -62,11 +63,25 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
+            .row-header {
+                background-color: #7a0019;
+                padding: 0.75em 0em;
+            }
+            .site-name a {
+                font-family: "Open Sans Condensed";
+                font-style: normal;
+                font-size: 2em;
+                line-height: 1em;
+                color: white;
+            }
+
         </style>
     </head>
 
-    <div>
-        <a [routerLink]="['/']">Digital Display Garden</a>
+    <div class="row-header">
+        <div class="site-name">
+            <a [routerLink]="['/']">Digital Display Garden</a>
+        </div>
     </div>
 
 </html>
