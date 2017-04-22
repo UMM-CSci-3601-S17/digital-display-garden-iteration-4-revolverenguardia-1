@@ -8,34 +8,78 @@
 -->
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed,
+            figure, figcaption, footer, header, hgroup,
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure,
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+            *,
+            *:before,
+            *:after {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
 
-    <style>
+    <div class="filter-bar">
 
-        .select{
+        <select>
+            <option value="volvo">1S</option>
+            <option value="saab">2S</option>
+            <option value="mercedes">LG</option>
+            <option value="audi">3S</option>
+        </select>
 
-        }
+        <select>
+            <option value="volvo">Begonia</option>
+            <option value="saab">Germanium</option>
+            <option value="mercedes">Cosmos</option>
+            <option value="audi">Tulip</option>
+        </select>
 
-    </style>
-
-</head>
-
-<div class="filter-bar">
-
-    <select>
-        <option value="volvo">1S</option>
-        <option value="saab">2S</option>
-        <option value="mercedes">LG</option>
-        <option value="audi">3S</option>
-    </select>
-
-    <select>
-        <option value="volvo">Begonia</option>
-        <option value="saab">Germanium</option>
-        <option value="mercedes">Cosmos</option>
-        <option value="audi">Tulip</option>
-    </select>
-
-</div>
-
+    </div>
 </html>
