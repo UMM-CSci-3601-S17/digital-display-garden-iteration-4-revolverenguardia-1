@@ -62,33 +62,68 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
-            .row-links {
+            .row-footer {
                 background-color: #90b57a;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-style: normal;
+                font-size: 1.5em;
             }
-            .row-links a {
-                color: black;
+            .each-footer-element {
+                display: inline-block;
+            }
+            .wcroc-website {
+                padding: 0.4em 0em;
+            }
+            .wcroc-website a {
+                color: #292f33;
+            }
+            .social-media img{
+                border-radius: 0.25em;
+                max-width: 2.5em;
+                height: auto;
+            }
+            .each-link {
+                display: inline;
+            }
+            .wcroc-address {
+                text-align: right;
+                float: right;
+                padding: 0.4em 0em;
             }
         </style>
     </head>
 
-    <div class="row-links">
-        <div>
-            <a href="https://wcroc.cfans.umn.edu/public-gardens" target="_blank">
-            Visit us at the WCROC website
-            </a>
+    <div class="row-footer">
+
+        <div class="each-footer-element">
+            <div class="wcroc-website">
+                <a href="https://wcroc.cfans.umn.edu/public-gardens" target="_blank">
+                Visit our public garden website!
+                </a>
+            </div>
+
+            <div class="social-media">
+                <div class="each-link">
+                    <a href="https://www.facebook.com/HorticultureDisplayGarden/" target="_blank">
+                        <img class="imgButton" alt="Facebook" src="../res/FB-f-Logo__blue_58.png">
+                    </a>
+                </div>
+
+                <div class="each-link">
+                    <a href="https://twitter.com/WCROCMorris" target="_blank">
+                        <img class="imgButton" alt="Twitter" src="../res/Twitter_Logo_White_On_Blue.png">
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <a href="https://www.facebook.com/HorticultureDisplayGarden/" target="_blank">
-                <img class="imgButton" alt="Facebook" src="../res/FB-f-Logo__blue_58.png">
-            </a>
+        <div class="wcroc-address each-footer-element">
+            <p>
+                West Central Research and Outreach Center<br>
+                46352 State Hwy 329 | Morris, MN 56267
+            </p>
         </div>
 
-        <div>
-            <a href="https://twitter.com/WCROCMorris" target="_blank">
-                <img class="imgButton" alt="Twitter" src="../res/Twitter_Logo_White_On_Blue.png">
-            </a>
-        </div>
     </div>
 
 </html>

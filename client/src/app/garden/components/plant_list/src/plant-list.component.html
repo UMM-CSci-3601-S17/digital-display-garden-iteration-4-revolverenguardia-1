@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
         <style>
             /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
             html, body, div, span, applet, object, iframe,
@@ -62,32 +63,35 @@
                 box-sizing: border-box;
             }
             html {
-                font-family: Arial;
-                font-weight: lighter;
-                font-size: 1.75em;
                 text-align: center;
             }
+            .the-whole {
+            }
             .row-plant-list-header {
-                background-color: #283d1c;
+                font-family: "Open Sans Condensed";
+                font-weight: 300;
+                font-size: 2em;
                 color: #ffffff;
-                padding: 0.5em 0em;
                 line-height: 1em;
+                background-color: #283d1c;
+                padding: 0.3em 0em;
+
             }
             .row-plant-list-body {
                 background-color: #ffffff;
             }
             .row-plant-list-body a {
-                color: #3b3b3b;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-style: normal;
+                font-size: 1.5em;
                 line-height: 1.5em;
+                color: #3b3b3b;
             }
             .row-plant-list-body li {
-                padding-top: 1.8em;
+                padding-top: 3em;
             }
             .row-plant-list-body ul {
-                padding-bottom: 1.8em;
-            }
-            .common-name {
-                font-size: 1em;
+                padding-bottom: 3em;
             }
             .cultivar {
                 font-weight: bold;
@@ -95,20 +99,22 @@
         </style>
     </head>
 
-    <div class="row-plant-list-header">
-        <div>Plants</div>
-    </div>
+    <div class="the-whole">
+        <div class="row-plant-list-header">
+            <div>Plants</div>
+        </div>
 
-    <div class="row-plant-list-body">
-        <ul>
-            <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
-                <a>
-                    <span class="common-name">{{ plant.commonName }}</span>
-                    <br>
-                    <span class="cultivar">{{ plant.cultivar}}</span>
-                </a>
-            </li>
-        </ul>
+        <div class="row-plant-list-body">
+            <ul>
+                <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
+                    <a>
+                        {{ plant.commonName }}
+                        <br>
+                        <span class="cultivar">{{ plant.cultivar}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
 </html>
