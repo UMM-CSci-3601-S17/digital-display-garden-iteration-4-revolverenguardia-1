@@ -7,7 +7,18 @@
 -->
 
 
-
+<div class="dropdown">
+    <a href="#" data-toggle="dropdown" class="dropdown-toggle"> {{ dropDownName }} <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li *ngFor="let plant of plantListService.getFilteredPlants()" (click)="setFlower(plant.cultivar)">
+        <a>
+            <h4>{{ plant.commonName }}</h4>
+            {{ plant.cultivar}}
+        </a>
+        </li>
+            <!--(click)="onSelectFlower(currentFlower)"> {{currentFlower}} </li>-->
+    </ul>
+</div>
 
 
 
@@ -22,7 +33,7 @@
 <br>
 <br>
 
-<input #flowerNameInput type="text" placeholder="Name of Flower in Photo" (input)="flowerName = $event.target.value">
+<!--<input #flowerNameInput type="text" placeholder="Name of Flower in Photo" (input)="flowerName = $event.target.value">-->
 
 
 <br>
