@@ -65,32 +65,44 @@
             html {
                 text-align: center;
             }
-            .the-whole {
+            .row-plant-list {
+                width: 50%;
+                margin: 0em auto;
+                -webkit-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+                -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+                box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+                position: relative;
+                top: -6.5em;
             }
-            .row-plant-list-header {
+            @media only screen and (max-width: 768px) {
+                [class="row-plant-list"] {
+                    width: 100%;
+                }
+            }
+            .plant-list-header {
                 font-family: "Open Sans Condensed";
                 font-weight: 300;
                 font-size: 2em;
                 color: #ffffff;
                 line-height: 1em;
                 background-color: #283d1c;
-                padding: 0.3em 0em;
+                padding: 0.4em 0em;
 
             }
-            .row-plant-list-body {
+            .plant-list-body {
                 background-color: #ffffff;
             }
-            .row-plant-list-body a {
+            .plant-list-body a {
                 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                 font-style: normal;
                 font-size: 1.5em;
                 line-height: 1.5em;
                 color: #3b3b3b;
             }
-            .row-plant-list-body li {
+            .plant-list-body li {
                 padding-top: 3em;
             }
-            .row-plant-list-body ul {
+            .plant-list-body ul {
                 padding-bottom: 3em;
             }
             .cultivar {
@@ -99,12 +111,11 @@
         </style>
     </head>
 
-    <div class="the-whole">
-        <div class="row-plant-list-header">
-            <div>Plants</div>
-        </div>
+    <div class="row-plant-list">
 
-        <div class="row-plant-list-body">
+        <div class="plant-list-header">Plants</div>
+
+        <div class="plant-list-body">
             <ul>
                 <li *ngFor="let plant of plantListService.getFilteredPlants()" [routerLink]="['/plant', plant.id]">
                     <a>
@@ -115,6 +126,7 @@
                 </li>
             </ul>
         </div>
+
     </div>
 
 </html>

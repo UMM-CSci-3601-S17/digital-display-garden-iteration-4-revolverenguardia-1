@@ -65,13 +65,18 @@
             }
             .row-header {
                 background-color: #7a0019;
-                padding-top: 0.75em;
-                padding-bottom: 0.75em;
-                padding-left: 1em;
+                padding: 0.75em 0em;
             }
             .site-name {
                 font-family: "Open Sans Condensed";
                 font-style: normal;
+                width: 50%;
+                margin: 0em auto;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="site-name"] {
+                    width: 95%;
+                }
             }
             .site-name a {
                 font-weight: 700;

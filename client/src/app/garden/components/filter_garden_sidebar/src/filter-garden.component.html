@@ -63,20 +63,28 @@
                 box-sizing: border-box;
             }
             .row-filter {
-                background: linear-gradient(#ffcc00, #FFDE7A);
+                background: linear-gradient(#FFDE7A, #ffcc00);
                 padding-top: 0.75em;
-                padding-bottom: 0.75em;
-                padding-left: 1em;
+                padding-bottom: 1.5em;
+            }
+            .drop-downs {
+                width: 50%;
+                margin: 0em auto;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="drop-downs"] {
+                    width: 95%;
+                }
             }
             .just-deco {
-                background: linear-gradient(#283d1c, #537d39);
-                padding: 1.5em 0em;
+                background: linear-gradient(#537d39, #283d1c);
+                padding: 3em 0em;
             }
         </style>
     </head>
 
     <div class="row-filter">
-        <div>
+        <div class="drop-downs">
             <select>
                 <option value="volvo">1S</option>
                 <option value="saab">2S</option>
@@ -85,7 +93,7 @@
             </select>
         </div>
 
-        <div>
+        <div class="drop-downs">
             <select>
                 <option value="volvo">Begonia</option>
                 <option value="saab">Germanium</option>
