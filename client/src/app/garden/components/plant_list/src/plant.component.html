@@ -14,7 +14,7 @@
     <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
     <style>
         /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
-        html, body, div, span, applet, object, iframe,
+        html, body, div, applet, object, iframe,
         h1, h2, h3, h4, h5, h6, p, blockquote, pre,
         a, abbr, acronym, address, big, cite, code,
         del, dfn, em, img, ins, kbd, q, s, samp,
@@ -64,62 +64,145 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
+        .plant-info {
+            width: 50%;
+            margin: auto;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-style: normal;
+            font-size: 1em;
+            line-height: 1em;
+        }
+        @media only screen and (max-width: 768px) {
+            [class="plant-info"] {
+                width: 100%;
+            }
+        }
+        .back-btn {
+            padding: 0.5em;
+            margin: 1.25em 0em;
+            background: linear-gradient(#FFDE7A, #ffcc00);
+            -webkit-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+            -moz-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+            box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+        }
+        .back-btn a {
+            color: #7a0019;
+        }
+        .garden-img {
+            -webkit-box-shadow: 0px 20px 23px 0px rgba(82,82,82,1);
+            -moz-box-shadow: 0px 20px 23px 0px rgba(82,82,82,1);
+            box-shadow: 0px 20px 23px 0px rgba(82,82,82,1);
+        }
+        .garden-img img{
+            width: 100%;
+            height: auto;
+        }
+        .body {
+            background-color: #ffffff;
+            -webkit-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            padding: 1.25em 0em;
+        }
+        .info {
+            margin-bottom: 2em;
+        }
+        .info p {
+            font-family: "Open Sans Condensed";
+            font-weight: 600;
+            font-size: 1.5em;
+            color: #283d1c;
+            line-height: 1em;
+            text-align: center;
+            margin-bottom: .35em;
+        }
+        .rating {
+            text-align: center;
+        }
+        .rating-btn {
+            padding: 0.5em 0.75em;
+            margin-bottom: 2em;
+        }
+        .rating-btn a {
+            color: #537d39;
+        }
+
         </style>
     </head>
 
-    <a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left"></span></a>
+    <div class="plant-info">
 
-    <img src="../res/wroc.jpg" width="100%"/>
-
-    <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
-
-    <div *ngIf="plant !== null">
-
-        <h3>{{plant.cultivar}}</h3>
-        <h4> Common Name: {{plant.commonName}}</h4>
-        <h4> Bed Number: {{plant.gardenLocation}}</h4>
-
-        <div *ngIf="!rated">
-            <a (click)="this.rate(true)" >
-                <span class="glyphicon glyphicon-thumbs-up"> </span> Like
-            </a>
-            <a (click)="this.rate(false)">
-                <span class="glyphicon glyphicon-thumbs-down"> </span> Dislike
+        <div class="back-btn btn btn-lg">
+            <a href="javascript:history.go(-1)">
+                <span class="glyphicon glyphicon-arrow-left"></span> Back to Search
             </a>
         </div>
 
-        <div *ngIf="rated">
-            <h3>Thanks for your feedback!</h3>
-            <div class="progress">
-                <div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
-                    {{plantFeedback.likeCount}}
+        <div class="garden-img">
+            <img src="../res/wroc.jpg">
+        </div>
+
+        <div class="body">
+
+            <div class="info">
+                <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
+
+                <div *ngIf="plant !== null">
+
+                    <p> Common Name - "{{plant.commonName}}"</p>
+                    <p> Cultivar - "{{plant.cultivar}}"</p>
+                    <p> Bed {{plant.gardenLocation}}</p>
+            </div>
+
+            <div class="rating">
+                <div *ngIf="!rated">
+
+                    <div class="rating-btn btn btn-lg">
+                        <a (click)="this.rate(true)">
+                            <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                        </a>
+                    </div>
+
+                    <div class="rating-btn btn btn-lg">
+                        <a (click)="this.rate(false)">
+                            <span class="glyphicon glyphicon-thumbs-down"></span> Dislike
+                        </a>
+                    </div>
+
                 </div>
 
-                <div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
-                    {{plantFeedback.dislikeCount}}
+                <div *ngIf="rated">
+                    <p>Thanks for your feedback!</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
+                            {{plantFeedback.likeCount}}
+                        </div>
+
+                        <div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
+                            {{plantFeedback.dislikeCount}}
+                        </div>
+                    </div>
                 </div>
             </div>
+
+                <div *ngIf="!commented">
+                    <textarea [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
+                    <br>
+                    <a (click)="this.comment(commentText)">
+                        Leave a comment
+                    </a>
+                </div>
+
+                <div *ngIf="commented">
+                    <h3>Your comment has been submitted.</h3>
+
+                    {{plantFeedback.commentCount}} people have left feedback
+                </div>
+            </div>
+
         </div>
-
-        <div *ngIf="!commented">
-            <textarea [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
-            <br>
-            <a (click)="this.comment(commentText)">
-                Leave a comment
-            </a>
-        </div>
-
-        <div *ngIf="commented">
-            <h3>Your comment has been submitted.</h3>
-
-            {{plantFeedback.commentCount}} people have left feedback
-        </div>
-
-        <!--Whitespace at end of page-->
-        <div></div>
 
     </div>
-
 
     <!--<footer-component></footer-component>-->
 
