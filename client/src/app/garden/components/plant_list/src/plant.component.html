@@ -79,7 +79,7 @@
         }
         .back-btn {
             padding: 0.5em;
-            margin: 1.25em 0em;
+            margin: 1em 0em;
             background: linear-gradient(#FFDE7A, #ffcc00);
             -webkit-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
             -moz-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
@@ -105,7 +105,7 @@
             padding: 1.25em 0em;
         }
         .info {
-            margin-bottom: 2em;
+            margin-bottom: 1.5em;
         }
         .info p {
             font-family: "Open Sans Condensed";
@@ -121,18 +121,49 @@
             margin-bottom: 2em;
         }
         .rating-btn {
-            padding: 0.5em 0.75em;
-            margin-bottom: 2em;
+            background-color: #737373;
+            padding: 0.3em 0.6em;
+            margin-left: 0.75em;
+            margin-right: 0.75em;
+            width: 7em;
         }
         .rating-btn a {
-            color: #537d39;
+            color: #ffffff;
         }
-        .rating p {
+        .feedback-to-user-action {
             font-family: "Open Sans Condensed";
             font-weight: 300;
             font-size: 1.25em;
             line-height: 1em;
             color: #7a0019;
+            text-align: center;
+        }
+        .comment {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+        .comment-box textarea{
+            border-radius: 0.25em;
+            width: 50%;
+            margin: 0em auto;
+            margin-bottom: 1em;
+        }
+        @media only screen and (max-width: 768px) {
+            [class="plant-info"] textarea {
+                width: 90%;
+            }
+        }
+        .submit-btn {
+            padding: 0.5em;
+            margin-bottom: 1.5em;
+            background: linear-gradient(#537d39, #283d1c);
+            -webkit-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+            -moz-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+            box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+        }
+        .submit-btn a {
+            color: #ffffff;
+            padding: 0em 0.25em;
         }
 
         </style>
@@ -192,7 +223,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="rated">
+                <div class="feedback-to-user-action" *ngIf="rated">
                     <p>Thanks for your feedback!</p>
                 </div>
 
@@ -208,20 +239,28 @@
             </div>
             <!--likes and dislikes end here-->
 
-            
+
             <!--comment starts here-->
             <div class="comment">
 
                 <div *ngIf="!commented">
-                    <textarea [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
-                    <a (click)="this.comment(commentText)">
-                        Leave a comment
-                    </a>
+
+                    <div class="comment-box">
+                        <textarea [(ngModel)]="commentText" rows="7" wrap="on"></textarea>
+                    </div>
+
+                    <div class="submit-btn btn btn-lg">
+                        <a (click)="this.comment(commentText)">
+                            Leave a comment
+                        </a>
+                    </div>
+
+                    <p class="feedback-to-user-action">{{plantFeedback.commentCount}} people have left comments so far!</p>
+
                 </div>
 
-                <div *ngIf="commented">
-                    <h3>Your comment has been submitted.</h3>
-                    {{plantFeedback.commentCount}} people have left feedback
+                <div class="feedback-to-user-action" *ngIf="commented">
+                    <p>Your comment has been submitted.</p>
                 </div>
             </div>
             <!--comment ends here-->
