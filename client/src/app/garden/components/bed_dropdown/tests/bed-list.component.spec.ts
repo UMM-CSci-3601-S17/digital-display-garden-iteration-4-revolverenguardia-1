@@ -8,9 +8,9 @@
  */
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { Observable } from "rxjs";
-import {BedListComponent} from "../src/bed-list.component";
+import {BedListComponent} from "../src/bed-dropdown.component";
 import {Bed} from "../src/bed";
-import {BedListService} from "../src/bed-list.service";
+import {BedListService} from "../src/bed-dropdown.service";
 import {RouterTestingModule} from "@angular/router/testing";
 
 

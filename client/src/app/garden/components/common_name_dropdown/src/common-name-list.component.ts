@@ -9,7 +9,7 @@ import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 
 @Component({
-    selector: 'common-name-list',
+    selector: 'common-name-dropdown',
     templateUrl: 'common-name-list.component.html'
 })
 export class CommonNameListComponent {
@@ -23,7 +23,9 @@ export class CommonNameListComponent {
      * a click event for a list item.
      * @param commonName - the common name to filter by
      */
-    private handleCommonNameListClick(commonName): void {
+    private handleCommonNameSelect(commonName): void {
+
+        console.log(commonName);
 
         // If bed name is being deselected
         if (commonName == this.plantListService.getCommonNameFilter())

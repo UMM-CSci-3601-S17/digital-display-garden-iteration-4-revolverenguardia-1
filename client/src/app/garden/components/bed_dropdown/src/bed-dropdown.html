@@ -1,0 +1,26 @@
+<!--
+    Provides an interface to view and interact with all Bed specific data.
+
+    @author Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
+    @editor Iteration 4 - Team Revolver en Guardia++
+-->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+
+        </style>
+    </head>
+
+    <div class="bed-dropdown">
+        <select (change)="handleBedSelect($event.target.value)">
+            <option value="ALL"></option>
+            <option *ngFor="let bed of bedListService.getBedNames()">
+                {{bed._id}}
+            </option>
+        </select>
+    </div>
+
+</html>

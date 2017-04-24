@@ -6,16 +6,16 @@
 import {FilterGardenComponent} from "../src/filter-garden.component";
 import {ComponentFixture, TestBed, async} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
-import {BedListComponent} from "../../bed_list/src/bed-list.component";
-import {CommonNameListComponent} from "../../common_name_list/src/common-name-list.component";
+import {BedListComponent} from "../../bed_dropdown/src/bed-dropdown.component";
+import {CommonNameListComponent} from "../../common_name_dropdown/src/common-name-list.component";
 import {RouterTestingModule} from "@angular/router/testing";
-import {BedListService} from "../../bed_list/src/bed-list.service";
-import {CommonNameListService} from "../../common_name_list/src/common-name-list.service";
+import {BedListService} from "../../bed_dropdown/src/bed-dropdown.service";
+import {CommonNameListService} from "../../common_name_dropdown/src/common-name-list.service";
 import {HttpModule} from "@angular/http";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {Observable} from "rxjs";
-import {Bed} from "../../bed_list/src/bed";
-import {CommonName} from "../../common_name_list/src/common-name";
+import {Bed} from "../../bed_dropdown/src/bed";
+import {CommonName} from "../../common_name_dropdown/src/common-name";
 import {Plant} from "../../plant_list/src/plant";
 
 describe("Test Display Properties of Filter Sidebar", () => {

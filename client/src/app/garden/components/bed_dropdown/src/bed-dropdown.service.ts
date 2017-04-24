@@ -52,6 +52,12 @@ export class BedListService {
         return this.beds;
     }
 
+    /**
+     * TODO: Comment
+     * @param gardenLocation
+     * @param isQR
+     * @returns {Observable<R>}
+     */
     reportBedVisit(gardenLocation : string, isQR : boolean): Observable<boolean> {
         if(isQR) {
             return this.http.post(API_URL + "qrVisit", gardenLocation).map(res => res.json());

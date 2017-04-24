@@ -84,21 +84,10 @@
     </head>
 
     <div class="row-filter">
-        <div class="drop-downs">
-            <select>
-                <option *ngFor="let bed of bedListService.getBedNames()">
-                    {{bed._id}}
-                </option>
-            </select>
-        </div>
 
-        <div class="drop-downs">
-            <select>
-                <option *ngFor="let commonName of commonNameListService.getCommonNames()">
-                    {{commonName._id}}
-                </option>
-            </select>
-        </div>
+        <bed-dropdown></bed-dropdown>
+        <common-name-dropdown></common-name-dropdown>
+
     </div>
 
     <div class="just-deco"></div>

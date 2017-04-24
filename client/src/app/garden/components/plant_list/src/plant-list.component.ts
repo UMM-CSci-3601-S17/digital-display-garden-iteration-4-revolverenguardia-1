@@ -8,8 +8,8 @@
 import {Component, OnInit} from '@angular/core';
 import {PlantListService} from "./plant-list.service";
 import {ActivatedRoute} from "@angular/router";
-import {BedListComponent} from "../../bed_list/src/bed-list.component";
-import {BedListService} from "../../bed_list/src/bed-list.service";
+import {BedListComponent} from "../../bed_dropdown/src/bed-dropdown.component";
+import {BedListService} from "../../bed_dropdown/src/bed-dropdown.service";
 import {GardenComponent} from "../../../src/garden-component";
 import {Location} from '@angular/common';
 

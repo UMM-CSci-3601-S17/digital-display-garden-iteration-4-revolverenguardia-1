@@ -5,9 +5,9 @@
  * @editor Iteration 4 - Team Revolver en Guardia++
  */
 import { Component } from '@angular/core';
-import {BedListService} from "../../bed_list/src/bed-list.service";
-import {CommonNameListService} from "../../common_name_list/src/common-name-list.service";
-import {Bed} from "../../bed_list/src/bed";
+import {BedListService} from "../../bed_dropdown/src/bed-dropdown.service";
+import {CommonNameListService} from "../../common_name_dropdown/src/common-name-list.service";
+import {Bed} from "../../bed_dropdown/src/bed";
 
 @Component({
     selector: 'filter-garden-component',
@@ -18,5 +18,9 @@ export class FilterGardenComponent {
 
     constructor(private bedListService: BedListService,
                 private commonNameListService: CommonNameListService){ }
+
+    public handleClick(text: string): void{
+        console.log(text);
+    }
 }
 

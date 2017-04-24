@@ -6,13 +6,13 @@
  * @author Iteration 2 - Team Omar Anwar
  */
 import {Component} from "@angular/core";
-import {BedListService} from "./bed-list.service";
+import {BedListService} from "./bed-dropdown.service";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 
 @Component({
-    selector: 'bed-list',
-    templateUrl: 'bed-list.component.html'
+    selector: 'bed-dropdown',
+    templateUrl: 'bed-dropdown.html'
 })
 export class BedListComponent {
 
@@ -23,7 +23,7 @@ export class BedListComponent {
      * Filters by the provided bed name.
      * @param bedName - the bed name to filter by
      */
-    private handleBedListClick(bedName): void{
+    private handleBedSelect(bedName): void{
 
         // If bed name is being deselected
         if(bedName == this.plantListService.getBedFilter())
