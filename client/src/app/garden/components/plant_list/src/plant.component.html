@@ -118,6 +118,7 @@
         }
         .rating {
             text-align: center;
+            margin-bottom: 2em;
         }
         .rating-btn {
             padding: 0.5em 0.75em;
@@ -126,35 +127,56 @@
         .rating-btn a {
             color: #537d39;
         }
+        .rating p {
+            font-family: "Open Sans Condensed";
+            font-weight: 300;
+            font-size: 1.25em;
+            line-height: 1em;
+            color: #7a0019;
+        }
 
         </style>
     </head>
 
     <div class="plant-info">
 
+
+        <!--back button starts here-->
         <div class="back-btn btn btn-lg">
             <a href="javascript:history.go(-1)">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back to Search
             </a>
         </div>
+        <!--back button ends here-->
 
+
+        <!--image starts here-->
         <div class="garden-img">
             <img src="../res/wroc.jpg">
         </div>
+        <!--image ends here-->
 
+
+        <!--body starts here-->
         <div class="body">
 
+
+            <!--plant info starts here-->
             <div class="info">
                 <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
 
-                <div *ngIf="plant !== null">
+                <!--<div *ngIf="plant !== null">-->
 
                     <p> Common Name - "{{plant.commonName}}"</p>
                     <p> Cultivar - "{{plant.cultivar}}"</p>
                     <p> Bed {{plant.gardenLocation}}</p>
             </div>
+            <!--plant info ends here-->
 
+
+            <!--likes and dislikes start here-->
             <div class="rating">
+
                 <div *ngIf="!rated">
 
                     <div class="rating-btn btn btn-lg">
@@ -168,26 +190,30 @@
                             <span class="glyphicon glyphicon-thumbs-down"></span> Dislike
                         </a>
                     </div>
-
                 </div>
 
                 <div *ngIf="rated">
                     <p>Thanks for your feedback!</p>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
-                            {{plantFeedback.likeCount}}
-                        </div>
-
-                        <div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">
-                            {{plantFeedback.dislikeCount}}
-                        </div>
-                    </div>
                 </div>
+
+                    <!--<div class="progress">-->
+                        <!--<div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">-->
+                            <!--{{plantFeedback.likeCount}}-->
+                        <!--</div>-->
+
+                        <!--<div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">-->
+                            <!--{{plantFeedback.dislikeCount}}-->
+                        <!--</div>-->
+                    <!--</div>-->
             </div>
+            <!--likes and dislikes end here-->
+
+            
+            <!--comment starts here-->
+            <div class="comment">
 
                 <div *ngIf="!commented">
                     <textarea [(ngModel)]="commentText" rows="5" wrap="on"></textarea>
-                    <br>
                     <a (click)="this.comment(commentText)">
                         Leave a comment
                     </a>
@@ -195,12 +221,13 @@
 
                 <div *ngIf="commented">
                     <h3>Your comment has been submitted.</h3>
-
                     {{plantFeedback.commentCount}} people have left feedback
                 </div>
             </div>
+            <!--comment ends here-->
 
         </div>
+        <!--body ends here-->
 
     </div>
 
