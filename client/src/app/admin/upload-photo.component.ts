@@ -5,6 +5,7 @@ import {PlantListComponent} from "../../app/garden/components/plant_list/src/pla
 import {Plant} from "../../app/garden/components/plant_list/src/plant";
 import {PlantListService} from "../../app/garden/components/plant_list/src/plant-list.service";
 import { Observable } from "rxjs";
+import {BedListService} from "../../app/garden/components/bed_list/src/bed-list.service";
 
 @Component({
     selector: 'upload-photo-component',
@@ -14,19 +15,21 @@ import { Observable } from "rxjs";
 
 export class UploadPhotoComponent implements OnInit {
 
-    constructor(private plantListService: PlantListService){ }
+    constructor(private plantListService: PlantListService, private bedListService: BedListService){ }
 
     @ViewChild('iu') iu;
     @ViewChild('nameInput') nameInput: ElementRef;
 
     ListOfAllPlants: Observable<Plant[]>;
+    FilteredList: Observable<Plant[]>;
 
     newFileName: string;
     flowerName: string;
     filename:string;
     uploadAttempted:boolean = false;
     public currentFlower: string;
-    dropDownName:string = "Flower Name";
+    flowerDropDownName:string = "Cultivar Name";
+    bedDropDownName:string = "Bed Name";
 
 
     handleUpload() {
@@ -44,13 +47,18 @@ export class UploadPhotoComponent implements OnInit {
     }
 
     setFlower(cultiVar) {
-        this.dropDownName = cultiVar;
+        this.flowerDropDownName = cultiVar;
         this.flowerName = cultiVar;
     }
 
-    retrievePlantNames() {
-        this.ListOfAllPlants = this.plantListService.getPlantsFromServer()
+    setBed(Namebed) {
+        this.bedDropDownName = Namebed;
+        //this.plantListService.setBedFilter(Namebed);
     }
+
+    // retrievePlantNames() {
+    //     this.ListOfAllPlants = this.plantListService.getPlantsFromServer()
+    // }
 
 
     ngOnInit(): void {

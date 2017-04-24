@@ -7,28 +7,66 @@
 -->
 
 
-<div class="dropdown">
-    <a href="#" data-toggle="dropdown" class="dropdown-toggle"> {{ dropDownName }} <b class="caret"></b></a>
-    <ul class="dropdown-menu">
-        <li *ngFor="let plant of plantListService.getFilteredPlants()" (click)="setFlower(plant.cultivar)">
-        <a>
-            <h4>{{ plant.commonName }}</h4>
-            {{ plant.cultivar}}
-        </a>
-        </li>
-            <!--(click)="onSelectFlower(currentFlower)"> {{currentFlower}} </li>-->
-    </ul>
+
+
+
+<div *ngIf="filename!==undefined"> Your file was successfully uploaded as data set {{thop.filename}}.
 </div>
-
-
-
-<div *ngIf="filename!==undefined"> Your file was successfully uploaded as data set {{this.filename}}.
-</div>
-<div *ngIf="filename === undefined && uploadAttempted === true">File upload failed.</div>
+<div *ngIf="filename === undefined && uploadAttempted === true">File upload failed - Please Name Photo.</div>
+<div *ngIf="flowerName === undefined && uploadAttempted === true">File upload failed - Please Select A Flower.</div>
 
 <br>
 
 <input #nameInput type="text" placeholder="Name For Your Photo" (input)="newFileName = $event.target.value">
+
+<div class="flowerFilter">
+
+    <!--Dropdown for beds, needs to be worked on-->
+
+    <!--<div class="dropdown">-->
+        <!--<a href="#" data-toggle="dropdown" class="dropdown-toggle"> {{ bedDropDownName }} <b class="caret"></b></a>-->
+        <!--<ul class="dropdown-menu">-->
+            <!--<li *ngFor="let bed of bedListService.getBedNames()" (click)="setBed(bed.bedName)">-->
+                <!--<a>-->
+                    <!--<h4>{{ bed.bedName }}</h4>-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+
+
+    <br>
+
+    <!--Option A, display a dropdown with no search filter-->
+
+
+    <div class="dropdown">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"> {{ flowerDropDownName }} <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li *ngFor="let plant of plantListService.getFilteredPlants()" (click)="setFlower(plant.cultivar)">
+                <a>
+                    <h4>{{ plant.commonName }}</h4>
+                    {{ plant.cultivar}}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!--Option B, dropdown with search filter, works, but errors are thrown and no feedback is recieved-->
+
+    <!--<label>-->
+        <!--{{ flowerDropDownName }}-->
+        <!--<input id="flowerInput" list="flowerOptions" (input)="flowerName = $event.target.value">-->
+        <!--<datalist id="flowerOptions">-->
+            <!--<li *ngFor="let plant of plantListService.getFilteredPlants()">-->
+                <!--<option>-->
+                    <!--<h4>{{ plant.cultivar }}</h4>-->
+                <!--</option>-->
+            <!--</li>-->
+        <!--</datalist>-->
+    <!--</label>-->
+
+</div>
 
 <br>
 <br>
