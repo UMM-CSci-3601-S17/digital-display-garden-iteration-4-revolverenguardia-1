@@ -6,7 +6,7 @@
  */
 import { Component } from '@angular/core';
 import {BedListService} from "../../bed_dropdown/src/bed-dropdown.service";
-import {CommonNameListService} from "../../common_name_dropdown/src/common-name-list.service";
+import {CommonNameListService} from "../../common_name_dropdown/src/common-name-dropdown.service";
 import {Bed} from "../../bed_dropdown/src/bed";
 
 @Component({

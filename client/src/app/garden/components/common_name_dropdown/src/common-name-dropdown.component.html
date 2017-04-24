@@ -14,8 +14,9 @@
 
     <div class="common-name-dropdown">
         <select (change)="handleCommonNameSelect($event.target.value)">
-            <option value="ALL"></option>
-            <option *ngFor="let commonName of commonNameListService.getCommonNames()">
+            <option disabled selected value>Filter Common Name</option>
+            <option value="ALL">All</option>
+            <option *ngFor="let commonName of commonNameListService.getCommonNames()" [selected]="selectedCommonName == commonName._id">
                 {{commonName._id}}
             </option>
         </select>

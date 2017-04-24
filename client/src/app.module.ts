@@ -10,11 +10,11 @@ import { NavbarComponent } from './app/navbar/navbar.component';
 import {GardenComponent} from "./app/garden/src/garden-component";
 import {PlantListComponent} from "./app/garden/components/plant_list/src/plant-list.component";
 import {BedListComponent} from "./app/garden/components/bed_dropdown/src/bed-dropdown.component";
-import { CommonNameListComponent } from "./app/garden/components/common_name_dropdown/src/common-name-list.component";
+import { CommonNameListComponent } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.component";
 
 import {PlantListService} from "./app/garden/components/plant_list/src/plant-list.service";
 import {BedListService} from "./app/garden/components/bed_dropdown/src/bed-dropdown.service";
-import { CommonNameListService } from "./app/garden/components/common_name_dropdown/src/common-name-list.service";
+import { CommonNameListService } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.service";
 import {AdminComponent} from "./app/admin/admin.component";
 import {PlantComponent} from "./app/garden/components/plant_list/src/plant.component";
 import {ImportComponent} from "./app/admin/import.component";
