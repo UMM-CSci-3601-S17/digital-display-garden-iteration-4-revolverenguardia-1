@@ -68,46 +68,13 @@ public class GardenCharts
 
             }
 
-            /*
-                ************** OLD STUFF ****************
-             */
-            //Create a Map between Hours and page visit times
-            HashMap<Integer, Integer> hours = new HashMap<Integer, Integer>();
-            for (Date date : dates){
-                int hour = date.getHours();
-
-                if(hours.get(hour) == null) {
-                    hours.put(hour, 1);
-                }
-                else
-                {
-                    int visits = hours.get(hour);
-                    hours.put(hour, visits + 1);
-                }
-            }
-            // replace nulls with zeros
-            for(int i = 0; i < 25; i++){
-                if(hours.get(i) == null){
-                    hours.put(i, 0);
-                }
-            }
-            /*
-                ************** OLD STUFF ****************
-            */
-
-
             ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
 
             int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
 
             int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
-            System.out.println();
-            printArray(viewsPerHour);
 
 
-            /*
-                *************** JSON GARBAGE ******************
-             */
             int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
             for (int i = 1; i < 24 + 1; i++) {
                 dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
@@ -362,7 +329,7 @@ public class GardenCharts
             }
             viewsPerHourPerDayOfWeek[i] = views1DArray;
         }
-        print2DArray(viewsPerHourPerDayOfWeek);
+        //print2DArray(viewsPerHourPerDayOfWeek);
         return viewsPerHourPerDayOfWeek;
     }
 
