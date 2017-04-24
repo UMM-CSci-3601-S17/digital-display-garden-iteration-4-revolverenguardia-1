@@ -19,21 +19,23 @@ export class UploadPhotoComponent implements OnInit {
 
     @ViewChild('iu') iu;
     @ViewChild('nameInput') nameInput: ElementRef;
+    @ViewChild('flowerNameInput') flowerNameInput: ElementRef;
 
     ListOfAllPlants: Observable<Plant[]>;
     FilteredList: Observable<Plant[]>;
 
     newFileName: string;
     flowerName: string;
-    filename:string;
+    filename: string;
     uploadAttempted:boolean = false;
     public currentFlower: string;
-    flowerDropDownName:string = "Cultivar Name";
-    bedDropDownName:string = "Bed Name";
+    flowerDropDownName: string = "Cultivar Name";
+    bedDropDownName: string = "Bed Name";
 
 
     handleUpload() {
         console.log("inputName = " + this.newFileName);
+        console.log("flowerName = " + this.flowerName);
         this.iu.upload(this.newFileName, this.flowerName).subscribe(
             response => {
                 this.filename = response.json();
