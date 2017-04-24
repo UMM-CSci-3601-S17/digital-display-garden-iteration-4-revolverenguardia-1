@@ -14,6 +14,12 @@ import {PlantFilter} from "../../plant_list/src/plantfilter";
 })
 export class CommonNameListComponent {
 
+    /**
+     * TODO: Comment
+     * @type {string}
+     */
+    private selectedCommonName: string = PlantFilter.NO_FILTER;
+
     constructor(private commonNameListService: CommonNameListService,
                 private plantListService: PlantListService) {
     }
@@ -37,5 +43,10 @@ export class CommonNameListComponent {
             // So enable the filter
             this.plantListService.setCommonNameFilter(commonName);
 
+    }
+
+    ngOnInit(){
+        this.selectedCommonName = this.plantListService.getCommonNameFilter();
+        console.log("Set common name filter " + this.selectedCommonName);
     }
 }
