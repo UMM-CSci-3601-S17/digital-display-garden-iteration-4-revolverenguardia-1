@@ -36,6 +36,7 @@ public class TestViewsPerHour{
         GardenCharts gardenCharts = new GardenCharts(databaseName);
         testUtils TestUTILS = new testUtils();
 
+
             //Will use the mock database with the inputed upload id and track the hour the plant was visited
 
         //System.out.println(gardenCharts.getPlantViewsPerHour("googleCharts uploadId"));
@@ -50,16 +51,18 @@ public class TestViewsPerHour{
         assertEquals("the plant 16053 should have like:true and like:false","{ \"likeCount\" : 1 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json1 );
         assertEquals("the plant 16037 should have like:true and like:false","{ \"likeCount\" : 2 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json2);
 
-//        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
-//        JsonArray json = TestUTILS.stringToJSONArray(string);
-//
-//        ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
-//
-//        Object object1 = arrayList.get(20).toString();
-//        Object object2 = arrayList.get(23).toString();
-//
-//        assertEquals("at the 19th hour there should be 1 visit","[\"12\",1]",object1);
-//        assertEquals("at the 22nd hour there should be 3 visits","[\"3\",3]",object2);
+        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
+        JsonArray json = TestUTILS.stringToJSONArray(string);
+
+        ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
+
+        Object object1 = arrayList.get(20).toString();
+        Object object2 = arrayList.get(23).toString();
+        Object object3 = arrayList.get(1).toString();
+
+        assertEquals("at the 19th hour there should be 1 visit","[\"7\",1]",object1);
+        assertEquals("at the 22nd hour there should be 3 visits","[\"10\",3]",object2);
+        assertEquals("at midnight, there should be 0 visits", "[\"12\",0]", object3);
     }
 
 
