@@ -30,8 +30,6 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
 
-        secure("https/keystore.jks", "password", null, null);
-
         port(2538);
 
         // This users looks in the folder `public` for the static web artifacts,
