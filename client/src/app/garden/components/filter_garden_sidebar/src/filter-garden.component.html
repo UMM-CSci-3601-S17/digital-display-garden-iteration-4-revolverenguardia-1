@@ -86,19 +86,17 @@
     <div class="row-filter">
         <div class="drop-downs">
             <select>
-                <option value="volvo">1S</option>
-                <option value="saab">2S</option>
-                <option value="mercedes">LG</option>
-                <option value="audi">3S</option>
+                <option *ngFor="let bed of bedListService.getBedNames()">
+                    {{bed._id}}
+                </option>
             </select>
         </div>
 
         <div class="drop-downs">
             <select>
-                <option value="volvo">Begonia</option>
-                <option value="saab">Germanium</option>
-                <option value="mercedes">Cosmos</option>
-                <option value="audi">Tulip</option>
+                <option *ngFor="let commonName of commonNameListService.getCommonNames()">
+                    {{commonName._id}}
+                </option>
             </select>
         </div>
     </div>

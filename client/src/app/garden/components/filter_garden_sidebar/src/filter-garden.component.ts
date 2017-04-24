@@ -16,12 +16,7 @@ import {Bed} from "../../bed_list/src/bed";
 
 export class FilterGardenComponent {
 
-    private beds: Bed[] = [];
-
     constructor(private bedListService: BedListService,
-                private commonNameListService: CommonNameListService){
-
-
-    }
+                private commonNameListService: CommonNameListService){ }
 }
 
