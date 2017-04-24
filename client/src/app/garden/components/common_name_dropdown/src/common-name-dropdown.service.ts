@@ -9,6 +9,10 @@ import {Observable} from "rxjs";
 import {CommonName} from "./common-name";
 import {Http} from "@angular/http";
 import {CommonNameCollection} from "./commonnamecollection";
+import {Plant} from "../../plant_list/src/plant";
+import {PlantFilter} from "../../plant_list/src/plantfilter";
+import {CommonNameFilter} from "./CommonNameFilter";
+import {PlantListService} from "../../plant_list/src/plant-list.service";
 
 @Injectable()
 export class CommonNameListService {
@@ -23,7 +27,7 @@ export class CommonNameListService {
      */
     public commonNames: CommonName[];
 
-    constructor(private http:Http) {
+    constructor(private http:Http, private plantListService: PlantListService) {
         this.getCommonNamesFromServer().subscribe(
             commonNames => {
                 this.commonNameCollection = new CommonNameCollection(commonNames);
@@ -50,4 +54,10 @@ export class CommonNameListService {
     public getCommonNames(): CommonName[]{
         return this.commonNames;
     }
+
+    public updateCommonNamesDropdown(plants: Plant[], bedName: string): void{
+        this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);
+        this.commonNames = CommonNameFilter.filterByBed(plants, bedName, this.commonNameCollection.getCommonNames());
+    }
+
 }

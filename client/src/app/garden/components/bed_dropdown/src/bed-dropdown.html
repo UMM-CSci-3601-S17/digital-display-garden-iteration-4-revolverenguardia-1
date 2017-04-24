@@ -16,7 +16,8 @@
 
     <div class="bed-dropdown">
         <select (change)="handleBedSelect($event.target.value)">
-            <option value="ALL"></option>
+            <option disabled selected value>Filter Bed</option>
+            <option value="ALL">All</option>
             <option *ngFor="let bed of bedListService.getBedNames()" [selected]="selectedBed == bed._id">
                 {{bed._id}}
             </option>

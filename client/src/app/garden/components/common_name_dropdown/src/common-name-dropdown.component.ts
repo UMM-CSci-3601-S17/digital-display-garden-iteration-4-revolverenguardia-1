@@ -4,13 +4,13 @@
  * @author Iteration 3 - Team revolver en guardia
  */
 import {Component} from "@angular/core";
-import {CommonNameListService} from "./common-name-list.service";
+import {CommonNameListService} from "./common-name-dropdown.service";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 
 @Component({
     selector: 'common-name-dropdown',
-    templateUrl: 'common-name-list.component.html'
+    templateUrl: 'common-name-dropdown.component.html'
 })
 export class CommonNameListComponent {
 
