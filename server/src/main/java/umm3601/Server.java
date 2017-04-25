@@ -64,8 +64,6 @@ public class Server {
             Scanner rdr = new Scanner(input);
             Google2Key = rdr.nextLine();
             Google2Secret = rdr.nextLine();
-            System.err.println(Google2Key);
-            System.err.println(Google2Secret);
 
         }
         catch(FileNotFoundException fnfe)
@@ -115,18 +113,26 @@ public class Server {
 
         get("/", clientRoute);
 
+
+        final CallbackRoute callback = new CallbackRoute(config, null, true);
+        callback.setRenewSession(false);
+        get("/callback", callback);
+        post("/callback", callback);
+
         /*
             Require Authentication before reaching any of the admin pages
          */
-        before("api/admin/", new SecurityFilter(config, "Google2Client"));
-        before("api/admin/*", new SecurityFilter(config, "Google2Client"));
+        before("api/admin", new SecurityFilter(config, "Google2Client"));
         before("api/admin", (request, response) -> {
             String token = generateJWTToken(request, response);
-            response.cookie("token", token);
+            if(!token.isEmpty()) {
+                response.cookie("token", token);
+            }
             boolean authenticated = isAuthorized(token);
             if(!authenticated)
                 halt(401, "Please log in with a valid Administrator Google email.");
         });
+        before("api/admin/*", new SecurityFilter(config, "Google2Client"));
         before("api/admin/*", (request, response) -> {
             String token = generateJWTToken(request, response);
             response.cookie("token", token);
@@ -135,12 +141,6 @@ public class Server {
                 halt(401, "Please log in with a valid Administrator Google email.");
         });
 
-
-
-        final CallbackRoute callback = new CallbackRoute(config, null, true);
-        callback.setRenewSession(false);
-        get("/callback", callback);
-        post("/callback", callback);
 
         /*///////////////////////////////////////////////////////////////////
          * BEGIN VISITOR ENDPOINTS
@@ -216,6 +216,12 @@ public class Server {
         /*///////////////////////////////////////////////////////////////////
          * ADMIN ENDPOINTS
          *////////////////////////////////////////////////////////////////////
+
+        //Authorization request to view admin page
+        get("api/admin", (req, res) -> {
+            res.type("application/json");
+            return true;
+        });
 
         // Accept an xls file
         post("api/admin/import", (req, res) -> {
@@ -349,11 +355,7 @@ public class Server {
         *////////////////////////////////////////////////////////////////////
 
 
-        //Authorization request to view admin page
-        get("api/admin", (req, res) -> {
-            res.type("application/json");
-            return true;
-        });
+
 
         // Views per Hour
         get("api/admin/charts/viewsPerHour", (req, res) -> {
@@ -400,6 +402,9 @@ public class Server {
 
     private static boolean isAuthorized(String jwtToken)
     {
+        if(jwtToken.isEmpty())
+            return false;
+
         JwtAuthenticator authenticator = new JwtAuthenticator(new SecretSignatureConfiguration(JWT_SALT));
         Google2Profile prof = (Google2Profile) authenticator.validateToken(jwtToken);
 
