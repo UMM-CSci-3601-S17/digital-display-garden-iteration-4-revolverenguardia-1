@@ -66,10 +66,12 @@
         }
         .plant-info {
             width: 50%;
-            margin: auto;
+            margin-top: -1.25em;
+            margin-left: auto;
+            margin-right: auto;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-style: normal;
-            font-size: 1em;
+            font-size: 1.5em;
             line-height: 1em;
         }
         .plant-info a {
@@ -82,12 +84,17 @@
         }
         .back-btn {
             padding: 0.5em;
-            margin-top: 0.5em;
             margin-bottom: 0.7em;
             background: linear-gradient(#FFDE7A, #ffcc00);
             -webkit-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
             -moz-box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
             box-shadow: 3px 4px 5px 0px rgba(82,82,82,1);
+        }
+        @media only screen and (max-width: 768px) {
+            [class="back-btn-outer"] {
+                width: 97.5%;
+                margin-left: 2.5%;
+            }
         }
         .back-btn a {
             color: #7a0019;
@@ -109,6 +116,12 @@
             text-align: center;
             margin-bottom: .35em;
         }
+        @media only screen and (max-width: 768px) {
+            [class="info-inner"] {
+                width: 95%;
+                margin: auto;
+            }
+        }
         .garden-img {
             -webkit-box-shadow: 0px 20px 23px 0px rgba(82,82,82,1);
             -moz-box-shadow: 0px 20px 23px 0px rgba(82,82,82,1);
@@ -124,6 +137,14 @@
             -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             padding: 1.5em 0em;
+            min-height: 30%;
+        }
+        @media only screen and (max-width: 768px) {
+            [class="user-feedback"] {
+                -webkit-box-shadow: 0px 0px 0px 0px rgba(82,82,82,1);
+                -moz-box-shadow: 0px 0px 0px 0px rgba(82,82,82,1);
+                box-shadow: 0px 0px 0px 0px rgba(82,82,82,1);
+            }
         }
         .rating {
             text-align: center;
@@ -178,11 +199,6 @@
         .submit-btn a:hover {
             font-weight: 700;
         }
-        .footer {
-            position: fixed;
-            bottom: 0px;
-            width: 100%;
-        }
         </style>
     </head>
 
@@ -190,23 +206,30 @@
 
 
         <!--back button starts here-->
-        <div class="back-btn btn btn-lg">
-            <a href="javascript:history.go(-1)">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back to Search
-            </a>
+        <div class="back-btn-outer">
+            <div class="back-btn btn btn-lg">
+                <a href="javascript:history.go(-1)">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Back to Search
+                </a>
+            </div>
         </div>
         <!--back button ends here-->
 
 
         <!--plant info starts here-->
         <div class="info">
-            <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
 
-            <div *ngIf="plant !== null">
+            <div class="info-inner">
 
-                <p> Common Name - "{{plant.commonName}}"</p>
-                <p> Cultivar - "{{plant.cultivar}}"</p>
-                <p> Bed {{plant.gardenLocation}}</p>
+                <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
+
+                <div *ngIf="plant !== null">
+
+                    <p> Common Name - "{{plant.commonName}}"</p>
+                    <p> Cultivar - "{{plant.cultivar}}"</p>
+                    <p> Bed {{plant.gardenLocation}}</p>
+                </div>
+
             </div>
 
         </div>
@@ -286,10 +309,6 @@
         </div>
         <!--user feedback ends here-->
 
-    </div>
-
-    <div class="footer">
-        <footer-component></footer-component>
     </div>
 
 </html>
