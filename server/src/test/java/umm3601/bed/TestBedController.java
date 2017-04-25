@@ -24,23 +24,22 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestBedController {
     private final static String databaseName = "data-for-testing-only";
+    private static final MongoClient mongoClient = new MongoClient();
+    private static final MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private BedController bedController;
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        bedController = new BedController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        bedController = new BedController(testDB);
     }
 
     @Test
     public void TestIncrementBedData(){
 
         bedController.incrementBedMetadata("7.0","pageViews","first uploadId");
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection beds = db.getCollection("beds");
+        MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
         Iterator iterator = doc.iterator();
@@ -49,17 +48,13 @@ public class TestBedController {
         int bedPageViews =  (int)((Document) result.get("metadata")).get("pageViews");
 
         assertEquals("this bed should only have 1 pageView",1, bedPageViews);
-
     }
 
 
     @Test
     public void TestBedVisit(){
         bedController.addBedVisit("10.0","second uploadId");
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection beds = db.getCollection("beds");
+        MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd303")));
         Iterator iterator = doc.iterator();
@@ -86,9 +81,7 @@ public class TestBedController {
     public void TestQRScansAndQRVisits(){
         //first lets test qr scans
         bedController.incrementBedMetadata("7.0","qrScans","first uploadId");
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection beds = db.getCollection("beds");
+        MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
         Iterator iterator = doc.iterator();
@@ -127,8 +120,6 @@ public class TestBedController {
         //checking to see that the type of visit is an of type/structure of ObjectID
         assertEquals("they should both be of type org.bson.types.ObjectId ",objectId.getClass().getName(),qrvisit.get("scan").getClass().getName());
         assertEquals("the object id produced from a visit must be 24 characters",24,s.length());
-
-
     }
 
     @Test

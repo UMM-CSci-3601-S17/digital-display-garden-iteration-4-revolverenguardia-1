@@ -1,5 +1,7 @@
 package umm3601.plant;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.ExcelParser;
@@ -15,12 +17,14 @@ public class TestUploadIdMethods {
 
     private final static String databaseName = "data-for-testing-only";
     private PlantController plantController;
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Before
     public void populateDB() throws IOException {
         PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        db.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -28,7 +32,7 @@ public class TestUploadIdMethods {
 
         String uploadIds = "[ \"first uploadId\" , \"googleCharts uploadId\" , \"second uploadId\" , \"third uploadId\"]";
 
-        String actualUploadId = ExcelParser.listUploadIds(databaseName);
+        String actualUploadId = ExcelParser.listUploadIds(testDB);
 
         assertEquals("the list upload ids should match all ids in Database(mock)", uploadIds,actualUploadId);
     }
@@ -36,7 +40,7 @@ public class TestUploadIdMethods {
 
     @Test
     public void TestGetLiveUploadId(){
-        String actualUploadId = ExcelParser.getLiveUploadId(databaseName);
+        String actualUploadId = ExcelParser.getLiveUploadId(testDB);
 
         System.out.println(actualUploadId);
         //assertTrue("",actualUploadId);

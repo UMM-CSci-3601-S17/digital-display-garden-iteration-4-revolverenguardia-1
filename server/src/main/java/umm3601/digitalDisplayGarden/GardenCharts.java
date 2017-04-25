@@ -25,18 +25,15 @@ import java.util.*;
 public class GardenCharts
 {
     private final MongoCollection<Document> plantCollection;
+    private final MongoCollection<Document> bedCollection;
     private final MongoCollection<Document> commentCollection;
     private final MongoCollection<Document> configCollection;
 
-    public GardenCharts(String databaseName) throws IOException {
-
-        MongoClient mongoClient = new MongoClient();
-        // Try connecting to a database
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-
-        plantCollection = db.getCollection("plants");
-        commentCollection = db.getCollection("comments");
-        configCollection = db.getCollection("config");
+    public GardenCharts(MongoDatabase database) throws IOException {
+        plantCollection = database.getCollection("plants");
+        bedCollection = database.getCollection("beds");
+        commentCollection = database.getCollection("comments");
+        configCollection = database.getCollection("config");
     }
 
     public String top20Charts(PlantController plantController, String uploadID){

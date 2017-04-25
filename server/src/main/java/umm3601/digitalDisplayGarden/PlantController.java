@@ -2,7 +2,6 @@ package umm3601.digitalDisplayGarden;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
@@ -34,22 +33,12 @@ public class PlantController {
     private final MongoCollection<Document> configCollection;
     private final MongoCollection<Document> bedCollection;
 
-    public PlantController(String databaseName) throws IOException {
-        // Set up our server address
-        // (Default host: 'localhost', default port: 27017)
-        // ServerAddress testAddress = new ServerAddress();
+    public PlantController(MongoDatabase database) throws IOException {
 
-        // Try connecting to the server
-        //MongoClient mongoClient = new MongoClient(testAddress, credentials);
-        MongoClient mongoClient = new MongoClient(); // Defaults!
-
-        // Try connecting to a database
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-
-        plantCollection = db.getCollection("plants");
-        commentCollection = db.getCollection("comments");
-        configCollection = db.getCollection("config");
-        bedCollection = db.getCollection("beds");
+        plantCollection = database.getCollection("plants");
+        commentCollection = database.getCollection("comments");
+        configCollection = database.getCollection("config");
+        bedCollection = database.getCollection("beds");
 
     }
 
