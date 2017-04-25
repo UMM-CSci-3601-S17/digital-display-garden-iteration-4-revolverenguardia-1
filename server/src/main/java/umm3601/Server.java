@@ -22,7 +22,8 @@ import javax.servlet.http.Part;
 
 public class Server {
 
-    public static final String API_URL = "https://localhost:2538";
+    public static final String API_URL = "https://revolverenguardia.dungeon.website";
+    public static final String JS_ORIGIN_URL = "http://localhost:9000"; //change to https://revolverenguardia.dungeon.website for prod
 
     public static String databaseName = "test";
 
@@ -57,7 +58,7 @@ public class Server {
             return "OK";
         });
 
-        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+        before((request, response) -> response.header("Access-Control-Allow-Origin", ""));
 
         // Redirects for the "home" page
         redirect.get("", "/");
@@ -147,7 +148,6 @@ public class Server {
 
         // Accept an xls file
         post("api/admin/import", (req, res) -> {
-
             res.type("application/json");
             try {
 
@@ -284,7 +284,6 @@ public class Server {
 
         get("api/admin/charts/plantMetadataMap", (req, res) -> {
             res.type("application/json");
-
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
