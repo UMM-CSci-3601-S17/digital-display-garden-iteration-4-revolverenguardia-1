@@ -1,5 +1,5 @@
 <h2>Administrator Tasks</h2>
-<div *ngIf="authorized" class= "text-center">
+<div *ngIf="[authorized]" class= "text-center">
 
     <button type="button" class="btn btn-primary btn-lg" [routerLink]="['/admin/exportData']"  >
         <span class="glyphicon glyphicon-download" aria-hidden="true"></span>

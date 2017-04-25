@@ -14,13 +14,8 @@ export class AdminComponent implements OnInit {
 
     constructor(private http:Http) { }
 
-    //Request authorization from the server in order to view admin buttons
-    isAuthorized(): Observable<Boolean> {
-        return this.http.get(this.URL).map(res => res.json());
-    }
 
     ngOnInit(): void {
-        this.isAuthorized().subscribe((auth => {this.authorized = auth;
-        console.log("auth=" + this.authorized);}));
+        window.location.href = API_URL + "admin";
     }
 }
