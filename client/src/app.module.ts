@@ -7,27 +7,28 @@ import { FormsModule } from '@angular/forms';
 import { PipeModule } from './pipe.module';
 
 import { NavbarComponent } from './app/navbar/navbar.component';
-import {GardenComponent} from "./app/garden/src/garden-component";
-import {PlantListComponent} from "./app/garden/components/plant_list/src/plant-list.component";
-import {BedListComponent} from "./app/garden/components/bed_dropdown/src/bed-dropdown.component";
+import { GardenComponent } from "./app/garden/src/garden-component";
+import { PlantListComponent } from "./app/garden/components/plant_list/src/plant-list.component";
+import { BedListComponent } from "./app/garden/components/bed_dropdown/src/bed-dropdown.component";
 import { CommonNameListComponent } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.component";
 
-import {PlantListService} from "./app/garden/components/plant_list/src/plant-list.service";
-import {BedListService} from "./app/garden/components/bed_dropdown/src/bed-dropdown.service";
+import { PlantListService } from "./app/garden/components/plant_list/src/plant-list.service";
+import { BedListService } from "./app/garden/components/bed_dropdown/src/bed-dropdown.service";
 import { CommonNameListService } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.service";
-import {AdminComponent} from "./app/admin/admin.component";
-import {PlantComponent} from "./app/garden/components/plant_list/src/plant.component";
-import {ImportComponent} from "./app/admin/import.component";
-import {AdminService} from "./app/admin/admin.service";
-import {ExportComponent} from "./app/admin/export.component";
-import {FileUploadComponent} from "./app/admin/file-upload.component";
-import {PlantService} from "./app/garden/components/plant_list/src/plant.service";
-import {GraphComponent} from "./app/admin/google-charts.component";
+import { AdminComponent } from "./app/admin/admin.component";
+import { PlantComponent } from "./app/garden/components/plant_list/src/plant.component";
+import { ImportComponent } from "./app/admin/import.component";
+import { AdminService } from "./app/admin/admin.service";
+import { ExportComponent } from "./app/admin/export.component";
+import { FileUploadComponent } from "./app/admin/file-upload.component";
+import { PlantService } from "./app/garden/components/plant_list/src/plant.service";
+import { GraphComponent } from "./app/admin/google-charts.component";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 import { FilterGardenComponent } from "./app/garden/components/filter_garden_sidebar/src/filter-garden.component";
-import {FooterComponent} from "./app/garden/components/footer/src/footer.component";
-import {RouterModule} from "@angular/router";
+import { FooterComponent } from "./app/garden/components/footer/src/footer.component";
+import { RouterModule } from "@angular/router";
+import { PlantInfoComponent } from "./app/garden/src/plant-info-component";
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import {RouterModule} from "@angular/router";
         AppComponent,
         NavbarComponent,
         GardenComponent,
+        PlantInfoComponent,
         FilterGardenComponent,
         PlantListComponent,
         BedListComponent,
