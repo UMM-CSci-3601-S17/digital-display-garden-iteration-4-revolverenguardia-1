@@ -10,7 +10,7 @@
 
 
 
-<div *ngIf="filename !== undefined"> Your file was successfully uploaded as data set {{this.filename}}.
+<div *ngIf="filename !== undefined && flowerName !== undefined"> Your file was successfully uploaded as data set {{this.filename}}.
 </div>
 <div *ngIf="newFileName === undefined && uploadAttempted === true">File upload failed - Please Name Photo.</div>
 <div *ngIf="flowerName === undefined && uploadAttempted === true">File upload failed - Please Select A Flower.</div>
