@@ -294,6 +294,13 @@ public class Server {
             return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
         });
 
+        get("api/admin/charts/top20Likes", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.top20Charts(plantController, getLiveUploadId());
+        });
+
+
         //Host the aerial image of the Garden
         get("api/admin/gardenPicture", (req, res) -> {
             res.type("application/png");

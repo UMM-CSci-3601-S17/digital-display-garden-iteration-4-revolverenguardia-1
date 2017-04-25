@@ -39,6 +39,49 @@ public class GardenCharts
         configCollection = db.getCollection("config");
     }
 
+    public String top20Charts(PlantController plantController, String uploadID){
+        try{
+            int likes = 0;
+            int dislikes = 0;
+            Object [][] dataTable = new Object[20][2];
+            String commonName = plantController.getCommonNamesJSON(uploadID);
+            String[] commonNameArray = commonName.split(",");
+            System.out.println(commonNameArray.length);
+            Document filter = new Document();
+            filter.put("uploadId", uploadID);
+
+            dataTable[0][0] = "Flower Names";
+            dataTable[0][1] = "Likes";
+
+            FindIterable doc = plantCollection.find(filter);
+
+            Iterator iterator = doc.iterator();
+            while(iterator.hasNext()) {
+                Document result = (Document) iterator.next();
+
+                //Get metadata.rating array
+                List<Document> ratings = (List<Document>) (((Document) result.get("metadata")).get("ratings"));
+
+                for (int i = 0; i < ratings.size(); i++){
+
+                }
+
+                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
+
+
+            }
+
+
+
+
+            return makeJSON(dataTable);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public String getPlantViewsPerHour(String uploadID) {
 
         try {
@@ -83,8 +126,6 @@ public class GardenCharts
                     int visits = hours.get(hour);
                     hours.put(hour, visits + 1);
                 }
-
-
             }
 
 

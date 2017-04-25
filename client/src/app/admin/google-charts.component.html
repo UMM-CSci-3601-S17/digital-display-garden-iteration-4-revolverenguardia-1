@@ -39,6 +39,14 @@
     </button>
 </div>
 
+<div id = "top20Div" padding="5%">
+    <google-chart [data] = "top20ChartData"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updatetop20()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+
 <style>
     #chartDiv {
         background-image: url("http://localhost:2538/api/admin/gardenPicture");

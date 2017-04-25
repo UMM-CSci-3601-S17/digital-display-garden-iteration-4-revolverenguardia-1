@@ -19,6 +19,7 @@ export class GraphComponent implements OnInit {
         this.updateBarChart();
         this.updateMap();
         this.updateBubble();
+        this.updatetop20();
     }
 
     public updateLineChart(): void{
@@ -54,7 +55,23 @@ export class GraphComponent implements OnInit {
             }, err => console.log(err));
     }
 
+    public updatetop20(): void{
 
+        this.adminService.get20MostLikes()
+            .subscribe(result => {
+                this.top20ChartData["dataTable"] = result;
+                this.top20ChartData = Object.create(this.top20ChartData);
+            }, err => console.log(err));
+    }
+
+    public top20ChartData = {
+        chartType: `ColumnChart`,
+        dataTable: [['Hour', 'Views'],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
+            ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
+        ],
+        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Common Name'}, vAxis : {'title' :'Amount of Likes'}},
+    }
 
     public line_ChartData = {
         chartType: `LineChart`,

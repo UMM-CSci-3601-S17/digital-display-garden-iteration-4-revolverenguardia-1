@@ -28,4 +28,8 @@ export class AdminService {
     getBedMetadataForBubble(): Observable<any[]> {
         return this.http.request(this.url + "admin/charts/plantMetadataBubbleMap").map(res => res.json())
     }
+
+    get20MostLikes(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20Likes").map(res => res.json())
+    }
 }
