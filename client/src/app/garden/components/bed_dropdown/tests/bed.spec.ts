@@ -16,9 +16,9 @@ describe("Test Bed Class", () => {
             bed2: Bed = new Bed("BedID2"),
             bed3: Bed = new Bed("BedID3");
 
-        expect(bed1.bedName).toBe("BedID1");
-        expect(bed2.bedName).toBe("BedID2");
-        expect(bed3.bedName).toBe("BedID3");
+        expect(bed1._id).toBe("BedID1");
+        expect(bed2._id).toBe("BedID2");
+        expect(bed3._id).toBe("BedID3");
 
     });
 });
