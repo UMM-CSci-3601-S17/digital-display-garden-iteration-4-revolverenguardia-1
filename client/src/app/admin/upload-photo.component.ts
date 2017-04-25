@@ -24,7 +24,7 @@ export class UploadPhotoComponent implements OnInit {
     ListOfAllPlants: Observable<Plant[]>;
     FilteredList: Observable<Plant[]>;
 
-    newFileName: string;
+    newFileName: string = "";
     flowerName: string;
     filename: string;
     uploadAttempted:boolean = false;

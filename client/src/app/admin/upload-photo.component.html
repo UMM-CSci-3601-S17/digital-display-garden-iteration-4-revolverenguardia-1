@@ -10,14 +10,14 @@
 
 
 
-<div *ngIf="filename !== undefined && flowerName !== undefined"> Your file was successfully uploaded as data set {{this.filename}}.
+<div *ngIf="flowerName !== undefined && uploadAttempted === true"> Your file was successfully uploaded as data set {{this.filename}}.
 </div>
-<div *ngIf="newFileName === undefined && uploadAttempted === true">File upload failed - Please Name Photo.</div>
+<!--<div *ngIf="newFileName === undefined && uploadAttempted === true">File upload failed - Please Name Photo.</div>-->
 <div *ngIf="flowerName === undefined && uploadAttempted === true">File upload failed - Please Select A Flower.</div>
 
 <br>
 
-<input #nameInput type="text" placeholder="Name For Your Photo" (input)="newFileName = $event.target.value">
+<!--<input #nameInput type="text" placeholder="Name For Your Photo" (input)="newFileName = $event.target.value">-->
 
 <div class="flowerFilter">
 
@@ -52,7 +52,7 @@
         <!--</ul>-->
     <!--</div>-->
 
-    <!--Option B, dropdown with search filter, works, but errors are thrown and no feedback is recieved-->
+    <!--Option B, dropdown with search filter-->
 
     <label>
         {{ flowerDropDownName }}

@@ -321,12 +321,26 @@ public class Server {
             return plantController.getClass().getResourceAsStream(gardenPath);
         });
 
+
+
         /*///////////////////////////////////////////////////////////////////
             END CHARTS
         *////////////////////////////////////////////////////////////////////
         /*///////////////////////////////////////////////////////////////////
-         * END ADMIN ENDPOINTS
+         * BEGIN IMAGES
          */ ///////////////////////////////////////////////////////////////////
+
+
+        get("api/admin/getImage/:name", (req, res) -> {
+            res.type("application/jpg");
+            String plantID = req.params("name");
+
+            ImageHandler handler = new ImageHandler(res.raw().getOutputStream());
+
+            handler.getImageOnFilesystem(plantID);
+
+            return res;
+        });
 
         post("api/upload-photo", (req, res) -> {
 
@@ -390,6 +404,14 @@ public class Server {
             return "Sorry, we couldn't find that!";
         });
     }
+        /*///////////////////////////////////////////////////////////////////
+         * END IMAGES
+         */ ///////////////////////////////////////////////////////////////////
+
+        /*///////////////////////////////////////////////////////////////////
+         * END ADMIN ENDPOINTS
+         */ ///////////////////////////////////////////////////////////////////
+
 
     public static String getLiveUploadId()
     {

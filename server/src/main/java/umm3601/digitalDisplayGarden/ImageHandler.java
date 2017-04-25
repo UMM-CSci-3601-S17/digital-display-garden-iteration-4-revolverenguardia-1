@@ -4,8 +4,13 @@ import org.joda.time.DateTime;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -18,7 +23,9 @@ public class ImageHandler {
     private InputStream stream;
     private InputStream stream0;
     private InputStream stream1;
+    private OutputStream streamOut;
     private Image image;
+    private BufferedImage outputImage;
     private String fileName;
     private String imgFileName;
 
@@ -26,6 +33,10 @@ public class ImageHandler {
         this.stream = stream;
         this.stream0 = stream0;
         this.stream1 = stream1;
+    }
+
+    public ImageHandler(OutputStream outStream) {
+        streamOut = outStream;
     }
 
     public Image extractImage() {
@@ -54,6 +65,52 @@ public class ImageHandler {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
+
+    public void getImageOnFilesystem(String flowerName) {
+        File flowerFolder = new File("./src/main/java/umm3601/images/" + flowerName);
+        File fileToBeRead = null;
+        //FileOutputStream returnStream = null;
+        try {
+            fileToBeRead = new File(flowerFolder.listFiles()[0].getName());
+        } catch (NullPointerException e) {
+
+        }
+
+//        try {
+//            returnStream = new FileOutputStream(fileToBeRead);
+//        } catch (FileNotFoundException e) {
+//
+//        }
+
+
+
+        try {
+            outputImage = ImageIO.read(fileToBeRead);
+        } catch (IOException e) {
+            System.err.println("OH GOD WE GOT AN IOEXCEPTION STOP THE WORLD");
+        } catch (NullPointerException e) {
+            System.err.println("No image found for selected flower");
+        }
+
+        try {
+            ImageIO.write(outputImage, "jpg", streamOut);
+        } catch (IOException e) {
+            System.err.println("We got an IOException");
+        }
+
+        // get DataBufferBytes from Raster
+//        WritableRaster raster = outputImage.getRaster();
+//        DataBuffer data  = raster.getDataBuffer();
+
+
+//        try {
+//            streamOut.write(data.getData());
+//        } catch (IOException e) {
+//
+//        } catch (NullPointerException e) {
+//
+//        }
+    };
 
     public static String getAvailableUploadId(){
 
