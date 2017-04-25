@@ -64,7 +64,7 @@
             }
             .row-filter {
                 background: linear-gradient(#FFDE7A, #ffcc00);
-                padding-top: 0.75em;
+                padding-top: 1em;
                 padding-bottom: 1.5em;
             }
             .drop-downs {
@@ -76,6 +76,18 @@
                     width: 95%;
                 }
             }
+            .bed,
+            .common-name{
+                display: inline-block;
+            }
+            .bed {
+                margin-right: 1em;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="bed"] {
+                    margin-bottom: .5em;
+                }
+            }
             .just-deco {
                 background: linear-gradient(#537d39, #283d1c);
                 padding: 3em 0em;
@@ -85,8 +97,17 @@
 
     <div class="row-filter">
 
-        <bed-dropdown></bed-dropdown>
-        <common-name-dropdown></common-name-dropdown>
+        <div class="drop-downs">
+
+            <div class="bed">
+                <bed-dropdown></bed-dropdown>
+            </div>
+
+            <div class="common-name">
+                <common-name-dropdown></common-name-dropdown>
+            </div>
+
+        </div>
 
     </div>
 
