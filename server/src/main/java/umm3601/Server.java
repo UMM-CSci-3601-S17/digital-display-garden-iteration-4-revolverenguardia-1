@@ -288,6 +288,12 @@ public class Server {
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
+        get("api/admin/charts/comboChart", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getComboChart(getLiveUploadId());
+        });
+
         get("api/admin/charts/plantMetadataBubbleMap", (req, res) -> {
             res.type("application/json");
 
