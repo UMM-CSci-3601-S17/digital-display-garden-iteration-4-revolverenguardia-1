@@ -1,8 +1,12 @@
 package umm3601;
 
+import org.pac4j.core.config.Config;
+import org.pac4j.core.config.ConfigFactory;
+import org.pac4j.sparkjava.CallbackRoute;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
+import umm3601.OAUTH.DDGConfigFactory;
 import umm3601.digitalDisplayGarden.BedController;
 import umm3601.digitalDisplayGarden.GardenCharts;
 import umm3601.digitalDisplayGarden.PlantController;
@@ -30,6 +34,8 @@ public class Server {
     private static String excelTempDir = "/tmp/digital-display-garden";
 
     public static void main(String[] args) throws IOException {
+
+        final Config config = new DDGConfigFactory("12345678901234567890123456789012").build();
 
         port(2538);
 
@@ -70,6 +76,14 @@ public class Server {
 
         get("/", clientRoute);
 
+        /*//////////////////////////////////////
+        /
+         */
+
+        final CallbackRoute callback = new CallbackRoute(config, null, true);
+        callback.setRenewSession(false);
+        get("/callback", callback);
+        post("/callback", callback);
 
         /*///////////////////////////////////////////////////////////////////
          * BEGIN VISITOR ENDPOINTS

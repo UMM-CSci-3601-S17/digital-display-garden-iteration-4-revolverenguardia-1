@@ -26,6 +26,8 @@ dependencies {
     compile group: 'org.pac4j', name: 'pac4j-oauth', version: '2.0.0-RC2'
     compile group: 'org.pac4j', name: 'spark-pac4j', version: '2.0.0-RC2'
     compile group: 'org.pac4j', name: 'pac4j-openid', version: '2.0.0-RC2'
+    compile group: 'org.pac4j', name: 'pac4j-http', version: '2.0.0-RC2'
+    compile group: 'org.pac4j', name: 'pac4j-jwt', version: '2.0.0-RC2'
     compile group: 'org.pac4j', name: 'pac4j-core', version: '2.0.0-RC2'
     compile group: 'com.sparkjava', name: 'spark-template-mustache', version: '2.3'
 
