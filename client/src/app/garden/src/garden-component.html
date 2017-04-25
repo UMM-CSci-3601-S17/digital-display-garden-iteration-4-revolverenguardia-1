@@ -10,10 +10,29 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .plant-list {
+                position: relative;
+                top: -6.5em;
+                z-index: 2;
+            }
+            .footer {
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+                z-index: 1;
+            }
+        </style>
     </head>
 
     <filter-garden-component></filter-garden-component>
-    <plant-list></plant-list>
-    <footer-component></footer-component>
+
+    <div class="plant-list">
+        <plant-list></plant-list>
+    </div>
+
+    <div class="footer">
+        <footer-component></footer-component>
+    </div>
 
 </html>
