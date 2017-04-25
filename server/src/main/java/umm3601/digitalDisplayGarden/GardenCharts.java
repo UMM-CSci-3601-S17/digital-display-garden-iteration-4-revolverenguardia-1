@@ -38,40 +38,63 @@ public class GardenCharts
 
     public String top20Charts(PlantController plantController, String uploadID){
         try{
-            int likes = 0;
-            int dislikes = 0;
+            int firstInt = 0;
             Object [][] dataTable = new Object[20][2];
-            String commonName = plantController.getCommonNamesJSON(uploadID);
-            String[] commonNameArray = commonName.split(",");
-            System.out.println(commonNameArray.length);
-            Document filter = new Document();
-            filter.put("uploadId", uploadID);
+            String[] plantID = plantController.getIDName(uploadID);
+            List<Integer> top20Likes = new ArrayList<>();
+            top20Likes.add(firstInt);
+            JsonArray out = new JsonArray();
+            JsonArray result = new JsonArray();
 
-            dataTable[0][0] = "Flower Names";
-            dataTable[0][1] = "Likes";
+            for (int i = 0; i < plantID.length; i++) {
+                int likes = 0;
+                JsonObject plantMetadata = new JsonObject();
+                JsonObject plantStuff = new JsonObject();
+                Document filter = new Document();
+                filter.append("uploadId", uploadID);
+                filter.append("id", plantID[i]);
 
-            FindIterable doc = plantCollection.find(filter);
-
-            Iterator iterator = doc.iterator();
-            while(iterator.hasNext()) {
-                Document result = (Document) iterator.next();
-
-                //Get metadata.rating array
-                List<Document> ratings = (List<Document>) (((Document) result.get("metadata")).get("ratings"));
-
-                for (int i = 0; i < ratings.size(); i++){
-
+                FindIterable<Document> iter = plantCollection.find(filter);
+                for (Document plant : iter) {
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
+                    likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
                 }
 
-                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
 
-
+                plantMetadata.addProperty("plant ID", plantID[i]);
+                plantMetadata.addProperty("likes", likes);
+                out.add(plantMetadata);
             }
 
+            JsonArray sortedJsonArray = new JsonArray();
+
+            List<JsonElement> jsonValues = new ArrayList<JsonElement>();
+
+            Iterator<JsonElement> outs = out.iterator();
+            while(outs.hasNext()){
+                JsonElement e = outs.next();
+                jsonValues.add(e);
+            }
+            Collections.sort(jsonValues, new Comparator<JsonElement>(){
+                private static final String KEY_NAME = "likes";
+
+                @Override
+                public int compare (JsonElement a, JsonElement b) {
+                    String valA = new String();
+                    String valB = new String();
+
+                    try {
+                        valA = (String)a.get(KEY_NAME);
+                        valB = (String)b.get(KEY_NAME);
+                    }
+                }
+            });
+            System.out.println(jsonValues.get(2));
 
 
 
-            return makeJSON(dataTable);
+            return out.toString();
+
         }
         catch (Exception e){
             e.printStackTrace();

@@ -59,6 +59,7 @@ export class GraphComponent implements OnInit {
 
         this.adminService.get20MostLikes()
             .subscribe(result => {
+                console.log(result);
                 this.top20ChartData["dataTable"] = result;
                 this.top20ChartData = Object.create(this.top20ChartData);
             }, err => console.log(err));
