@@ -66,7 +66,7 @@ export class GraphComponent implements OnInit {
 
 
     public line_ChartData = {
-        chartType: `LineChart`,
+        chartType: `AreaChart`,
         dataTable: [['Hour', 'Views'],
             ['0',  0],
             ['1',  0],
@@ -137,6 +137,8 @@ export class GraphComponent implements OnInit {
             //backgroundColor: `#ECF0F1`,
             backgroundColor: `#D2D7D9`,
             height: 400,
+            hAxis: {title: 'Time (In hours)'},
+            vAxis: {title: 'Views'},
             seriesType: `bars`,
             series: {
                 // 0: {color: `#3498DB`},
