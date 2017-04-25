@@ -27,13 +27,13 @@ describe("Bed List Component", () => {
         bedListServiceStub = {
             getBedNames: () => Observable.of([
                 {
-                    bedName: "Bed1",
+                    _id: "Bed1",
                 },
                 {
-                    bedName: "Bed2",
+                    _id: "Bed2",
                 },
                 {
-                    bedName: "Bed3",
+                    _id: "Bed3",
                 }
             ])
         };

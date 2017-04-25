@@ -11,8 +11,9 @@ import {Http} from "@angular/http";
 import {CommonNameCollection} from "./commonnamecollection";
 import {Plant} from "../../plant_list/src/plant";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
-import {CommonNameFilter} from "./CommonNameFilter";
+import {CommonNameFilter} from "./common-name-filter";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
+import {Bed} from "../../bed_dropdown/src/bed";
 
 @Injectable()
 export class CommonNameListService {
@@ -57,7 +58,7 @@ export class CommonNameListService {
 
     public updateCommonNamesDropdown(plants: Plant[], bedName: string): void{
         this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);
-        this.commonNames = CommonNameFilter.filterByBed(plants, bedName, this.commonNameCollection.getCommonNames());
+        this.commonNames = CommonNameFilter.filterByBed(plants, this.commonNameCollection.getCommonNames(), new Bed(bedName));
     }
 
 }
