@@ -90,6 +90,76 @@ public class GardenCharts
         }
     }
 
+    public String getComboChart (String uploadID) {
+        try {
+            Object[][] dataTable = new Object[24 + 1][9];
+
+            Document filter = new Document();
+            filter.put("uploadId", uploadID);
+
+            dataTable[0][0] = "Hour";
+            dataTable[0][1] = "Sunday";
+            dataTable[0][2] = "Monday";
+            dataTable[0][3] = "Tuesday";
+            dataTable[0][4] = "Wednesday";
+            dataTable[0][5] = "Thursday";
+            dataTable[0][6] = "Friday";
+            dataTable[0][7] = "Saturday";
+            dataTable[0][8] = "Average";
+
+
+            ArrayList<Date> dates = new ArrayList<Date>();
+
+            //Get all plants
+            FindIterable doc = plantCollection.find(filter);
+
+            Iterator iterator = doc.iterator();
+            while(iterator.hasNext()) {
+                Document result = (Document) iterator.next();
+
+                //Get metadata.rating array
+                List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
+
+                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
+                for(int i = 0; i < ratings.size(); i++){
+                    Document d = ratings.get(i);
+                    dates.add(((ObjectId) d.get("visit")).getDate());
+                }
+
+            }
+
+            ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
+
+            int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
+
+            int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
+            System.out.println();
+            printArray(viewsPerHour);
+
+
+            int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+            for (int i = 1; i < 24 + 1; i++) {
+                dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
+                dataTable[i][8] = viewsPerHour[i - 1];
+            }
+
+            for(int i = 0; i < viewsPerHourPerDayOfWeek.length; i++){
+                for(int j = 0; j < viewsPerHourPerDayOfWeek[i].length; j++){
+                    dataTable[i + 1][j + 1] = viewsPerHourPerDayOfWeek[i][j];
+                }
+            }
+
+            System.out.println();
+            //print2DArray(dataTable);
+
+            return makeJSON(dataTable);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
      * Form a JSON to pass to the client to render in the Google Maps Bed Metadata Map
      *
