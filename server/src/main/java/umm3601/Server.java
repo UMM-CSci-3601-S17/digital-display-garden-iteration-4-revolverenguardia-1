@@ -1,8 +1,19 @@
 package umm3601;
 
+import net.minidev.json.JSONObject;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.config.ConfigFactory;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
+import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
+import org.pac4j.jwt.profile.JwtGenerator;
+import org.pac4j.oauth.profile.google2.Google2Profile;
 import org.pac4j.sparkjava.CallbackRoute;
+import org.pac4j.sparkjava.SecurityFilter;
+import org.pac4j.sparkjava.SparkWebContext;
+import spark.Request;
+import spark.Response;
 import spark.Route;
 import spark.utils.IOUtils;
 import com.mongodb.util.JSON;
@@ -14,6 +25,7 @@ import umm3601.digitalDisplayGarden.PlantController;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.*;
 
 import static spark.Spark.*;
 
@@ -28,14 +40,41 @@ public class Server {
 
     public static final String API_URL = "https://revolverenguardia.dungeon.website";
     public static final String JS_ORIGIN_URL = "http://localhost:9000"; //change to https://revolverenguardia.dungeon.website for prod
+    public static final String JWT_SALT_PATH = "src/main/resources/jwtsalt.txt";
+    public static final String G2_AUTH_PATH = "src/main/resources/google2auth.txt";
+    private static String JWT_SALT;
 
     public static String databaseName = "test";
 
     private static String excelTempDir = "/tmp/digital-display-garden";
 
     public static void main(String[] args) throws IOException {
+        String Google2Key;
+        String Google2Secret;
 
-        final Config config = new DDGConfigFactory("12345678901234567890123456789012").build();
+        try
+        {
+            InputStream input = new FileInputStream(JWT_SALT_PATH);
+            byte[] salt = new byte[32];
+            input.read(salt, 0, 32);
+            JWT_SALT = new String(salt);
+            input.close();
+
+            input = new FileInputStream(G2_AUTH_PATH);
+            Scanner rdr = new Scanner(input);
+            Google2Key = rdr.nextLine();
+            Google2Secret = rdr.nextLine();
+            System.err.println(Google2Key);
+            System.err.println(Google2Secret);
+
+        }
+        catch(FileNotFoundException fnfe)
+        {
+            System.err.println("JWT Salt file could not be found.");
+            return;
+        }
+
+        final Config config = new DDGConfigFactory(JWT_SALT, Google2Key ,Google2Secret).build();
 
         port(2538);
 
@@ -76,9 +115,27 @@ public class Server {
 
         get("/", clientRoute);
 
-        /*//////////////////////////////////////
-        /
+        /*
+            Require Authentication before reaching any of the admin pages
          */
+        before("api/admin/", new SecurityFilter(config, "Google2Client"));
+        before("api/admin/*", new SecurityFilter(config, "Google2Client"));
+        before("api/admin", (request, response) -> {
+            String token = generateJWTToken(request, response);
+            response.cookie("token", token);
+            boolean authenticated = isAuthorized(token);
+            if(!authenticated)
+                halt(401, "Please log in with a valid Administrator Google email.");
+        });
+        before("api/admin/*", (request, response) -> {
+            String token = generateJWTToken(request, response);
+            response.cookie("token", token);
+            boolean authenticated = isAuthorized(token);
+            if(!authenticated)
+                halt(401, "Please log in with a valid Administrator Google email.");
+        });
+
+
 
         final CallbackRoute callback = new CallbackRoute(config, null, true);
         callback.setRenewSession(false);
@@ -162,6 +219,7 @@ public class Server {
 
         // Accept an xls file
         post("api/admin/import", (req, res) -> {
+
             res.type("application/json");
             try {
 
@@ -290,6 +348,13 @@ public class Server {
             BEGIN CHARTS
         *////////////////////////////////////////////////////////////////////
 
+
+        //Authorization request to view admin page
+        get("api/admin", (req, res) -> {
+            res.type("application/json");
+            return true;
+        });
+
         // Views per Hour
         get("api/admin/charts/viewsPerHour", (req, res) -> {
             res.type("application/json");
@@ -331,6 +396,42 @@ public class Server {
             res.status(404);
             return "Sorry, we couldn't find that!";
         });
+    }
+
+    private static boolean isAuthorized(String jwtToken)
+    {
+        JwtAuthenticator authenticator = new JwtAuthenticator(new SecretSignatureConfiguration(JWT_SALT));
+        Google2Profile prof = (Google2Profile) authenticator.validateToken(jwtToken);
+
+        if(prof == null)
+        {
+            System.err.println("Google2Profile was null");
+            return false;
+        }
+
+        List<JSONObject> emails = (List<JSONObject>)(Object)prof.getEmails();
+        Set<String> authorizedEmails = new TreeSet<String>();
+        authorizedEmails.add("frazi177@morris.umn.edu");
+//		authorizedEmails.add("carav008@morris.umn.edu");
+        for(JSONObject e : emails)
+        {
+            System.err.println("Found email:" + e.get("email"));
+            if(authorizedEmails.contains(e.get("email")))
+                return true;
+        }
+        return false;
+    }
+
+    private static String generateJWTToken(final Request request, final Response response) {
+        final SparkWebContext context = new SparkWebContext(request, response);
+        final ProfileManager manager = new ProfileManager(context);
+        final Optional<CommonProfile> profile = manager.get(true);
+        String token = "";
+        if (profile.isPresent()) {
+            JwtGenerator generator = new JwtGenerator(new SecretSignatureConfiguration(JWT_SALT));
+            token = generator.generate(profile.get());
+        }
+        return token;
     }
 
     public static String getLiveUploadId()
