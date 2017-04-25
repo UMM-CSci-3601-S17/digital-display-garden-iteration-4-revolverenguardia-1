@@ -17,30 +17,29 @@ import spark.TemplateEngine;
  */
 public class DDGConfigFactory implements ConfigFactory {
 
-    private final String salt;
+    private final String salt, key, secret;
 
-    public DDGConfigFactory(final String salt) {
+    public DDGConfigFactory(final String salt, final String key, final String secret) {
         this.salt = salt;
+        this.key = key;
+        this.secret = secret;
     }
 
     @Override
     public Config build() {
 //
-        final Google2Client google2Client = new Google2Client("124405005703-d2kbqml252lon2osu99sd2keplofo5us", "0Lk736R6UyLUh15jPKhRXNEx");
+        final Google2Client google2Client = new Google2Client(key, secret);
+        google2Client.setScope(Google2Client.Google2Scope.EMAIL);
 
         // REST authent with JWT for a token passed in the url as the token parameter
         ParameterClient parameterClient = new ParameterClient("token", new JwtAuthenticator(new SecretSignatureConfiguration(salt)));
         parameterClient.setSupportGetRequest(true);
         parameterClient.setSupportPostRequest(false);
 
-        final Clients clients = new Clients("http://localhost:2538/callback", google2Client, parameterClient, new AnonymousClient());
+        final Clients clients = new Clients("http://localhost:2538/callback", google2Client, parameterClient);
 
         final Config config = new Config(clients);
-        config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
-        //TODO:
-//        config.addAuthorizer("custom", new CustomAuthorizer());
-        config.addMatcher("excludedPath", new PathMatcher().excludeRegex("^/facebook/notprotected$"));
-//        config.setHttpActionAdapter(new DemoHttpActionAdapter(templateEngine));
+        config.setHttpActionAdapter(new DDGHttpActionAdapter());
         return config;
     }
 
