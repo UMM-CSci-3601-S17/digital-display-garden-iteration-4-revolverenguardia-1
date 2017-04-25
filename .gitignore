@@ -1,2 +1,4 @@
 .idea
 .gradle
+server/src/main/resources/google2auth.txt
+server/src/main/resources/jwtsalt.txt
