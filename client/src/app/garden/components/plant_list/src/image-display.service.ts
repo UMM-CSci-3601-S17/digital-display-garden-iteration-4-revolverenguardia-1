@@ -14,8 +14,8 @@ export class ImageDisplayService {
 
     }
 
-    public getImageFromServer(): Observable<File> {
-        return this.http.request(API_URL + "getImage" + "/:" + this.plantName).map(res => res.json());
+    public getImageFromServer(plantName: string): Observable<File> {
+        return this.http.request(API_URL + "getImage" + "/" + this.plantName).map(res => res.json());
     }
 
 }

@@ -334,7 +334,9 @@ public class Server {
         get("api/admin/getImage/:name", (req, res) -> {
             res.type("application/jpg");
             String plantID = req.params("name");
+            System.out.println(plantID);
 
+            System.out.println("we got to the correct endpoint");
             ImageHandler handler = new ImageHandler(res.raw().getOutputStream());
 
             handler.getImageOnFilesystem(plantID);

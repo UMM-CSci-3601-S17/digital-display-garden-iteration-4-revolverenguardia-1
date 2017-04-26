@@ -5,17 +5,26 @@
  * @editor Iteration 2 - Team Omar Anwar
  * @editor Iteratoin 3 - Team Revolver en Guardia
  */
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
 import 'rxjs/add/operator/switchMap';
+import {ImageDisplayService} from "./image-display.service";
 
 @Component({
     selector: 'plant-component',
     templateUrl: 'plant.component.html'
 })
+
+
 export class PlantComponent implements OnInit {
+
+
+    @ViewChild('imageDisplay') imageDisplay: ElementRef;
+
+    private imageService: ImageDisplayService;
+
 
     // Has the current PlantComponent been liked or disliked?
     public rated: Boolean = false;
@@ -26,7 +35,8 @@ export class PlantComponent implements OnInit {
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
 
-    /**
+    public Image_URL: string;
+        /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,
      * has a route to provide routing to specific PlantComponent pages that have unique URLs based on
      * the plant id.
@@ -43,9 +53,17 @@ export class PlantComponent implements OnInit {
      * For example, a URL for the Alternanthera would be http://localhost:9000/plant/16001
      */
     ngOnInit(): void {
+
+
         this.route.params
             .switchMap((params: Params) => this.plantService.getPlantById(params['id']))
-            .subscribe(plant => this.plant = plant);
+            .subscribe(plant => {
+                this.plant = plant;
+                this.Image_URL = API_URL + "admin/getImage/" + this.plant.cultivar;
+            });
+
+
+
     }
 
     /**

@@ -70,10 +70,13 @@ public class ImageHandler {
         File flowerFolder = new File("./src/main/java/umm3601/images/" + flowerName);
         File fileToBeRead = null;
         //FileOutputStream returnStream = null;
+        System.out.println(flowerFolder.toString());
         try {
-            fileToBeRead = new File(flowerFolder.listFiles()[0].getName());
+            fileToBeRead = new File("./src/main/java/umm3601/images/" + flowerName + "/" + flowerFolder.listFiles()[0].getName());
+            System.out.println(fileToBeRead.toString());
         } catch (NullPointerException e) {
-
+            System.err.println("Null pointer when trying to read file" + flowerFolder.listFiles());
+            System.out.println(flowerFolder.listFiles().toString());
         }
 
 //        try {
@@ -86,8 +89,9 @@ public class ImageHandler {
 
         try {
             outputImage = ImageIO.read(fileToBeRead);
+            System.out.println("Read the file");
         } catch (IOException e) {
-            System.err.println("OH GOD WE GOT AN IOEXCEPTION STOP THE WORLD");
+            System.err.println("IOException when reading the file");
         } catch (NullPointerException e) {
             System.err.println("No image found for selected flower");
         }
@@ -95,7 +99,7 @@ public class ImageHandler {
         try {
             ImageIO.write(outputImage, "jpg", streamOut);
         } catch (IOException e) {
-            System.err.println("We got an IOException");
+            System.err.println("We got an IOException when writing the image to the outputstream");
         }
 
         // get DataBufferBytes from Raster

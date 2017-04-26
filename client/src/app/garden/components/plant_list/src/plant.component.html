@@ -52,6 +52,9 @@
         </style>
     </head>
 
+    <img [src]="Image_URL">
+
+
     <a id="back-button" href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span></a>
 
     <div class="image">
@@ -62,7 +65,8 @@
 
     <div *ngIf="plant !== null" class= "text-center">
 
-        <h3>{{plant.cultivar}}</h3>
+        <!--<h3>{{plant.cultivar}}</h3>-->
+        <h3>{{Image_URL}}</h3>
         <h4> Common Name: {{plant.commonName}}</h4>
         <h4> Bed Number: {{plant.gardenLocation}}</h4>
 
