@@ -67,6 +67,11 @@
                 padding-top: 1em;
                 padding-bottom: 1.5em;
             }
+            @media only screen and (max-width: 768px) {
+                [class="row-filter"] {
+                    padding-bottom: 1em;
+                }
+            }
             .drop-downs {
                 width: 50%;
                 margin: 0em auto;
@@ -83,14 +88,19 @@
             .bed {
                 margin-right: 1em;
             }
-            @media only screen and (max-width: 768px) {
-                [class="bed"] {
+            @media only screen and (max-width: 320px) {
+                [class="bed"]{
                     margin-bottom: .5em;
                 }
             }
             .just-deco {
                 background: linear-gradient(#537d39, #283d1c);
                 padding: 3em 0em;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="just-deco"] {
+                    padding: 0em;
+                }
             }
         </style>
     </head>
