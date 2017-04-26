@@ -9,12 +9,12 @@ import { PipeModule } from './pipe.module';
 import { NavbarComponent } from './app/navbar/navbar.component';
 import { GardenComponent } from "./app/garden/src/garden-component";
 import { PlantListComponent } from "./app/garden/components/plant_list/src/plant-list.component";
-import { BedListComponent } from "./app/garden/components/bed_dropdown/src/bed-dropdown.component";
-import { CommonNameListComponent } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.component";
+import { BedDropdownComponent } from "./app/garden/components/bed_dropdown/src/bed-dropdown.component";
+import { CommonNameDropdownComponent } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.component";
 
 import { PlantListService } from "./app/garden/components/plant_list/src/plant-list.service";
-import { BedListService } from "./app/garden/components/bed_dropdown/src/bed-dropdown.service";
-import { CommonNameListService } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.service";
+import { BedDropdownService } from "./app/garden/components/bed_dropdown/src/bed-dropdown.service";
+import { CommonNameDropdownService } from "./app/garden/components/common_name_dropdown/src/common-name-dropdown.service";
 import { AdminComponent } from "./app/admin/admin.component";
 import { PlantComponent } from "./app/garden/components/plant_list/src/plant.component";
 import { ImportComponent } from "./app/admin/import.component";
@@ -49,8 +49,8 @@ import { PlantInfoComponent } from "./app/garden/src/plant-info-component";
         PlantInfoComponent,
         FilterGardenComponent,
         PlantListComponent,
-        BedListComponent,
-        CommonNameListComponent,
+        BedDropdownComponent,
+        CommonNameDropdownComponent,
         PlantComponent,
         AdminComponent,
         ImportComponent,
@@ -62,8 +62,8 @@ import { PlantInfoComponent } from "./app/garden/src/plant-info-component";
     ],
     providers: [
         PlantListService,
-        BedListService,
-        CommonNameListService,
+        BedDropdownService,
+        CommonNameDropdownService,
         AdminService,
         PlantService
     ],

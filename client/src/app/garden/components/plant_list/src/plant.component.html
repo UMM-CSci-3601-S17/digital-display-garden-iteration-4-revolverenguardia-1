@@ -199,6 +199,9 @@
         .submit-btn a:hover {
             font-weight: 700;
         }
+        .progress{
+            margin: 5px 5px 5px 5px;
+        }
         </style>
     </head>
 
@@ -268,15 +271,18 @@
                     <p>Thanks for your feedback!</p>
                 </div>
 
-                    <!--<div class="progress">-->
-                        <!--<div class="progress-bar progress-bar-success" [style.width]="(plantFeedback.likeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">-->
-                            <!--{{plantFeedback.likeCount}}-->
-                        <!--</div>-->
 
-                        <!--<div class="progress-bar progress-bar-info" [style.width]="(plantFeedback.dislikeCount/(plantFeedback.likeCount + plantFeedback.dislikeCount))*100 +'%'">-->
-                            <!--{{plantFeedback.dislikeCount}}-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <div *ngIf="rated" class="progress">
+
+                    <div *ngIf="getLikeWidth() > 0" class="progress-bar progress-bar-success" [style.width]="getLikeWidth() + '%'">
+                        <span class="glyphicon glyphicon-thumbs-up"> {{plantFeedback.likeCount}} </span>
+                    </div>
+
+                    <div class="progress-bar progress-bar-danger" [style.width]="getDislikeWidth() + '%'">
+                        {{plantFeedback.dislikeCount}}
+                    </div>
+                </div>
+
             </div>
             <!--likes and dislikes end here-->
 

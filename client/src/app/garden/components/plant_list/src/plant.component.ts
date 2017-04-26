@@ -10,7 +10,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
 import 'rxjs/add/operator/switchMap';
-import {PlantFeedback} from "./PlantFeedback";
+import {PlantFeedback} from "./plant-feedback";
 
 @Component({
     selector: 'plant-component',
@@ -27,8 +27,8 @@ export class PlantComponent implements OnInit {
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
 
-    //This will get the feedback count
-    plantFeedback: PlantFeedback = new PlantFeedback();
+    // Tracks the feedback for the current plant
+    private plantFeedback: PlantFeedback = new PlantFeedback();
 
 
     /**
@@ -42,20 +42,22 @@ export class PlantComponent implements OnInit {
 
 
     /**
+     * TODO
      * On initialization generates the URL with the proper plant ID and also helps to
      * populate the PlantComponent page with the Plant data referneced by the id.
      *
      * For example, a URL for the Alternanthera would be http://localhost:9000/plant/16001
      */
     ngOnInit(): void {
+        // Get the actual plant
         this.route.params
             .switchMap((params: Params) => this.plantService.getPlantById(params['id']))
             .subscribe(plant => this.plant = plant);
 
+        // Get the feedback data for the plant
         this.route.params
             .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
             .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
-
     }
 
     /**
@@ -86,6 +88,9 @@ export class PlantComponent implements OnInit {
         }
     }
 
+    /**
+     * TODO
+     */
     private refreshFeedback(): void {
         //Update flower feedback numbers
         this.route.params
@@ -109,6 +114,20 @@ export class PlantComponent implements OnInit {
      */
     public isCommented(): Boolean{
         return this.commented;
+    }
+
+    public getLikeWidth(): number{
+        let likes: number = this.plantFeedback.likeCount,
+            dislikes: number = this.plantFeedback.dislikeCount;
+
+        return likes / (likes + dislikes) * 100;
+    }
+
+    public getDislikeWidth(): number{
+        let likes: number = this.plantFeedback.likeCount,
+            dislikes: number = this.plantFeedback.dislikeCount;
+
+        return dislikes / (likes + dislikes) * 100;
     }
 }
 

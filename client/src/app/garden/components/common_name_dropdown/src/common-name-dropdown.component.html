@@ -71,14 +71,14 @@
             .common-name-dropdown select {
                 border-radius: 0.25em;
                 background-color: #ffffff;
-                padding: 0.2em 1em;
+                padding: 1.0em 0.2em;
             }
         </style>
     </head>
 
     <div class="common-name-dropdown">
         <select (change)="handleCommonNameSelect($event.target.value)">
-            <option disabled selected value>Filter Common Name</option>
+            <option disabled selected value>Choose Common Name</option>
             <option value="ALL">All</option>
             <option *ngFor="let commonName of commonNameListService.getCommonNames()" [selected]="selectedCommonName == commonName._id">
                 {{commonName._id}}

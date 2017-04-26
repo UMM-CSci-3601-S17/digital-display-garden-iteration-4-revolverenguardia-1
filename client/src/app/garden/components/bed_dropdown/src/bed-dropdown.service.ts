@@ -12,7 +12,7 @@ import {Http} from "@angular/http";
 import {BedCollection} from "./bedcollection";
 
 @Injectable()
-export class BedListService {
+export class BedDropdownService {
 
     /**
      * Master collection of beds
@@ -20,7 +20,7 @@ export class BedListService {
     private bedCollection: BedCollection;
 
     /**
-     * Collection of beds shown in the BedListComponent
+     * Collection of beds shown in the BedDropdownComponent
      */
     private beds: Bed[];
 
@@ -45,8 +45,8 @@ export class BedListService {
     }
 
     /**
-     * Gets the Beds shown within the BedListComponent
-     * @returns {Bed[]} - Beds displayed in BedListComponent
+     * Gets the Beds shown within the BedDropdownComponent
+     * @returns {Bed[]} - Beds displayed in BedDropdownComponent
      */
     public getBedNames(): Bed[]{
         return this.beds;

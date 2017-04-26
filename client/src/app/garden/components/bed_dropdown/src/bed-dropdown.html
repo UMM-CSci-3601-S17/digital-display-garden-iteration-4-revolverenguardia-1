@@ -73,14 +73,14 @@
             .bed-dropdown select {
                 border-radius: 0.25em;
                 background-color: #ffffff;
-                padding: 0.2em 1em;
+                padding: 1.0em 0.2em;
             }
         </style>
     </head>
 
     <div class="bed-dropdown">
         <select (change)="handleBedSelect($event.target.value)">
-            <option disabled selected value>Filter Bed</option>
+            <option disabled selected value>Choose Bed</option>
             <option value="ALL">All</option>
             <option *ngFor="let bed of bedListService.getBedNames()" [selected]="selectedBed == bed._id">
                 {{bed._id}}

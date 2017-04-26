@@ -1,8 +1,8 @@
 export class PlantFeedback{
+
     commentCount:number;
     likeCount:number;
     dislikeCount:number;
-
 
     constructor(){
         this.commentCount = 0;

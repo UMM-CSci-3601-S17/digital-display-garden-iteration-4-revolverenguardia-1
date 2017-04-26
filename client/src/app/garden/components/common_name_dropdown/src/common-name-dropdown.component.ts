@@ -4,7 +4,7 @@
  * @author Iteration 3 - Team revolver en guardia
  */
 import {Component} from "@angular/core";
-import {CommonNameListService} from "./common-name-dropdown.service";
+import {CommonNameDropdownService} from "./common-name-dropdown.service";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 
@@ -12,7 +12,7 @@ import {PlantFilter} from "../../plant_list/src/plantfilter";
     selector: 'common-name-dropdown',
     templateUrl: 'common-name-dropdown.component.html'
 })
-export class CommonNameListComponent {
+export class CommonNameDropdownComponent {
 
     /**
      * TODO: Comment
@@ -20,7 +20,7 @@ export class CommonNameListComponent {
      */
     private selectedCommonName: string = PlantFilter.NO_FILTER;
 
-    constructor(private commonNameListService: CommonNameListService,
+    constructor(private commonNameListService: CommonNameDropdownService,
                 private plantListService: PlantListService) {
     }
 

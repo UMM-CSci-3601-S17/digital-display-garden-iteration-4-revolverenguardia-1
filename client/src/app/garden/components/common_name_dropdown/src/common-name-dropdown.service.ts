@@ -16,7 +16,7 @@ import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {Bed} from "../../bed_dropdown/src/bed";
 
 @Injectable()
-export class CommonNameListService {
+export class CommonNameDropdownService {
 
     /**
      * Master collection of common names
