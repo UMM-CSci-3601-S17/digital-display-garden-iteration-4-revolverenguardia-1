@@ -265,7 +265,7 @@
             <!--likes and dislikes start here-->
             <div class="rating">
 
-                <div *ngIf="!rated">
+                <div *ngIf="!rated && !ratingInTransit">
 
                     <div class="rating-btn btn btn-lg">
                         <a (click)="this.rate(true)">
@@ -280,8 +280,9 @@
                     </div>
                 </div>
 
-                <div class="feedback-to-user-action" *ngIf="rated">
-                    <p>Thanks for your feedback!</p>
+                <div class="feedback-to-user-action">
+                    <p *ngIf="!rated && ratingInTransit">Submitting feedback to server...</p>
+                    <p *ngIf="rated && !ratingInTransit">Thanks for your feedback!</p>
                 </div>
 
 

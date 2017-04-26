@@ -21,6 +21,9 @@ export class PlantComponent implements OnInit {
     // Has the current PlantComponent been liked or disliked?
     public rated: Boolean = false;
 
+    // Is there a current submit to the server for rating submission?
+    public ratingInTransit: Boolean = false;
+
     // Has the current PlantComponent been commented on?
     private commented: Boolean = false;
 
@@ -67,10 +70,14 @@ export class PlantComponent implements OnInit {
      */
     public rate(rating: boolean): void {
         if (!this.rated) {
+            this.ratingInTransit = true;
             this.plantService.ratePlant(this.plant.id, rating)
-                .subscribe(succeeded => this.rated = succeeded)
-            this.rated = true;
-            this.refreshFeedback();
+                .subscribe(succeeded => {
+                    setTimeout(() => {
+                    this.rated = succeeded;
+                    this.refreshFeedback();
+                    this.ratingInTransit = false; }, 2000);
+                });
         }
     }
 
@@ -116,6 +123,10 @@ export class PlantComponent implements OnInit {
         return this.commented;
     }
 
+    /**
+     * TODO
+     * @returns {number}
+     */
     public getLikeWidth(): number{
         let likes: number = this.plantFeedback.likeCount,
             dislikes: number = this.plantFeedback.dislikeCount;
@@ -123,6 +134,10 @@ export class PlantComponent implements OnInit {
         return likes / (likes + dislikes) * 100;
     }
 
+    /**
+     * TODO
+     * @returns {number}
+     */
     public getDislikeWidth(): number{
         let likes: number = this.plantFeedback.likeCount,
             dislikes: number = this.plantFeedback.dislikeCount;
