@@ -32,6 +32,7 @@ public class PlantController {
     private final MongoCollection<Document> commentCollection;
     private final MongoCollection<Document> configCollection;
     private final MongoCollection<Document> bedCollection;
+    private final MongoDatabase db;
 
     public PlantController(MongoDatabase database) throws IOException {
 
@@ -39,7 +40,7 @@ public class PlantController {
         commentCollection = database.getCollection("comments");
         configCollection = database.getCollection("config");
         bedCollection = database.getCollection("beds");
-
+        db = database;
     }
 
     /**
@@ -55,6 +56,8 @@ public class PlantController {
      * @throws com.mongodb.MongoCommandException when the id is valid and the field is empty
      */
     public boolean incrementMetadata(String plantID, String field, String uploadId) {
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
 
         Document searchDocument = new Document();
         searchDocument.append("id", plantID);
@@ -67,6 +70,10 @@ public class PlantController {
 
     // List plants
     public String listPlants(Map<String, String[]> queryParams, String uploadId) {
+
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return "null";
+
         //Create a filter based on query params
         Document filterDoc = new Document();
         filterDoc.append("uploadId", uploadId);
@@ -113,6 +120,9 @@ public class PlantController {
      */
     public String getPlantByPlantID(String plantID, String uploadID) {
 
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return "null";
+
         FindIterable<Document> jsonPlant;
         String returnVal;
         try {
@@ -146,6 +156,10 @@ public class PlantController {
                             PLANT_FEEDBACK_COMMENTS = 2;
 
     public long[] getPlantFeedbackByPlantId(String plantID, String uploadID) {
+
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return null;
+
         Document filter = new Document();
         filter.put("commentOnPlant", plantID);
         filter.put("uploadId", uploadID);
@@ -196,6 +210,8 @@ public class PlantController {
      */
 
     public String getPlantFeedbackByPlantIdJSON(String plantID, String uploadID) {
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return "null";
         Document out = new Document();
 
         //Get feedback then package it in a JSON(BSON) Document
@@ -208,8 +224,11 @@ public class PlantController {
     }
 
     public String[] getGardenLocations(String uploadID){
-        //Get distinct gardenLocations for this uploadId
 
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return null;
+
+        //Get distinct gardenLocations for this uploadId
         Document filter = new Document();
         filter.append("uploadId", uploadID);
         DistinctIterable<String>  bedIterator = plantCollection.distinct("gardenLocation", filter, String.class);
@@ -224,29 +243,29 @@ public class PlantController {
     }
 
     public JsonArray getGardenLocationsJSON(String uploadID){
-        try {
-            //Get garden locations and package them in a JsonArray
-            String[] beds = getGardenLocations(uploadID);
-            JsonArray out = new JsonArray();
-            for(int i = 0; i < beds.length; i++)
-            {
-                JsonObject bed = new JsonObject();
-                bed.addProperty("_id", beds[i]);
-                out.add(bed);
-            }
 
-            return out;
-        }
-        catch(Exception e)
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return null;
+
+        //Get garden locations and package them in a JsonArray
+        String[] beds = getGardenLocations(uploadID);
+        JsonArray out = new JsonArray();
+        for(int i = 0; i < beds.length; i++)
         {
-            e.printStackTrace();
-            throw e;
+            JsonObject bed = new JsonObject();
+            bed.addProperty("_id", beds[i]);
+            out.add(bed);
         }
+
+        return out;
     }
 
 
 
     public String getCommonNamesJSON(String uploadID){
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return "null";
+
         AggregateIterable<Document> documents
                 = plantCollection.aggregate(
                 Arrays.asList(
@@ -265,7 +284,8 @@ public class PlantController {
      * @return
      */
     public boolean addVisit(String plantID, String uploadId) {
-
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
         Document filterDoc = new Document();
         filterDoc.append("id", plantID);
         filterDoc.append("uploadId", uploadId);
@@ -294,6 +314,9 @@ public class PlantController {
      */
 
     public boolean storePlantComment(String json, String uploadID) {
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return false;
+
         try {
 
             Document toInsert = new Document();
@@ -332,13 +355,11 @@ public class PlantController {
 
             commentCollection.insertOne(toInsert);
 
-        } catch (BsonInvalidOperationException e){
+        } catch (BsonInvalidOperationException e) {
             e.printStackTrace();
             return false;
-        } catch (org.bson.json.JsonParseException e){
-            e.printStackTrace();
-            return false;
-        } catch (IllegalArgumentException e){
+        }
+        catch (org.bson.json.JsonParseException e) {
             e.printStackTrace();
             return false;
         }
@@ -356,6 +377,9 @@ public class PlantController {
      */
 
     public boolean addFlowerRating(String plantId, boolean like, String uploadID) {
+
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return false;
 
         //Get a plant by this plantId and uploadId
         Document filterDoc = new Document();
@@ -397,6 +421,10 @@ public class PlantController {
      */
 
     public boolean addFlowerRating(String json, String uploadID){
+
+        if (!ExcelParser.isValidUploadId(db, uploadID))
+            return false;
+
         boolean like;
         String id;
 
@@ -417,9 +445,9 @@ public class PlantController {
             }
 
         } catch (BsonInvalidOperationException e){
-            e.printStackTrace();
             return false;
-        } catch (org.bson.json.JsonParseException e){
+        }
+        catch (org.bson.json.JsonParseException e){
             return false;
         }
 
@@ -437,8 +465,10 @@ public class PlantController {
      */
     public boolean writeFeedback(OutputStream outputStream, String uploadId) throws IOException {
 
-        FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
 
+        FeedbackWriter feedbackWriter = new FeedbackWriter(outputStream);
         writeToCommentSheet(feedbackWriter, uploadId);
         writeToPlantMetadataSheet(feedbackWriter, uploadId);
         writeToBedMetadataSheet(feedbackWriter, uploadId);
@@ -447,8 +477,11 @@ public class PlantController {
         return true;
     }
 
-    private void writeToCommentSheet(FeedbackWriter feedbackWriter, String uploadId)
+    public boolean writeToCommentSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
+
         //Find all comments of this uploadId
         FindIterable iter = commentCollection.find(
                 and(
@@ -482,10 +515,14 @@ public class PlantController {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
-    private void writeToPlantMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
+    public boolean writeToPlantMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
+
         //Loop through all plants
         FindIterable iter = plantCollection.find(
                 eq("uploadId", uploadId)
@@ -526,10 +563,14 @@ public class PlantController {
                 System.err.println("ERROR ON PLANT " + onPlant);
             }
         }
+        return true;
     }
 
-    private void writeToBedMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
+    public boolean writeToBedMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
+        if (!ExcelParser.isValidUploadId(db, uploadId))
+            return false;
+
         FindIterable iter = bedCollection.find(
                 eq("uploadId", uploadId)
 
@@ -560,6 +601,7 @@ public class PlantController {
                 System.err.println("ERROR ON BED " + onBed);
             }
         }
+        return true;
     }
 
 
