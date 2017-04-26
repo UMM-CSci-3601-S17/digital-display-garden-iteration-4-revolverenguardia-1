@@ -66,9 +66,7 @@
         }
         .plant-info {
             width: 50%;
-            margin-top: -1.25em;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 1em auto;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-style: normal;
             font-size: 1.5em;
@@ -80,6 +78,7 @@
         @media only screen and (max-width: 768px) {
             [class="plant-info"] {
                 width: 100%;
+                margin-bottom: 0em;
             }
         }
         .back-btn {
@@ -137,7 +136,6 @@
             -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             padding: 1.5em 0em;
-            min-height: 30%;
         }
         @media only screen and (max-width: 768px) {
             [class="user-feedback"] {
@@ -224,6 +222,11 @@
         .rating-text{
             font-family: "Open Sans Condensed";
             font-weight: 600;
+        }
+        .footer {
+            -webkit-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
         }
         </style>
     </head>
@@ -342,6 +345,12 @@
 
         </div>
         <!--user feedback ends here-->
+
+        <!--footer starts here-->
+        <div class="footer">
+            <footer-component></footer-component>
+        </div>
+        <!--footer ends here-->
 
     </div>
 
