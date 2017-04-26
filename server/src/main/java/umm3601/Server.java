@@ -8,6 +8,7 @@ import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
+import org.pac4j.oauth.client.Google2Client;
 import org.pac4j.oauth.profile.google2.Google2Profile;
 import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.SecurityFilter;
@@ -40,8 +41,8 @@ public class Server {
 
     public static final String API_URL = "https://revolverenguardia.dungeon.website";
     public static final String JS_ORIGIN_URL = "http://localhost:9000"; //change to https://revolverenguardia.dungeon.website for prod
-    public static final String JWT_SALT_PATH = "src/main/resources/jwtsalt.txt";
-    public static final String G2_AUTH_PATH = "src/main/resources/google2auth.txt";
+    public static final String JWT_SALT_PATH = "/jwtsalt.txt";
+    public static final String G2_AUTH_PATH = "/google2auth.txt";
     private static String JWT_SALT;
 
     public static String databaseName = "test";
@@ -54,13 +55,13 @@ public class Server {
 
         try
         {
-            InputStream input = new FileInputStream(JWT_SALT_PATH);
+            InputStream input = Server.class.getResourceAsStream(JWT_SALT_PATH);
             byte[] salt = new byte[32];
             input.read(salt, 0, 32);
             JWT_SALT = new String(salt);
             input.close();
 
-            input = new FileInputStream(G2_AUTH_PATH);
+            input = Server.class.getResourceAsStream(G2_AUTH_PATH);
             Scanner rdr = new Scanner(input);
             Google2Key = rdr.nextLine();
             Google2Secret = rdr.nextLine();
@@ -101,7 +102,7 @@ public class Server {
             return "OK";
         });
 
-        before((request, response) -> response.header("Access-Control-Allow-Origin", ""));
+        before((request, response) -> response.header("Access-Control-Allow-Origin", JS_ORIGIN_URL));
 
         // Redirects for the "home" page
         redirect.get("", "/");
@@ -122,25 +123,34 @@ public class Server {
         /*
             Require Authentication before reaching any of the admin pages
          */
-        before("api/admin", new SecurityFilter(config, "Google2Client"));
-        before("api/admin", (request, response) -> {
-            String token = generateJWTToken(request, response);
-            if(!token.isEmpty()) {
-                response.cookie("token", token);
-            }
-            boolean authenticated = isAuthorized(token);
-            if(!authenticated)
-                halt(401, "Please log in with a valid Administrator Google email.");
-        });
-        before("api/admin/*", new SecurityFilter(config, "Google2Client"));
-        before("api/admin/*", (request, response) -> {
-            String token = generateJWTToken(request, response);
-            response.cookie("token", token);
-            boolean authenticated = isAuthorized(token);
-            if(!authenticated)
-                halt(401, "Please log in with a valid Administrator Google email.");
-        });
+//        before("api/admin", new SecurityFilter(config, "Google2Client"));
+//        before("api/admin", (request, response) -> {
+//            String token = generateJWTToken(request, response);
+//            if(!token.isEmpty()) {
+//                response.cookie("token", token);
+//            }
+//            boolean authenticated = isAuthorized(token);
+//            if(!authenticated)
+//                halt(401, "Please log in with a valid Administrator Google email.");
+//        });
+//        before("api/admin/*", new SecurityFilter(config, "Google2Client"));
+//        before("api/admin/*", (request, response) -> {
+//            String token = generateJWTToken(request, response);
+//            response.cookie("token", token);
+//            boolean authenticated = isAuthorized(token);
+//            if(!authenticated)
+//                halt(401, "Please log in with a valid Administrator Google email.");
+//        });
 
+
+        get("foo", (request, response) -> {
+            final SparkWebContext context = new SparkWebContext(request, response);
+
+            SecurityFilter halp = new SecurityFilter(config, "Google2Client");
+            config.getClients().getDefaultClient().redirect(context);
+            halp.handle(request,response);
+            return true;
+        });
 
         /*///////////////////////////////////////////////////////////////////
          * BEGIN VISITOR ENDPOINTS
@@ -219,12 +229,18 @@ public class Server {
 
         //Authorization request to view admin page
         get("api/admin", (req, res) -> {
+
             res.type("application/json");
             return true;
         });
 
         // Accept an xls file
         post("api/admin/import", (req, res) -> {
+            if(!isAuthorized(req.cookie("token"))) {
+                //Not Authorized
+                halt(403);
+                return null;
+            }
 
             res.type("application/json");
             try {
@@ -251,6 +267,11 @@ public class Server {
 
         //Patch from spreadsheet
         post("api/admin/patch", (req, res) -> {
+            if(!isAuthorized(req.cookie("token"))) {
+                //Not Authorized
+                halt(403);
+                return null;
+            }
 
             res.type("application/json");
             try {
@@ -276,6 +297,22 @@ public class Server {
         });
 
         get("api/admin/export", (req, res) -> {
+
+
+            if(!isAuthorized(req.cookie("token"))) {
+                //Not Authorized
+                SecurityFilter securityFilter = new SecurityFilter(config, "Google2Client");
+                Google2Client client = new Google2Client();
+
+                securityFilter.handle(req, res);
+                res.redirect(auth.getAuthURL(publicURL + "/admin/exportData"));
+                return res; // not reached
+            }
+
+
+            res.type("application/vnd.ms-excel");
+            res.header("Content-Disposition", "attachment; filename=\"Garden-Visitor data.xlsx\"");
+
             // Note that after flush() or close() is called on
             // res.raw().getOutputStream(), the response can no longer be
             // modified. Since writeComment(..) closes the OutputStream
@@ -290,8 +327,6 @@ public class Server {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                     plantController.writeFeedback(buffer, req.queryMap().toMap().get("uploadId")[0]);
 
-                    res.type("application/vnd.ms-excel");
-                    res.header("Content-Disposition", "attachment; filename=\"Garden-Visitor data.xlsx\"");
 
                     OutputStream out = res.raw().getOutputStream();
                     out.write(buffer.toByteArray());
@@ -402,7 +437,7 @@ public class Server {
 
     private static boolean isAuthorized(String jwtToken)
     {
-        if(jwtToken.isEmpty())
+        if(jwtToken == null || jwtToken.isEmpty())
             return false;
 
         JwtAuthenticator authenticator = new JwtAuthenticator(new SecretSignatureConfiguration(JWT_SALT));

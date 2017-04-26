@@ -37,8 +37,10 @@ public class DDGConfigFactory implements ConfigFactory {
         parameterClient.setSupportPostRequest(false);
 
         final Clients clients = new Clients("http://localhost:2538/callback", google2Client, parameterClient);
+        clients.setDefaultClient(google2Client);
 
         final Config config = new Config(clients);
+
         config.setHttpActionAdapter(new DDGHttpActionAdapter());
         return config;
     }
