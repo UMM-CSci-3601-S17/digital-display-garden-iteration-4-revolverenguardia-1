@@ -56,18 +56,18 @@ public class TestViewsPerHour{
         Commented out to pass Travic CI Tests
          */
 
-//        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
-//        JsonArray json = TestUTILS.stringToJSONArray(string);
-//
-//        ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
-//
-//        Object object1 = arrayList.get(20).toString();
-//        Object object2 = arrayList.get(23).toString();
-//        Object object3 = arrayList.get(1).toString();
-//
-//        assertEquals("at the 19th hour there should be 1 visit","[\"7\",1]",object1);
-//        assertEquals("at the 22nd hour there should be 3 visits","[\"10\",3]",object2);
-//        assertEquals("at midnight, there should be 0 visits", "[\"12\",0]", object3);
+        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
+        JsonArray json = TestUTILS.stringToJSONArray(string);
+
+        ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
+
+        Object object1 = arrayList.get(20).toString();
+        Object object2 = arrayList.get(23).toString();
+        Object object3 = arrayList.get(1).toString();
+
+        assertEquals("at the 19th hour there should be 1 visit","[\"7\",1]",object1);
+        assertEquals("at the 22nd hour there should be 3 visits","[\"10\",3]",object2);
+        assertEquals("at midnight, there should be 0 visits", "[\"12\",0]", object3);
     }
 
 
