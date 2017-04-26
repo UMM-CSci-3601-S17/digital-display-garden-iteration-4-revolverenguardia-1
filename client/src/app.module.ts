@@ -28,7 +28,6 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { FilterGardenComponent } from "./app/garden/components/filter_garden_sidebar/src/filter-garden.component";
 import { FooterComponent } from "./app/garden/components/footer/src/footer.component";
 import { RouterModule } from "@angular/router";
-import { PlantInfoComponent } from "./app/garden/src/plant-info-component";
 
 @NgModule({
     imports: [
@@ -46,7 +45,6 @@ import { PlantInfoComponent } from "./app/garden/src/plant-info-component";
         AppComponent,
         NavbarComponent,
         GardenComponent,
-        PlantInfoComponent,
         FilterGardenComponent,
         PlantListComponent,
         BedDropdownComponent,
