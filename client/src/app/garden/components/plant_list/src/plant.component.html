@@ -200,7 +200,20 @@
             font-weight: 700;
         }
         .progress{
-            margin: 5px 5px 5px 5px;
+            border-radius: 0.25em;
+            height: 1.5em;
+            width: 50%;
+            margin: 0em auto;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            font-size: 1.5em;
+        }
+        #like-progress-bar, #dislike-progress-bar{
+            margin-top: 0.2em;
+        }
+        .rating-text{
+            font-family: "Open Sans Condensed";
+            font-weight: 600;
         }
         </style>
     </head>
@@ -275,11 +288,15 @@
                 <div *ngIf="rated" class="progress">
 
                     <div *ngIf="getLikeWidth() > 0" class="progress-bar progress-bar-success" [style.width]="getLikeWidth() + '%'">
-                        <span class="glyphicon glyphicon-thumbs-up"> {{plantFeedback.likeCount}} </span>
+                        <span id="like-progress-bar" class="glyphicon glyphicon-thumbs-up"> </span>
+                        <span class="rating-text"> {{plantFeedback.likeCount}} </span>
+
                     </div>
 
-                    <div class="progress-bar progress-bar-danger" [style.width]="getDislikeWidth() + '%'">
-                        {{plantFeedback.dislikeCount}}
+                    <div *ngIf="getDislikeWidth() > 0" class="progress-bar progress-bar-danger" [style.width]="getDislikeWidth() + '%'">
+                        <span id="dislike-progress-bar" class="glyphicon glyphicon-thumbs-down"> </span>
+                        <span class="rating-text"> {{plantFeedback.dislikeCount}} </span>
+
                     </div>
                 </div>
 

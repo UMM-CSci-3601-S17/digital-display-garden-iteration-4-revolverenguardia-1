@@ -38,7 +38,8 @@ export class PlantComponent implements OnInit {
      * @param plantService - the PlantService that provides data
      * @param route - the routing service that routes to specific PlantComponent pages
      */
-    constructor(private plantService: PlantService, private route: ActivatedRoute ) { }
+    constructor(private plantService: PlantService,
+                private route: ActivatedRoute ) { }
 
 
     /**
@@ -65,11 +66,11 @@ export class PlantComponent implements OnInit {
      * @param rating - the rating to be provided
      */
     public rate(rating: boolean): void {
-        if (!this.rated) {this.rated = false;
+        if (!this.rated) {
             this.plantService.ratePlant(this.plant.id, rating)
-            //this will update the comment dynamically but makes the test fail
-                //.subscribe(succeeded => {this.rated = succeeded;this.refreshFeedback()})
                 .subscribe(succeeded => this.rated = succeeded)
+            this.rated = true;
+            this.refreshFeedback();
         }
     }
 
@@ -81,9 +82,8 @@ export class PlantComponent implements OnInit {
         if (!this.commented) {
             if (comment != null) {
                 this.plantService.commentPlant(this.plant.id, comment)
-                    //this will update the comment dynamically but makes the test fail
-                    //.subscribe(succeeded => {this.commented = succeeded;this.refreshFeedback()})
                     .subscribe(succeeded => this.commented = succeeded)
+                this.commented = true;
             }
         }
     }
