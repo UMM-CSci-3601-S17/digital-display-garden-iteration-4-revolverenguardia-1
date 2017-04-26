@@ -201,12 +201,22 @@
         }
         .progress{
             border-radius: 0.25em;
-            height: 1.5em;
+            line-height: 1.5em;
             width: 50%;
-            margin: 0em auto;
-            margin-top: 1em;
-            margin-bottom: 1em;
-            font-size: 1.5em;
+            margin: 1em auto;
+            font-size: 1em;
+            height: 1.5em;
+        }
+        .progress-like {
+            background: linear-gradient(to right bottom, #537d39, #74af50);
+        }
+        .progress-dislike {
+            background: linear-gradient(to right bottom, #737373, #8c8c8c);
+        }
+        @media only screen and (max-width: 768px) {
+            [class="progress"] {
+                width: 90%;
+            }
         }
         #like-progress-bar, #dislike-progress-bar{
             margin-top: 0.2em;
@@ -288,13 +298,13 @@
 
                 <div *ngIf="rated" class="progress">
 
-                    <div *ngIf="getLikeWidth() > 0" class="progress-bar progress-bar-success" [style.width]="getLikeWidth() + '%'">
+                    <div *ngIf="getLikeWidth() > 0" class="progress-bar progress-like" [style.width]="getLikeWidth() + '%'">
                         <span id="like-progress-bar" class="glyphicon glyphicon-thumbs-up"> </span>
                         <span class="rating-text"> {{plantFeedback.likeCount}} </span>
 
                     </div>
 
-                    <div *ngIf="getDislikeWidth() > 0" class="progress-bar progress-bar-danger" [style.width]="getDislikeWidth() + '%'">
+                    <div *ngIf="getDislikeWidth() > 0" class="progress-bar progress-dislike" [style.width]="getDislikeWidth() + '%'">
                         <span id="dislike-progress-bar" class="glyphicon glyphicon-thumbs-down"> </span>
                         <span class="rating-text"> {{plantFeedback.dislikeCount}} </span>
 
