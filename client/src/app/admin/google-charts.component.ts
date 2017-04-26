@@ -60,7 +60,7 @@ export class GraphComponent implements OnInit {
         this.adminService.get20MostLikes()
             .subscribe(result => {
                 console.log(result);
-                this.top20ChartData["dataTable"] = result;
+                this.top20ChartData.dataTable = this.createDataTableTop20(result);
                 this.top20ChartData = Object.create(this.top20ChartData);
             }, err => console.log(err));
     }
@@ -71,36 +71,16 @@ export class GraphComponent implements OnInit {
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
-        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Common Name'}, vAxis : {'title' :'Amount of Likes'}},
+        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Likes'}},
     }
 
     public line_ChartData = {
         chartType: `LineChart`,
         dataTable: [['Hour', 'Views'],
-            ['0',  0],
-            ['1',  0],
-            ['2',  0],
-            ['3',  0],
-            ['4',  0],
-            ['5',  0],
-            ['6',  0],
-            ['7',  0],
-            ['8',  0],
-            ['9',  0],
-            ['10',  0],
-            ['11',  0],
-            ['12',  0],
-            ['13',  0],
-            ['14',  0],
-            ['15',  0],
-            ['16',  0],
-            ['17',  0],
-            ['18',  0],
-            ['19',  0],
-            ['20',  0],
-            ['21',  0],
-            ['22',  0],
-            ['23',  0],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0],
+            ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0],
+            ['12',  0], ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0],
+            ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     };
@@ -266,6 +246,24 @@ export class GraphComponent implements OnInit {
             dataTable[i+1][1] = this.bedLocations[i][1];
             dataTable[i+1][2] = toolWindow[i];
             console.log(toolWindow[i]);
+        }
+
+        return dataTable;
+    }
+
+    private createDataTableTop20(toolWindow: string[]): any[][]{
+        var dataTable: any [][] = new Array<Array<any>>(toolWindow.length+1);
+        for(var i : number = 0; i < toolWindow.length+1; i++){
+            dataTable[i] = new Array<any>(2);
+        }
+        dataTable[0][0] = "Plant ID";
+        dataTable[0][1] = "Likes";
+        for(var i : number = 0; i < toolWindow.length; i++)
+        {
+
+
+            dataTable[i+1][0] = toolWindow[i]['cultivarName'];
+            dataTable[i+1][1] = toolWindow[i]['likes'];
         }
 
         return dataTable;
