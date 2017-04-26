@@ -44,13 +44,13 @@ public class TestGetFeedbackCounts {
 
 
         String counts = plantController.getPlantFeedbackByPlantIdJSON("16001.0","first uploadId");
-
-        System.out.println(counts);
-
         assertEquals("this should be in json format","{ \"likeCount\" : 2 , \"dislikeCount\" : 1 , \"commentCount\" : 1}",counts);
 //        assertEquals("the count should have 2 likes ", "\"likeCount\" : 2",counts.substring(2,17));
 //        assertEquals("the count should have 1 dilikes ", "\"dislikeCount\" : 1",counts.substring(20,38));
 //        assertEquals("the count should have 1 comments ","\"commentCount\" : 1", counts.substring(41,59));
+
+        counts = plantController.getPlantFeedbackByPlantIdJSON("16001.0","invalid uploadId");
+        assertEquals("this should return \"null\"", "null", counts);
     }
 
 }

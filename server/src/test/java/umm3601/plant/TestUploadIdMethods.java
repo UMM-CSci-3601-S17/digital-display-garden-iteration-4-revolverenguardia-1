@@ -32,7 +32,7 @@ public class TestUploadIdMethods {
 
         String uploadIds = "[ \"first uploadId\" , \"googleCharts uploadId\" , \"second uploadId\" , \"third uploadId\"]";
 
-        String actualUploadId = ExcelParser.listUploadIds(testDB);
+        String actualUploadId = ExcelParser.listUploadIdsJSON(testDB);
 
         assertEquals("the list upload ids should match all ids in Database(mock)", uploadIds,actualUploadId);
     }
