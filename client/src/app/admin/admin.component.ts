@@ -14,8 +14,7 @@ export class AdminComponent implements OnInit {
 
     constructor(private http:Http) { }
 
-
     ngOnInit(): void {
-        window.location.href = API_URL + "admin";
+
     }
 }

@@ -305,7 +305,7 @@ public class Server {
                 Google2Client client = new Google2Client();
 
                 securityFilter.handle(req, res);
-                res.redirect(auth.getAuthURL(publicURL + "/admin/exportData"));
+//                res.redirect(auth.getAuthURL(publicURL + "/admin/exportData"));
                 return res; // not reached
             }
 

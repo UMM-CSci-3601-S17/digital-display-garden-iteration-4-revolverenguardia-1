@@ -22,6 +22,7 @@ export class ImportComponent implements OnInit {
             },
             err => {
                 this.uploadAttempted = true;
+                console.log(err);
             }
 
         );
