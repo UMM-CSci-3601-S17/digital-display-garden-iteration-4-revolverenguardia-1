@@ -71,9 +71,9 @@
                 line-height: 1em;
             }
             .bed-dropdown select {
-                border-radius: 0.25em;
+                border-radius: 0.5em;
                 background-color: #ffffff;
-                padding: 1.0em 0.2em;
+                padding: 0.8em 0.2em;
             }
         </style>
     </head>
@@ -81,9 +81,9 @@
     <div class="bed-dropdown">
         <select (change)="handleBedSelect($event.target.value)">
             <option disabled selected value>Choose Bed</option>
-            <option value="ALL">All</option>
+            <option value="ALL">All beds</option>
             <option *ngFor="let bed of bedListService.getBedNames()" [selected]="selectedBed == bed._id">
-                {{bed._id}}
+                Bed {{bed._id}}
             </option>
         </select>
     </div>
