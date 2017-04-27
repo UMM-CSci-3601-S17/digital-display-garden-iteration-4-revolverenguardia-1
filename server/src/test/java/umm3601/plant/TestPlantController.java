@@ -63,6 +63,17 @@ public class TestPlantController {
         assertEquals("Incorrect number of plants with commonName Bob", 0, filteredPlants.length);
     }
 
+
+    @Test
+    public void testListPlantsWithInvalidUploadId() throws IOException {
+        Plant[] filteredPlants;
+        Gson gson = new Gson();
+
+        Map<String, String[]> queryParams = new HashMap<>();
+        String rawPlants = plantController.listPlants(queryParams, "invalid uploadId");
+        assertEquals("Non-null response for an invalid uploadId", rawPlants, "null");
+    }
+
     @Test
     public void findDataForGardenTen() throws  IOException {
         Plant[] filteredPlants;
@@ -110,6 +121,7 @@ public class TestPlantController {
         String plantJson2 = "{ \"_id\" : { \"$oid\" : \"58d1c36efb0cac4e15afd204\" }, \"commonName\" : \"Dianthus\", \"cultivar\" : \"Jolt™ Pink F1\", \"gardenLocation\" : \"7.0\", \"id\" : \"16040.0\" }";
         assertEquals("this should be plant 1",plantJson,plantController.getPlantByPlantID("16001.0","first uploadId"));
         assertEquals("this should be plant 2",plantJson2,plantController.getPlantByPlantID("16040.0","second uploadId"));
+        assertEquals("this should be null", "null", plantController.getPlantByPlantID("16040.0","invalid uploadId"));
 
         //test to see if the plant doesnt appear'
         assertEquals("this plant doesnt exist thus should return \"null\"",plantController.getPlantByPlantID("16005", "first uploadId"), "null");

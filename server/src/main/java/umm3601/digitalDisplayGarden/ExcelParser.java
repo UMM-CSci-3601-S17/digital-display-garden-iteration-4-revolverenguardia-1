@@ -392,7 +392,7 @@ public class ExcelParser {
      *
      * @return a sorted JSON array of all the distinct uploadIds in the DB
      */
-    public static String listUploadIds(MongoDatabase database) {
+    public static List<String> listUploadIds(MongoDatabase database) {
         MongoCollection<Document> plantCollection = database.getCollection("plants");
 
         AggregateIterable<Document> documents
@@ -405,7 +405,11 @@ public class ExcelParser {
         for(Document d: documents) {
             lst.add(d.getString("_id"));
         }
-        return JSON.serialize(lst);
+        return lst;
+    }
+
+    public static String listUploadIdsJSON(MongoDatabase database) {
+        return JSON.serialize(listUploadIds(database));
     }
 
     /**
@@ -429,6 +433,12 @@ public class ExcelParser {
             System.err.println(" [hint] Database might be empty? Couldn't getLiveUploadId");
             throw e;
         }
+    }
+
+    public static boolean isValidUploadId(MongoDatabase database, String uploadId)
+    {
+        List<String> uploadIds = listUploadIds(database);
+        return uploadIds.contains(uploadId);
     }
 
 

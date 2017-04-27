@@ -34,6 +34,8 @@ public class TestCommonNames {
         assertEquals("Incorrect number of unique common names", 2, commonNames.length);
         assertEquals("Incorrect value for index 0", "Rose", commonNames[0]._id);
         assertEquals("Incorrect value for index 1", "Tulip", commonNames[1]._id);
+        json = plantController.getCommonNamesJSON("invalid uploadId");
+        assertEquals("GetCommonNames returned non-null response for invalid uploadId", json, "null");
     }
 
 }

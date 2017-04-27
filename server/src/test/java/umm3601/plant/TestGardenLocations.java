@@ -11,6 +11,8 @@ import umm3601.digitalDisplayGarden.PlantController;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 
 public class TestGardenLocations {
 
@@ -46,6 +48,12 @@ public class TestGardenLocations {
 
         //System.out.println(gardenLocations[0]);
         assertEquals("Incorrect zero index", "10.0", gardenLocations[0]);
+
+        gardenLocations = plantController.getGardenLocations("invalid uploadId");
+        assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocations);
+
+        JsonArray gardenLocationsJSON = plantController.getGardenLocationsJSON("invalid uploadId");
+        assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocationsJSON);
 
     }
 
