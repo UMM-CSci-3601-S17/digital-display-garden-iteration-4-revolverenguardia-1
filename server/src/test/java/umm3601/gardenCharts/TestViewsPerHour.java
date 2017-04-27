@@ -1,6 +1,8 @@
 package umm3601.gardenCharts;
 
 import com.google.gson.JsonArray;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.ExcelParser;
@@ -22,18 +24,19 @@ import static junit.framework.TestCase.assertEquals;
 public class TestViewsPerHour{
 
     private final static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
     public void TestGetViewsPerHour() throws IOException{
-        GardenCharts gardenCharts = new GardenCharts(databaseName);
+        GardenCharts gardenCharts = new GardenCharts(testDB);
         testUtils TestUTILS = new testUtils();
 
             //Will use the mock database with the inputed upload id and track the hour the plant was visited
@@ -46,9 +49,11 @@ public class TestViewsPerHour{
 
         String json1 =plantController.getPlantFeedbackByPlantIdJSON("16053.0","googleCharts uploadId");
         String json2 = plantController.getPlantFeedbackByPlantIdJSON("16037.0","googleCharts uploadId");
+        String json3 = plantController.getPlantFeedbackByPlantIdJSON("16037.0","invalid uploadId");
 
         assertEquals("the plant 16053 should have like:true and like:false","{ \"likeCount\" : 1 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json1 );
         assertEquals("the plant 16037 should have like:true and like:false","{ \"likeCount\" : 2 , \"dislikeCount\" : 1 , \"commentCount\" : 0}", json2);
+        assertEquals("get plant with invalid uploadId should be \"null\"","null", json3);
 
 //        String string = gardenCharts.getPlantViewsPerHour("googleCharts uploadId");
 //        JsonArray json = TestUTILS.stringToJSONArray(string);

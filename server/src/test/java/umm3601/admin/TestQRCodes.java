@@ -45,14 +45,13 @@ public class TestQRCodes {
 
     @Test
     public void TestCreateBufferedImages() throws IOException,WriterException{
-        String bedURLs[] = new String[3];
+        String bedURLs[] = new String[2];
         bedURLs[0]= "http://localhost:2538/bed/bed1?qr=true";
         bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
-        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         System.out.println(QRCodes.createBufferedImages(bedURLs).get(0));
 
         List<BufferedImage> qrCodeImages = new ArrayList<BufferedImage>();
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 2; i++) {
             qrCodeImages.add(createQRFromBedURL(bedURLs[i]));
         }
 
@@ -62,18 +61,16 @@ public class TestQRCodes {
 
     @Test
     public void TestWriteZipPathForQRCodes() throws IOException,WriterException{
-        String bedNames[] = new String[3];
+        String bedNames[] = new String[2];
         bedNames[0] = "bed1";
         bedNames[1] = "bed2";
-        bedNames[2] = "bed3";
 
-        String bedURLs[] = new String[3];
+        String bedURLs[] = new String[2];
         bedURLs[0] = "http://localhost:2538/bed/bed1?qr=true";
         bedURLs[1] = "http://localhost:2538/bed/bed2?qr=true";
-        bedURLs[2] = "http://localhost:2538/bed/bed3?qr=true";
         List<BufferedImage> qrCodeImages = QRCodes.createBufferedImages(bedURLs);
 
-        assertEquals(qrCodeImages.size(), 3);
+        assertEquals(qrCodeImages.size(), 2);
 
         QRCodes.writeBufferedImagesToFile(qrCodeImages,bedNames,this.path);
 
@@ -94,18 +91,24 @@ public class TestQRCodes {
     @After
     public void cleanFiles() throws IOException
     {
-        //Delete temp folder holding QRCodes
-        Path tempFolderPath = Paths.get(this.path);
-        if (Files.exists(tempFolderPath))
-            Files.delete(tempFolderPath);
+        try {
+            //Delete temp folder holding QRCodes
+            Path tempFolderPath = Paths.get(this.path);
+            if (Files.exists(tempFolderPath))
+                Files.delete(tempFolderPath);
 
-        //Delete QRCode zip file
-        File f = new File("./");
-        String files[] = f.list();
-        for(int i = 0; i < files.length; i++)
+            //Delete QRCode zip file
+            File f = new File("./");
+            String files[] = f.list();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].endsWith(".zip") && files[i].startsWith("QR Code Export"))
+                    Files.delete(Paths.get(files[i]));
+            }
+        }
+        catch(Exception e)
         {
-            if(files[i].endsWith(".zip") && files[i].startsWith("QR Code Export"))
-                Files.delete(Paths.get(files[i]));
+            //Failed deleting a folder
+            e.printStackTrace();
         }
     }
 

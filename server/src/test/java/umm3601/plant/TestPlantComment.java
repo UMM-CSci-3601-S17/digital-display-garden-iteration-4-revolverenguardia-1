@@ -12,20 +12,19 @@ import umm3601.digitalDisplayGarden.PlantController;
 import java.io.IOException;
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestPlantComment {
 
     private final static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -34,9 +33,7 @@ public class TestPlantComment {
 
         assertTrue(plantController.storePlantComment(json, "second uploadId"));
 
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> commentDocuments = db.getCollection("comments");
+        MongoCollection<Document> commentDocuments = testDB.getCollection("comments");
 
         long contains = commentDocuments.count();
         assertEquals(1, contains);
@@ -52,15 +49,30 @@ public class TestPlantComment {
 
     @Test
     public void failedInputOfComment() throws IOException {
+        MongoCollection<Document> commentDocuments = testDB.getCollection("comments");
+
         String json = "{ plantId: \"58d1c36efb0cac4e15afd27\", comment : \"Here is our comment for this test\" }";
+        assertFalse("Added a comment for a plant that doesn't exist", plantController.storePlantComment(json, "second uploadId"));
+        assertEquals("Added a comment for a plant that doesn't exist", 0, commentDocuments.count());
 
-        assertFalse(plantController.storePlantComment(json, "second uploadId"));
+        json = "{ plantId: \"16040.0\", comment : \"Here is our comment for this test\" }";
+        assertFalse("Added a comment for an invalid uploadId", plantController.storePlantComment(json, "invalid uploadId"));
+        assertEquals("Added a comment for a plant that doesn't exist", 0, commentDocuments.count());
 
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> commentDocuments = db.getCollection("comments");
+        json = "{ -2i gnlr b[  34rr=634=ub1]<m.";
+        assertFalse("Somehow added a malformed comment", plantController.storePlantComment(json, "second uploadId"));
+        assertEquals("Somehow added a malformed comment", 0, commentDocuments.count());
 
-        long contains = commentDocuments.count();
-        assertEquals(0, contains);
+        json = "{ comment : \"Here is our comment for this test\" }";
+        assertFalse( "Added a comment without corresponding plant", plantController.storePlantComment(json, "second uploadId"));
+        assertEquals("Added a comment without corresponding plant", 0, commentDocuments.count());
+
+        json = "{ plantId: \"16040.0\" }";
+        assertFalse( "Added a comment without an actual comment", plantController.storePlantComment(json, "second uploadId"));
+        assertEquals("Added a comment without an actual comment", 0, commentDocuments.count());
+
+        json = "";
+        assertFalse( "Added a comment with empty json", plantController.storePlantComment(json, "second uploadId"));
+        assertEquals("Added a comment with empty json", 0, commentDocuments.count());
     }
 }

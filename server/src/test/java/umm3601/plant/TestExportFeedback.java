@@ -1,5 +1,7 @@
 package umm3601.plant;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static umm3601.digitalDisplayGarden.FeedbackWriter.*;
 import static junit.framework.TestCase.assertEquals;
 
@@ -20,14 +24,20 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class TestExportFeedback {
 
+//    private final static String databaseName = "data-for-testing-only";
+//    public MongoClient mongoClient = new MongoClient();
+//    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
+//    private PlantController plantController;
+
     private final static String databaseName = "data-for-testing-only";
     private PlantController plantController;
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Before
     public void populateDB() throws IOException {
-        //PopulateMockDatabase db = new PopulateMockDatabase();
-        //db.clearAndPopulateDBAgain();
-        //plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -88,8 +98,46 @@ public class TestExportFeedback {
 //        sheet = workbook.getSheetAt(2); //Metadata Sheet
 //        assertEquals("Bed Metadata Sheet does not contain "+ bedMetadata + "+2 rows",sheet.getPhysicalNumberOfRows(), plantMetadata+2);
 
+    }
+
+
+
+    @Test
+    public void testWriteFeedback() throws IOException {
+//        byte[] emptyFeedback = null;
+//        {//Scoping
+//            ByteArrayOutputStream emptyFeedbackBuffer = new ByteArrayOutputStream();
+//            FeedbackWriter feedbackWriter = new FeedbackWriter(emptyFeedbackBuffer);
+//            feedbackWriter.complete();
+//            emptyFeedback = emptyFeedbackBuffer.toByteArray();
+//        }
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        assertFalse("Wrote feedback to an invalid uploadId", plantController.writeFeedback(buffer, "invalid uploadId"));
+        buffer.close(); buffer = new ByteArrayOutputStream();
+        assertTrue("Couldn't write to a valid uploadId", plantController.writeFeedback(buffer, "first uploadId"));
+        buffer.close(); buffer = new ByteArrayOutputStream();
+    }
+
+    @Test
+    public void testWriteFeedbackSheet() throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        FeedbackWriter feedback = new FeedbackWriter(buffer);
+
+        assertTrue("Failed to write feedback to a valid uploadId", plantController.writeToBedMetadataSheet(feedback, "first uploadId"));
+        assertFalse("Wrote feedback to an invalid uploadId", plantController.writeToBedMetadataSheet(feedback, "invalid uploadId"));
+
+        assertTrue("Failed to write feedback to a valid uploadId", plantController.writeToCommentSheet(feedback, "first uploadId"));
+        assertFalse("Wrote feedback to an invalid uploadId",plantController.writeToCommentSheet(feedback, "invalid uploadId"));
+
+        assertTrue("Failed to write feedback to a valid uploadId", plantController.writeToPlantMetadataSheet(feedback, "first uploadId"));
+        assertFalse("Wrote feedback to an invalid uploadId", plantController.writeToPlantMetadataSheet(feedback, "invalid uploadId"));
+
+
 
 
     }
+
+
 }
 

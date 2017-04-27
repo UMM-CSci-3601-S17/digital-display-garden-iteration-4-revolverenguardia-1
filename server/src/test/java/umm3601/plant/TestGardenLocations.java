@@ -2,6 +2,8 @@ package umm3601.plant;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.PlantController;
@@ -9,17 +11,20 @@ import umm3601.digitalDisplayGarden.PlantController;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 
 public class TestGardenLocations {
 
     private final static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
@@ -43,6 +48,12 @@ public class TestGardenLocations {
 
         //System.out.println(gardenLocations[0]);
         assertEquals("Incorrect zero index", "10.0", gardenLocations[0]);
+
+        gardenLocations = plantController.getGardenLocations("invalid uploadId");
+        assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocations);
+
+        JsonArray gardenLocationsJSON = plantController.getGardenLocationsJSON("invalid uploadId");
+        assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocationsJSON);
 
     }
 
