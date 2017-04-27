@@ -3,7 +3,6 @@ package umm3601.digitalDisplayGarden;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -35,8 +34,7 @@ public class GardenCharts
 
     public String top20Charts(PlantController plantController, String uploadID, String type){
         try{
-            String[] plantID = plantController.getIDName(uploadID);
-            String[] cultivar = plantController.getCultivar(uploadID);
+            String[] cultivar = plantController.getCultivars(uploadID);
             Map<String, Integer> result = new HashMap<>();
             for (int i = 0; i < cultivar.length; i++) {
 
@@ -45,7 +43,6 @@ public class GardenCharts
                 int comments = 0;
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
-                filter.append("id", plantID[i]);
 
                 FindIterable<Document> iter = plantCollection.find(filter);
                 for (Document plant : iter) {

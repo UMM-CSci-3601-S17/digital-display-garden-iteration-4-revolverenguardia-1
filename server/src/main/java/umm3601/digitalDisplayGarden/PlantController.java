@@ -242,20 +242,7 @@ public class PlantController {
         return beds.toArray(new String[beds.size()]);
     }
 
-    public String[] getIDName(String uploadID){
-        Document filter = new Document();
-        filter.append("uploadId", uploadID);
-        DistinctIterable<String>  idIterator = plantCollection.distinct("id", filter, String.class);
-        List<String> id = new ArrayList<String>();
-        for(String s : idIterator)
-        {
-            id.add(s);
-        }
-        //Then sort the gardenLocations as according to BedComparator
-        return id.toArray(new String[id.size()]);
-    }
-
-    public String[] getCultivar(String uploadID){
+    public String[] getCultivars(String uploadID){
         Document filter = new Document();
         filter.append("uploadId", uploadID);
         DistinctIterable<String>  idIterator = plantCollection.distinct("cultivar", filter, String.class);
