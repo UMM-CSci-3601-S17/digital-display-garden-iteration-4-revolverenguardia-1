@@ -36,6 +36,9 @@ export class PlantListComponent implements OnInit {
                     //This hides the qr=true query param from the user (and removes it from browser history)
                     this.location.replaceState("/bed/" + bedName);
 
+                    //Tell the plantListService what bed it should filter by
+                    this.plantListService.prepareBedFilter(bedName);
+
                 });
                 err => {
                     console.log(err);

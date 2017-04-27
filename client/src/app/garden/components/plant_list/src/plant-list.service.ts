@@ -38,6 +38,10 @@ export class PlantListService {
                 // Setup master collection and displayed filtered plants
                 this.plantCollection = new PlantCollection(plants);
                 this.filteredPlants = this.plantCollection.getPlants();
+
+                // In case the user went directly to a bed page
+                // and the bedFilter was prepared, filter by those plants.
+                this.filterPlants();
                 err => {
                     console.log(err);
                 }
@@ -66,6 +70,7 @@ export class PlantListService {
      * Requests that the PlantListComponent be updated according to the currently set filters.
      */
     private filterPlants(): void{
+        console.log(this.bedFilter);
         // Filter from the master plant collection
         let plantsBeingFiltered: Plant[] = this.plantCollection.getPlants();
 
@@ -96,6 +101,19 @@ export class PlantListService {
     public setBedFilter(bedFilter: string): void{
         this.bedFilter = bedFilter;
         this.filterPlants();
+    }
+
+    /**
+     * Set the filter for plants, but don't do any filtering now.
+     * filterPlants() can't be run before plant-list.service is initialized
+     * and bedFilter must be set from bed-dropdown.service.ts which
+     * happens to be initialized first.
+     * This and the filterPlants() in the constructor enable
+     * going to /bed/1S and automatically filtering by that bed.
+     * @param bedFilter
+     */
+    public prepareBedFilter(bedFilter: string): void{
+        this.bedFilter = bedFilter;
     }
 
     /**
