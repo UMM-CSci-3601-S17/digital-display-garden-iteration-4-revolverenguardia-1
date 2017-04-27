@@ -47,7 +47,7 @@ public class TestImageUploads {
         assertEquals("java.awt.image.BufferedImage", img.getClass().getName().toString());
     }
 
-    @Test
+    /*@Test
     public void testStoreImage() {
         Image img = handler.extractImage();
         Image extImg = null;
@@ -59,7 +59,7 @@ public class TestImageUploads {
         handler.storeImage(imageTestDir,testFlowerName,img);
         assertNotNull(testFile.listFiles()[0]);
         assertEquals(img.toString().substring(img.toString().length()-(img.toString().length()-30)), extImg.toString().substring(extImg.toString().length()-(img.toString().length()-30)));
-    }
+    }*/
 
     /*@Test
     public void testReadImage() {
