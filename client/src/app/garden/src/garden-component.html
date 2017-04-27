@@ -3,14 +3,32 @@
 
     @author Iteration 2 - Team Omar Anwar
     @editor Iteration 3 - Team Revolver en Guardia
+    @editor Iteration 4 - Team Revolver en Guardia++
 -->
 
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .plant-list {
+                position: relative;
+                top: -6.5em;
+                z-index: 2;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="plant-list"] {
+                    position: static;
+                }
+            }
+        </style>
+    </head>
 
-    <filter-garden-sidebar></filter-garden-sidebar>
-    <plant-list></plant-list>
-    <footer-component></footer-component>
+    <filter-garden-component></filter-garden-component>
+
+    <div class="plant-list">
+        <plant-list></plant-list>
+    </div>
 
 </html>

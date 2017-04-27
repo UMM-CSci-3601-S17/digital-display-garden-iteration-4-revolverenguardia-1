@@ -2,73 +2,126 @@
     Provides links to the WCROC website and their social media pages
 
     @author Iteration 1 - Team Omar Anwar
-    @editor Iteration 3 - Team Revolver en guardia
+    @editor Iteration 3 - Team Revolver En Guardia
+    @editor Iteration 4 - Team Revolver En Guardia++
 -->
 
 <!DOCTYPE html>
-
 <html>
     <head>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-
-            .footer{
-                position: fixed;
-                right: 0;
-                left: 0;
-                bottom: 0;
-                padding: 1em;
-                width: 100%;
-                background-color: #466a31;
+            /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed,
+            figure, figcaption, footer, header, hgroup,
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
             }
-
-            .wcroc-link{
-                width: 218px;
-                float: left;
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure,
+            footer, header, hgroup, menu, nav, section {
+                display: block;
             }
-            .inner-container{
-                width: 100%;
+            body {
+                line-height: 1;
             }
-            .wcroc-link a{
-                font-size: medium;
-                color: #fbe453;
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+            *,
+            *:before,
+            *:after {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .row-footer {
+                background-color: #90b57a;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-style: normal;
+                font-size: 0.95em;
+                padding: 0.75em 0em;
                 text-align: center;
             }
-            .wcroc-link a:hover{
-                color: #fef6c5;
+            .row-footer a {
+                text-decoration: none;
             }
-            .imgButton {
-                margin-left: 1px;
-                width: 35px;
+            .wcroc-website {
+                padding-bottom: 0.4em;
             }
-            .social-media {
-                margin-left: 1px;
-                width: 80px;
-                float: right;
-                display: inline-block;
+            .wcroc-website a {
+                color: #292f33;
             }
-
+            .wcroc-website a:hover {
+                font-weight: 700;
+            }
+            .social-media img{
+                border-radius: 0.25em;
+                max-width: 2.5em;
+                height: auto;
+            }
+            .each-link {
+                display: inline;
+            }
         </style>
     </head>
 
-    <div class="footer">
-        <div class="inner-container">
-            <div class="wcroc-link">
-                <a href="https://wcroc.cfans.umn.edu/public-gardens" target="_blank">
-                Visit us at the WCROC website
-                </a>
-            </div>
+    <div class="row-footer">
 
-            <div class="social-media">
+        <div class="wcroc-website">
+            <a href="https://wcroc.cfans.umn.edu/public-gardens" target="_blank">
+            Visit us at WCROC website!
+            </a>
+        </div>
+
+        <div class="social-media">
+            <div class="each-link">
                 <a href="https://www.facebook.com/HorticultureDisplayGarden/" target="_blank">
                     <img class="imgButton" alt="Facebook" src="../res/FB-f-Logo__blue_58.png">
                 </a>
+            </div>
 
+            <div class="each-link">
                 <a href="https://twitter.com/WCROCMorris" target="_blank">
                     <img class="imgButton" alt="Twitter" src="../res/Twitter_Logo_White_On_Blue.png">
                 </a>
             </div>
+
+            <div class="each-link">
+                <a href="https://m.youtube.com/channel/UCxU3Nsu5XjCy8XLfxHp1_Wg" target="_blank">
+                    <img class="imgButton" alt="Twitter" src="../res/YouTube-social-square_red_48px.png">
+                </a>
+            </div>
+
         </div>
+
     </div>
 
 </html>

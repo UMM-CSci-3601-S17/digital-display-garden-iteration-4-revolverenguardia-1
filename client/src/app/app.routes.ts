@@ -3,11 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {GardenComponent} from "./garden/src/garden-component";
 import {AdminComponent} from "./admin/admin.component";
-import {PlantComponent} from "./garden/components/plant_list/src/plant.component";
 import {ImportComponent} from "./admin/import.component";
 import {ExportComponent} from "./admin/export.component";
-import {PlantListComponent} from "./garden/components/plant_list/src/plant-list.component";
 import {GraphComponent} from "./admin/google-charts.component";
+import {PlantComponent} from "./garden/components/plant_list/src/plant.component";
 
 
 export const routes: Routes = [

@@ -85,6 +85,10 @@ export class PlantListService {
         return this.filteredPlants;
     }
 
+    public getPlants(): Plant[]{
+        return this.plantCollection.getPlants();
+    }
+
     /**
      * Filter the plants by the provided bed filter.
      * @param bedFilter - bed to filter by

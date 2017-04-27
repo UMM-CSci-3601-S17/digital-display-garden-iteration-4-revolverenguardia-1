@@ -8,16 +8,16 @@
  */
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { Observable } from "rxjs";
-import {BedListComponent} from "../src/bed-list.component";
+import {BedDropdownComponent} from "../src/bed-dropdown.component";
 import {Bed} from "../src/bed";
-import {BedListService} from "../src/bed-list.service";
+import {BedDropdownService} from "../src/bed-dropdown.service";
 import {RouterTestingModule} from "@angular/router/testing";
 
 
 describe("Bed List Component", () => {
 
-    let bedList: BedListComponent;
-    let fixture: ComponentFixture<BedListComponent>;
+    let bedList: BedDropdownComponent;
+    let fixture: ComponentFixture<BedDropdownComponent>;
 
     let bedListServiceStub: {
         getBedNames: () => Observable<Bed[]>
@@ -27,27 +27,27 @@ describe("Bed List Component", () => {
         bedListServiceStub = {
             getBedNames: () => Observable.of([
                 {
-                    bedName: "Bed1",
+                    _id: "Bed1",
                 },
                 {
-                    bedName: "Bed2",
+                    _id: "Bed2",
                 },
                 {
-                    bedName: "Bed3",
+                    _id: "Bed3",
                 }
             ])
         };
 
         TestBed.configureTestingModule({
-            declarations: [ BedListComponent ],
-            providers:    [ { provide: BedListService, useValue: bedListServiceStub } ],
+            declarations: [ BedDropdownComponent ],
+            providers:    [ { provide: BedDropdownService, useValue: bedListServiceStub } ],
             imports: [ RouterTestingModule ]
         })
     });
 
     beforeEach(async(() => {
         TestBed.compileComponents().then(() => {
-            fixture = TestBed.createComponent(BedListComponent);
+            fixture = TestBed.createComponent(BedDropdownComponent);
             bedList = fixture.componentInstance;
             fixture.detectChanges();
         });
