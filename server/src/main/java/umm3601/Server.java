@@ -312,6 +312,25 @@ public class Server {
             return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
         });
 
+        get("api/admin/charts/top20Likes", (req, res) -> {
+            res.type("application/json");
+            String type = "likes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+        get("api/admin/charts/top20disLikes", (req, res) -> {
+            res.type("application/json");
+            String type = "dislikes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+        get("api/admin/charts/top20Comments", (req, res) -> {
+            res.type("application/json");
+            String type = "comments";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+
         //Host the aerial image of the Garden
         get("api/admin/gardenPicture", (req, res) -> {
             res.type("application/png");

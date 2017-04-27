@@ -10,16 +10,15 @@ import org.bson.types.ObjectId;
 
 import java.util.Iterator;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.exists;
 import static com.mongodb.client.model.Projections.include;
 import static com.mongodb.client.model.Projections.fields;
 
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Created by Dogxx000 on 4/8/17.
- */
 public class GardenCharts
 {
     private final MongoCollection<Document> plantCollection;
@@ -33,6 +32,82 @@ public class GardenCharts
         commentCollection = database.getCollection("comments");
         configCollection = database.getCollection("config");
     }
+
+    public String top20Charts(PlantController plantController, String uploadID, String type){
+        try{
+            String[] plantID = plantController.getIDName(uploadID);
+            String[] cultivar = plantController.getCultivar(uploadID);
+            Map<String, Integer> result = new HashMap<>();
+            for (int i = 0; i < cultivar.length; i++) {
+
+                int likes = 0;
+                int dislikes = 0;
+                int comments = 0;
+                Document filter = new Document();
+                filter.append("uploadId", uploadID);
+                filter.append("id", plantID[i]);
+
+                FindIterable<Document> iter = plantCollection.find(filter);
+                for (Document plant : iter) {
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
+                    if (type.equals("likes")) {
+                        likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                    }
+                    if (type.equals("dislikes")) {
+                        dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
+                    }
+                    if (type.equals("comments")) {
+                        comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+                    }
+
+                }
+
+                String key = cultivar[i];
+                if (type.equals("likes")) {
+                    Integer value = (Integer) likes;
+                    result.put(key, value);
+                }
+                if (type.equals("dislikes")) {
+                    Integer value = (Integer) dislikes;
+                    result.put(key, value);
+                }
+                if (type.equals("comments")) {
+                    Integer value = (Integer) comments;
+                    result.put(key, value);
+                }
+
+            }
+
+            Map<String, Integer> finalMap = new HashMap<>();
+            finalMap = sortByValue(result);
+            JsonArray finalJsonArray = new JsonArray();
+            Set keyset = finalMap.keySet();
+            List<?> list = new ArrayList<>(keyset);
+
+
+            for(int i = 0; i < 20; i++) {
+                JsonObject plantMetadata = new JsonObject();
+                String cultivarName = "";
+                int typeOfData = 0;
+                cultivarName = (String) list.get(i);
+                typeOfData = finalMap.get(cultivarName);
+                if(typeOfData == 0){
+                    return finalJsonArray.toString();
+                }
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", typeOfData);
+                finalJsonArray.add(plantMetadata);
+            }
+            return finalJsonArray.toString();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 
     public String getPlantViewsPerHour(String uploadID) {
 
@@ -534,6 +609,26 @@ public class GardenCharts
         return averagePerDayOfWeek;
     }
 
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+        List<Map.Entry<String, Integer>> list =
+                new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return -(o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
 
 
 }
+
+
