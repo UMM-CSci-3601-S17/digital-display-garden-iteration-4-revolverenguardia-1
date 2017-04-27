@@ -171,6 +171,13 @@ public class PopulateMockDatabase {
         plantFour.append("metadata", metadataDoc3);
         plants.insertOne(plantFour);
 
+
+        Document bed20 = new Document();
+        bed20.append("_id", new ObjectId("58d1c36efb0cac4e15afd313"));
+        bed20.append("gardenLocation", "20");
+        bed20.append("uploadId", "third uploadId");
+        bed20.append("metadata", bedMetadataDoc1);
+        beds.insertOne(bed20);
         //for testing getCommonNamesJSON (third uploadID)
         //Fifth Plant PlantFive
         Document plantFive = new Document();
@@ -224,7 +231,12 @@ public class PopulateMockDatabase {
         plants.insertOne(plantSeven);
 
 
-
+        Document bed5 = new Document();
+        bed5.append("_id", new ObjectId("58d1c36efb0cac4e15afd308"));
+        bed5.append("gardenLocation", "5.0");
+        bed5.append("uploadId", "googleCharts uploadId");
+        bed5.append("metadata", bedMetadataDoc1);
+        beds.insertOne(bed5);
         /*
         Plants that will include mock pageViews and visits
         */
@@ -268,6 +280,12 @@ public class PopulateMockDatabase {
         plants.insertOne(plantEight);
 
         //Ninth plant
+        Document bed2S = new Document();
+        bed2S.append("_id", new ObjectId("58d1c36efb0cac4e15afd309"));
+        bed2S.append("gardenLocation", "2S");
+        bed2S.append("uploadId", "googleCharts uploadId");
+        bed2S.append("metadata", bedMetadataDoc1);
+        beds.insertOne(bed2S);
         Document plantNine = new Document();
         plantNine.append("_id", new ObjectId("58d1c36efb0cac4e15afd102"));
         plantNine.append("uploadId", "googleCharts uploadId");
