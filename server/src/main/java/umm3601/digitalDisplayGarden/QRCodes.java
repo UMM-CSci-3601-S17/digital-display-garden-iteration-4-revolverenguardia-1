@@ -19,6 +19,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.mongodb.client.MongoDatabase;
 
 
 public class QRCodes {
@@ -38,7 +39,7 @@ public class QRCodes {
      * @return the path to the new .zip file or null if there was a disk IO issue
      */
 
-    public static String CreateQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
+    public static String createQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
         String[] bedUrls = formBedURLs(bedNames,urlPrefix);
         List<BufferedImage> qrCodeImages = createBufferedImages(bedUrls);
         writeBufferedImagesToFile(qrCodeImages,bedNames,qrTempPath);
@@ -116,6 +117,8 @@ public class QRCodes {
         }
         catch(IOException ioe)
         {
+            //We cant test this catch without filling the harddrive
+            //or removing access qualifications from the server's user.
             ioe.printStackTrace();
             System.err.println("Failed to create directory for qrcode packaging.");
             throw ioe;
@@ -128,6 +131,8 @@ public class QRCodes {
                 ImageIO.write(bufferedImages.get(i), "png", outputFile);
             }
         } catch (IOException ioe) {
+            //We cant test this catch without filling the harddrive
+            //or removing access qualifications from the server's user
             ioe.printStackTrace();
             System.err.println("Could not write some Images to disk, exiting.");
             throw ioe;
@@ -179,6 +184,9 @@ public class QRCodes {
                     }
                     catch(IOException ioe)
                     {
+                        //This catch is to make sure a race condition doesn't occur where SOMEBODY
+                        //deletes the path/files[i] before it's automatically deleted here
+                        //The worst thing that could happen is that a file isn't deleted
                         ioe.printStackTrace();
                         System.err.println("Failed to delete QRCode image file (permissions or doesn't exist)");
                     }

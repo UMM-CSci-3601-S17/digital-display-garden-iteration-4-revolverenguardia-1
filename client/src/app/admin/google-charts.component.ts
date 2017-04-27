@@ -69,22 +69,20 @@ export class GraphComponent implements OnInit {
     public updatetop20likes(): void{
         this.adminService.get20MostLikes()
             .subscribe(result => {
-                this.top20ChartDataLikes["dataTable"] = this.createDataTableTop20(result);
-                this.top20ChartDataLikes = Object.create(this.top20ChartDataLikes);
+                    this.top20ChartDataLikes["dataTable"] = this.createDataTableTop20(result);
+                    this.top20ChartDataLikes = Object.create(this.top20ChartDataLikes);
             }, err => console.log(err));
     }
 
     public updatetop20dislikes(): void{
-
         this.adminService.get20MostDisLikes()
             .subscribe(result => {
-                this.top20ChartDataDisLikes["dataTable"] = this.createDataTableTop20(result);
-                this.top20ChartDataDisLikes = Object.create(this.top20ChartDataDisLikes);
+                    this.top20ChartDataDisLikes["dataTable"] = this.createDataTableTop20(result);
+                    this.top20ChartDataDisLikes = Object.create(this.top20ChartDataDisLikes);
             }, err => console.log(err));
     }
 
     public updatetop20comments(): void{
-
         this.adminService.get20MostComments()
             .subscribe(result => {
                 this.top20ChartDataComments["dataTable"] = this.createDataTableTop20(result);
@@ -353,12 +351,10 @@ export class GraphComponent implements OnInit {
         for(var i : number = 0; i < toolWindow.length+1; i++){
             dataTable[i] = new Array<any>(2);
         }
-        dataTable[0][0] = "Plant ID";
+        dataTable[0][0] = "Cultivar Name";
         dataTable[0][1] = "";
         for(var i : number = 0; i < toolWindow.length; i++)
         {
-
-
             dataTable[i+1][0] = toolWindow[i]['cultivarName'];
             dataTable[i+1][1] = toolWindow[i]['likes'];
         }

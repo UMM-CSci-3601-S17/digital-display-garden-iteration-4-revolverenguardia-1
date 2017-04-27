@@ -166,7 +166,7 @@ public class Server {
                 String id = ExcelParser.generateNewUploadId();
                 String[][] excelFile = parser.parseExcel();
                 parser.populateDatabase(excelFile, id);
-
+                System.out.println(id);
                 return JSON.serialize(id);
 
             } catch (NotOfficeXmlFileException e) {
@@ -258,7 +258,7 @@ public class Server {
 
             //Creates a Zip file, found at zipPath
             String liveUploadID = getLiveUploadId();
-            String zipPath = QRCodes.CreateQRCodesFromAllBeds(
+            String zipPath = QRCodes.createQRCodesFromAllBeds(
                     liveUploadID,
                     plantController.getGardenLocations(liveUploadID),
                     API_URL + "/bed/");

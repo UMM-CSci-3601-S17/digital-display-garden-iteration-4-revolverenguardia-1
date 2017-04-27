@@ -19,9 +19,11 @@ Where `YOUR_KEY` is replaced by the public key. Go to [this](https://developers.
 
 ## :droplet: On the droplet :droplet:
 ### Changing IP's and Keys:
-Several places in our code refer to `localhost`, and that might cause problems when deploying for public use. Change the following files to make sure your IP addresses are correct.
+Several places in our code refer to `localhost`, and that might cause problems when deploying for public use. Change the following files to point to the right places.
+
 #### Client - Webpack file:
-*   `webpack.prod.js` : change `localhost` to the correct IP address.   
+*   `webpack.prod.js` : change `localhost` to the correct IP address.
+Due to *https*, for us, this is `'https://revolverenguardia.dungeon.website/api/'` 
 
 #### Client - `google-charts-component.html`   
 In `google-charts-component.html`, we grab an image from the server to use as a background for the bubble chart. When running locally, we tell it to go to `localhost`, but for deployment, we need to change this to the correct IP address.  

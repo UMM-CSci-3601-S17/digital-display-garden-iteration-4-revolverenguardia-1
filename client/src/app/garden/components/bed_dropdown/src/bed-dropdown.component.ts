@@ -37,11 +37,11 @@ export class BedDropdownComponent implements OnInit{
     }
 
     /**
-     * TODO: Comment
+     * Ensures that the filter state persists when this component
+     * is loaded and re-loaded.
      */
     ngOnInit(){
         this.selectedBed = this.plantListService.getBedFilter();
-        console.log("Set bed filter " + this.selectedBed);
     }
 
 }

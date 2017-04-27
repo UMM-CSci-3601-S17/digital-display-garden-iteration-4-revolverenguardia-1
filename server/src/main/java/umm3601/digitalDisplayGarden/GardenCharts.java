@@ -56,9 +56,7 @@ public class GardenCharts
                     if (type.equals("comments")) {
                         comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
                     }
-
                 }
-
                 String key = cultivar[i];
                 if (type.equals("likes")) {
                     Integer value = (Integer) likes;
@@ -72,28 +70,58 @@ public class GardenCharts
                     Integer value = (Integer) comments;
                     result.put(key, value);
                 }
-
             }
-
             Map<String, Integer> finalMap = new HashMap<>();
             finalMap = sortByValue(result);
             JsonArray finalJsonArray = new JsonArray();
             Set keyset = finalMap.keySet();
             List<?> list = new ArrayList<>(keyset);
+            int count = 0;
+            if(finalMap.size() < 21){
+                for(int i = 0; i < finalMap.size() ; i++) {
+                    JsonObject plantMetadata = new JsonObject();
+                    String cultivarName = "";
+                    int typeOfData = 0;
+                    cultivarName = (String) list.get(i);
+                    typeOfData = finalMap.get(cultivarName);
+                    if (count == 0 && typeOfData == 0){
+                        cultivarName = "";
+                        plantMetadata.addProperty("cultivarName", cultivarName);
+                        plantMetadata.addProperty("likes", typeOfData);
+                        finalJsonArray.add(plantMetadata);
+                        return finalJsonArray.toString();
+                    }
+                    if(typeOfData == 0){
+                        return finalJsonArray.toString();
+                    }
+                    plantMetadata.addProperty("cultivarName", cultivarName);
+                    plantMetadata.addProperty("likes", typeOfData);
+                    finalJsonArray.add(plantMetadata);
+                    count++;
+                }
+                return finalJsonArray.toString();
+            }
 
-
-            for(int i = 0; i < 20; i++) {
+            for(int i = 0; (i < 20) ; i++) {
                 JsonObject plantMetadata = new JsonObject();
                 String cultivarName = "";
                 int typeOfData = 0;
                 cultivarName = (String) list.get(i);
                 typeOfData = finalMap.get(cultivarName);
+                if (count == 0 && typeOfData == 0){
+                    cultivarName = "";
+                    plantMetadata.addProperty("cultivarName", cultivarName);
+                    plantMetadata.addProperty("likes", typeOfData);
+                    finalJsonArray.add(plantMetadata);
+                    return finalJsonArray.toString();
+                }
                 if(typeOfData == 0){
                     return finalJsonArray.toString();
                 }
                 plantMetadata.addProperty("cultivarName", cultivarName);
                 plantMetadata.addProperty("likes", typeOfData);
                 finalJsonArray.add(plantMetadata);
+                count++;
             }
             return finalJsonArray.toString();
 
@@ -203,8 +231,7 @@ public class GardenCharts
             int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
 
             int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
-            //System.out.println();
-            //printArray(viewsPerHour);
+
 
             //String[] civilianTimeString = {"12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00"};
 
@@ -221,7 +248,7 @@ public class GardenCharts
                 }
             }
 
-            System.out.println();
+            //System.out.println();
             //print2DArray(dataTable);
 
             return makeJSON(dataTable);

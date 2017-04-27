@@ -34,7 +34,7 @@ public class PlantController {
     private final MongoCollection<Document> bedCollection;
     private final MongoDatabase db;
 
-    public PlantController(MongoDatabase database) throws IOException {
+    public PlantController(MongoDatabase database) {
 
         plantCollection = database.getCollection("plants");
         commentCollection = database.getCollection("comments");
@@ -256,9 +256,8 @@ public class PlantController {
     }
 
     public JsonArray getGardenLocationsJSON(String uploadID){
-
         if (!ExcelParser.isValidUploadId(db, uploadID))
-            return null;
+            return new JsonArray();
 
         //Get garden locations and package them in a JsonArray
         String[] beds = getGardenLocations(uploadID);
