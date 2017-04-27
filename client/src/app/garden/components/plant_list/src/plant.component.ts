@@ -73,10 +73,9 @@ export class PlantComponent implements OnInit {
             this.ratingInTransit = true;
             this.plantService.ratePlant(this.plant.id, rating)
                 .subscribe(succeeded => {
-                    setTimeout(() => {
                     this.rated = succeeded;
                     this.refreshFeedback();
-                    this.ratingInTransit = false; }, 2000);
+                    this.ratingInTransit = false;
                 });
         }
     }
