@@ -173,7 +173,8 @@ export class GraphComponent implements OnInit {
             backgroundColor: `#D2D7D9`,
             height: 400,
             hAxis: {title: 'Time (In hours)'},
-            vAxis: {title: 'Views'},
+            vAxis: {title: 'Views',
+                    viewWindow: {min: -1},},
             seriesType: `bars`,
             series: {
                 // 0: {color: `#3498DB`},
