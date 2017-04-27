@@ -37,7 +37,8 @@ export class PlantListComponent implements OnInit {
                     this.location.replaceState("/bed/" + bedName);
 
                     //Tell the plantListService what bed it should filter by
-                    this.plantListService.prepareBedFilter(bedName);
+                    if(bedName != "all")
+                        this.plantListService.prepareBedFilter(bedName);
 
                 });
                 err => {
