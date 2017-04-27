@@ -39,7 +39,7 @@ public class QRCodes {
      * @return the path to the new .zip file or null if there was a disk IO issue
      */
 
-    public static String CreateQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
+    public static String createQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
         String[] bedUrls = formBedURLs(bedNames,urlPrefix);
         List<BufferedImage> qrCodeImages = createBufferedImages(bedUrls);
         writeBufferedImagesToFile(qrCodeImages,bedNames,qrTempPath);

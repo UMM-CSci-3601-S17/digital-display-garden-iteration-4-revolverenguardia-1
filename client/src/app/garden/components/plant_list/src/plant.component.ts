@@ -3,7 +3,8 @@
  *
  * @author Iteration 1 - Team Rayquaza
  * @editor Iteration 2 - Team Omar Anwar
- * @editor Iteratoin 3 - Team Revolver en Guardia
+ * @editor Iteration 3 - Team Revolver en Guardia
+ * @editor Iteration 4 - Team Revolver en Guardia++
  */
 import {Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -46,9 +47,9 @@ export class PlantComponent implements OnInit {
 
 
     /**
-     * TODO
-     * On initialization generates the URL with the proper plant ID and also helps to
-     * populate the PlantComponent page with the Plant data referneced by the id.
+     * On initialization generates the URL with the proper plant ID. Also helps to
+     * populate the PlantComponent page with the Plant data referenced by the id and
+     * track feed back data
      *
      * For example, a URL for the Alternanthera would be http://localhost:9000/plant/16001
      */
@@ -74,7 +75,7 @@ export class PlantComponent implements OnInit {
             this.plantService.ratePlant(this.plant.id, rating)
                 .subscribe(succeeded => {
                     this.rated = succeeded;
-                    this.refreshFeedback();
+                    this.requestFeedbackFromServer();
                     this.ratingInTransit = false;
                 });
         }
@@ -95,10 +96,9 @@ export class PlantComponent implements OnInit {
     }
 
     /**
-     * TODO
+     * Request PlantFeedback data for the current plant from the server.
      */
-    private refreshFeedback(): void {
-        //Update flower feedback numbers
+    private requestFeedbackFromServer(): void {
         this.route.params
             .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
             .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
@@ -123,8 +123,8 @@ export class PlantComponent implements OnInit {
     }
 
     /**
-     * TODO
-     * @returns {number}
+     * Returns the width of the like bar within the rating bar.
+     * @returns {number} - like bar width
      */
     public getLikeWidth(): number{
         let likes: number = this.plantFeedback.likeCount,
@@ -134,8 +134,8 @@ export class PlantComponent implements OnInit {
     }
 
     /**
-     * TODO
-     * @returns {number}
+     * Returns the width of the dislike bar within the rating bar.
+     * @returns {number} - dislike bar width
      */
     public getDislikeWidth(): number{
         let likes: number = this.plantFeedback.likeCount,

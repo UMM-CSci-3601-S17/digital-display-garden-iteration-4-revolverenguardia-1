@@ -3,6 +3,7 @@ package umm3601.gardenCharts;
 import com.google.gson.JsonArray;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.ExcelParser;
@@ -20,9 +21,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by carav008 on 4/14/17.
  */
-
 public class TestViewsPerHour{
-
     private final static String databaseName = "data-for-testing-only";
     public MongoClient mongoClient = new MongoClient();
     public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
@@ -66,13 +65,15 @@ public class TestViewsPerHour{
 
         ArrayList<Object> arrayList = TestUTILS.JSONArrayToArrayList(json);
 
-        Object object1 = arrayList.get(20).toString();
-        Object object2 = arrayList.get(23).toString();
+        Object object1 = arrayList.get(12).toString();
+        Object object2 = arrayList.get(20).toString();
         Object object3 = arrayList.get(1).toString();
+        Object object4 = arrayList.get(2).toString();
 
-        assertEquals("at the 19th hour there should be 1 visit","[\"7\",1]",object1);
-        assertEquals("at the 22nd hour there should be 3 visits","[\"10\",3]",object2);
-        assertEquals("at midnight, there should be 0 visits", "[\"12\",0]", object3);
+        assertEquals("at the 11th hour there should be 2 visit","[\"11\",1]",object1);
+        assertEquals("at the 19nd hour there should be 1 visits","[\"7\",1]",object2);
+        assertEquals("at midnight, there should be 0 visits", "[\"12\",1]", object3);
+        assertEquals("at 1am, there should be 0 visits", "[\"1\",0]",object4);
     }
 
 

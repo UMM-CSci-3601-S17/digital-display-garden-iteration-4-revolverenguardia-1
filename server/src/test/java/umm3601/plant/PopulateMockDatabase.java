@@ -25,13 +25,38 @@ public class PopulateMockDatabase {
 
 
     public static void clearAndPopulateDBAgain(MongoDatabase testDB) throws IOException {
+        testDB.drop();
         MongoCollection plants = testDB.getCollection("plants");
         MongoCollection beds = testDB.getCollection("beds");
-        testDB.drop();
-
-
         MongoCollection config = testDB.getCollection("config");
         config.insertOne(new Document().append("liveUploadId", "first uploadId"));
+
+        addFirstUploadId(plants,beds,config);
+        addSecondUploadId(plants,beds,config);
+        addThirdUploadId(plants,beds,config);
+        addGoogleChartsUploadId(plants,beds,config);
+
+    }
+
+    public static void addFirstUploadId(MongoCollection plants, MongoCollection beds, MongoCollection config)
+    {
+        {
+            Document bed10 = new Document();
+            bed10.append("_id", new ObjectId("58d1c36efb0cac4e15afd303"));
+            bed10.append("gardenLocation", "10.0");
+
+
+            Document bed10Meta = new Document();
+            bed10Meta.append("pageViews", 0);
+            bed10Meta.append("qrScans", 0);
+            bed10Meta.append("bedVisits", new BsonArray());
+            bed10Meta.append("qrVisits", new BsonArray());
+
+            bed10.append("uploadId", "first uploadId");
+            bed10.append("metadata", bed10Meta);
+            beds.insertOne(bed10);
+        }
+
 
 
         //First Plant Alternanthera
@@ -48,16 +73,13 @@ public class PopulateMockDatabase {
         alternanthera.append("source", "PA");
         alternanthera.append("SSeedVVeg", "S");
 
-//        BsonArray visits = new BsonArray();
-//        ObjectId visit1 = new ObjectId("58e48858efbd6027e34b4c52");
-//        visits.add(new BsonObjectId(visit1));
 
         Document metadataDoc = new Document();
         metadataDoc.append("pageViews", 0);
         metadataDoc.append("ratings", new BsonArray());
         metadataDoc.append("visits", new BsonArray());
 
-        
+
         alternanthera.append("metadata", metadataDoc);
         //alternanthera.append("garden", "hello!");
         plants.insertOne(alternanthera );
@@ -85,53 +107,45 @@ public class PopulateMockDatabase {
         plants.insertOne(begonia);
 
 
-        //First Garden Location bed7.0
-        Document bed7 = new Document();
-        bed7.append("_id", new ObjectId("58d1c36efb0cac4e15afd302"));
-        bed7.append("gardenLocation", "7.0");
-
-        Document bedMetadataDoc = new Document();
-        bedMetadataDoc.append("pageViews", 0);
-        bedMetadataDoc.append("qrScans", 0);
-        bedMetadataDoc.append("bedVisits", new BsonArray());
-        bedMetadataDoc.append("qrVisits", new BsonArray());
 
 
-        bed7.append("uploadId", "first uploadId");
-        bed7.append("metadata", bedMetadataDoc);
-        beds.insertOne(bed7);
 
-        Document bed1S = new Document();
-        bed1S.append("_id", new ObjectId("58d1c36efb0cac4e15afd304"));
-        bed1S.append("gardenLocation", "1S");
+    }
 
-         bedMetadataDoc = new Document();
-        bedMetadataDoc.append("pageViews", 10);
-        bedMetadataDoc.append("qrScans",0);
-        bedMetadataDoc.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
-        bedMetadataDoc.append("qrVisits", new BsonArray());
+    public static void addSecondUploadId(MongoCollection plants, MongoCollection beds, MongoCollection config)
+    {
 
+        {
+            //First Garden Location bed7.0
+            Document bed7 = new Document();
+            bed7.append("_id", new ObjectId("58d1c36efb0cac4e15afd302"));
+            bed7.append("gardenLocation", "7.0");
 
-        bed1S.append("uploadId", "first uploadId");
-        bed1S.append("metadata", bedMetadataDoc);
-        beds.insertOne(bed1S);
+            Document bed7Meta = new Document();
+            bed7Meta.append("pageViews", 0);
+            bed7Meta.append("qrScans", 0);
+            bed7Meta.append("bedVisits", new BsonArray());
+            bed7Meta.append("qrVisits", new BsonArray());
 
+            bed7.append("uploadId", "second uploadId");
+            bed7.append("metadata", bed7Meta);
+            beds.insertOne(bed7);
+        }
+        {
+            Document bed12 = new Document();
+            bed12.append("_id", new ObjectId("58d1c36efb0cac4e15afd304"));
+            bed12.append("gardenLocation", "12");
 
-        //Second Garden Location bed10.0
-        Document bed10 = new Document();
-        bed10.append("_id", new ObjectId("58d1c36efb0cac4e15afd303"));
-        bed10.append("gardenLocation", "10.0");
+            Document bed12Meta = new Document();
+            bed12Meta.append("pageViews", 10);
+            bed12Meta.append("qrScans", 0);
+            bed12Meta.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
+            bed12Meta.append("qrVisits", new BsonArray());
 
-
-        Document bedMetadataDoc1 = new Document();
-        bedMetadataDoc1.append("pageViews", 0);
-        bedMetadataDoc1.append("qrScans", 0);
-        bedMetadataDoc1.append("bedVisits", new BsonArray());
-        bedMetadataDoc1.append("qrVisits", new BsonArray());
-
-        bed10.append("uploadId", "second uploadId");
-        bed10.append("metadata", bedMetadataDoc1);
-        beds.insertOne(bed10);
+            bed12.append("uploadId", "second uploadId");
+            bed12.append("metadata", bed12Meta);
+            beds.insertOne(bed12);
+        }
 
         //Third Plant Dianthus
         Document dianthus = new Document();
@@ -162,7 +176,7 @@ public class PopulateMockDatabase {
         plantFour.append("commonName", "PlantFour");
         plantFour.append("cultivar", "Some Plant");
         plantFour.append("gardenLocation", "12");
-        plantFour.append("id", "16040.0");
+        plantFour.append("id", "16041.0");
 
         Document metadataDoc3 = new Document();
         metadataDoc3.append("pageViews", 0);
@@ -170,6 +184,25 @@ public class PopulateMockDatabase {
 
         plantFour.append("metadata", metadataDoc3);
         plants.insertOne(plantFour);
+    }
+
+    public static void addThirdUploadId(MongoCollection plants, MongoCollection beds, MongoCollection config)
+    {
+        {
+            Document bed20 = new Document();
+            bed20.append("_id", new ObjectId("58d1c36efb0cac4e15afd305"));
+            bed20.append("gardenLocation", "20");
+
+            Document bed20Meta = new Document();
+            bed20Meta.append("pageViews", 10);
+            bed20Meta.append("qrScans", 0);
+            bed20Meta.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
+            bed20Meta.append("qrVisits", new BsonArray());
+
+            bed20.append("uploadId", "third uploadId");
+            bed20.append("metadata", bed20Meta);
+            beds.insertOne(bed20);
+        }
 
         //for testing getCommonNamesJSON (third uploadID)
         //Fifth Plant PlantFive
@@ -222,8 +255,42 @@ public class PopulateMockDatabase {
 
         plantSeven.append("metadata", metadataDoc6);
         plants.insertOne(plantSeven);
+    }
 
+    public static void addGoogleChartsUploadId(MongoCollection plants, MongoCollection beds, MongoCollection config)
+    {
 
+        {
+            Document bed5 = new Document();
+            bed5.append("_id", new ObjectId("58d1c36efb0cac4e15afd308"));
+            bed5.append("gardenLocation", "5.0");
+
+            Document bed5Meta = new Document();
+            bed5Meta.append("pageViews", 10);
+            bed5Meta.append("qrScans", 0);
+            bed5Meta.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
+            bed5Meta.append("qrVisits", new BsonArray());
+
+            bed5.append("uploadId", "googleCharts uploadId");
+            bed5.append("metadata", bed5Meta);
+            beds.insertOne(bed5);
+        }
+
+        {
+            Document bed2S = new Document();
+            bed2S.append("_id", new ObjectId("58d1c36efb0cac4e15afd309"));
+            bed2S.append("gardenLocation", "2S");
+
+            Document bed2SMeta = new Document();
+            bed2SMeta.append("pageViews", 10);
+            bed2SMeta.append("qrScans", 0);
+            bed2SMeta.append("bedVisits", new BsonArray()); //TODO should have 10 {visit : objectId}'s in here but for the test I'm writing rn don't need
+            bed2SMeta.append("qrVisits", new BsonArray());
+
+            bed2S.append("uploadId", "googleCharts uploadId");
+            bed2S.append("metadata", bed2SMeta);
+            beds.insertOne(bed2S);
+        }
 
         /*
         Plants that will include mock pageViews and visits
@@ -242,27 +309,30 @@ public class PopulateMockDatabase {
         Document metadataDoc8 = new Document();
         metadataDoc8.append("pageViews", 5);
 
+        BsonArray ratings = new BsonArray();
+        {
+            BsonDocument rateDoc1 = new BsonDocument();
+            rateDoc1.append("like", new BsonBoolean(false));
+            rateDoc1.append("ratingOnObjectId", new BsonObjectId(new ObjectId("58f03f9aad21334329e73865")));
+            ratings.add(rateDoc1);
+        }
+        {
+            BsonDocument rateDoc2 = new BsonDocument();
+            rateDoc2.append("like", new BsonBoolean(true));
+            rateDoc2.append("ratingOnObjectId", new BsonObjectId(new ObjectId("58f03f9aad21334329e73866")));
+            ratings.add(rateDoc2);
+        }
+        metadataDoc8.append("ratings", ratings);
 
-        BsonArray r = new BsonArray();
-        BsonDocument rateDoc1 = new BsonDocument();
-        rateDoc1.append("like",new BsonBoolean(false));
-        rateDoc1.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73865")));
-        r.add(rateDoc1);
-        metadataDoc8.append("ratings", r);
 
-        BsonDocument rateDoc2 = new BsonDocument();
-        rateDoc2.append("like",new BsonBoolean(true));
-        rateDoc2.append("ratingOnObjectId",new BsonObjectId(new ObjectId("58f03f9aad21334329e73866")));
-        r.add(rateDoc2);
-        metadataDoc.append("ratings", r);
-
-
-
-        BsonArray mockVisits8 = new BsonArray();
+        BsonArray bed8Visits = new BsonArray();
         BsonDocument docV8 = new BsonDocument();
-        docV8.append("visit",new BsonObjectId(new ObjectId("58d1c36efb0cac4e15afd555")));
-        mockVisits8.add(docV8);
-        metadataDoc8.append("visits", mockVisits8);
+        Date p8Date1 = new Date(2017 + 6, 0, 5,18,18,02);
+        ObjectId p8Obj1 = new ObjectId(p8Date1);
+        System.out.println("ID: 16053.0 | Date: " + p8Obj1.getDate());
+        docV8.append("visit",new BsonObjectId(new ObjectId(p8Date1)));
+        bed8Visits.add(docV8);
+        metadataDoc8.append("visits", bed8Visits);
 
         plantEight.append("metadata", metadataDoc8);
         plants.insertOne(plantEight);
@@ -302,17 +372,26 @@ public class PopulateMockDatabase {
 
         BsonArray mockVisits = new BsonArray();
         BsonDocument docV1 = new BsonDocument();
-        docV1.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73801")));
+        Date p9Date1 = new Date(2017 + 6, 1, 20, 5, 34, 59);
+        ObjectId objID2 = new ObjectId(p9Date1);
+        System.out.println("ID: 16037.0 | Date: " + objID2.getDate());
+        docV1.append("visit",new BsonObjectId(objID2));
         mockVisits.add(docV1);
         metadataDoc9.append("visits", mockVisits);
 
         BsonDocument docV2 = new BsonDocument();
-        docV2.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73802")));
+        Date p9Date2 = new Date(2017 + 6, 1,22,5,34, 2);
+        ObjectId objID3 = new ObjectId(p9Date2);
+        System.out.println("ID: 16037.0 | Date: " + objID3.getDate());
+        docV2.append("visit",new BsonObjectId(objID3));
         mockVisits.add(docV2);
         metadataDoc9.append("visits", mockVisits);
 
         BsonDocument docV3 = new BsonDocument();
-        docV3.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73803")));
+        Date p9Date4 = new Date(2017 + 6, 5, 30, 14, 47,3);
+        ObjectId objID4 = new ObjectId(p9Date4);
+        System.out.println("ID: 16037.0 | Date: " + objID4.getDate());
+        docV3.append("visit",new BsonObjectId(objID4));
         mockVisits.add(docV3);
 
         metadataDoc9.append("visits", mockVisits);
@@ -320,6 +399,8 @@ public class PopulateMockDatabase {
         plantNine.append("metadata", metadataDoc9);
         plants.insertOne(plantNine);
     }
+
+
 }
 
 
