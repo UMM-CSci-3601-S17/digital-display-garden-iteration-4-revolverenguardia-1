@@ -39,12 +39,11 @@ public class GardenCharts
             String[] plantID = plantController.getIDName(uploadID);
             String[] cultivar = plantController.getCultivar(uploadID);
             Map<String, Integer> result = new HashMap<>();
-            JsonArray finalJsonArray = new JsonArray();
-            JsonObject plantMetadata = new JsonObject();
-            int likes = 0;
-            int dislikes = 0;
-            int comments = 0;
             for (int i = 0; i < cultivar.length; i++) {
+
+                int likes = 0;
+                int dislikes = 0;
+                int comments = 0;
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
                 filter.append("id", plantID[i]);
@@ -61,9 +60,7 @@ public class GardenCharts
                     if (type.equals("comments")) {
                         comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
                     }
-
                 }
-
                 String key = cultivar[i];
                 if (type.equals("likes")) {
                     Integer value = (Integer) likes;
@@ -77,49 +74,58 @@ public class GardenCharts
                     Integer value = (Integer) comments;
                     result.put(key, value);
                 }
-
             }
-
-            /*if(likes == 0){
-                String cultivarName = "No Data";
-                plantMetadata.addProperty("cultivarName", cultivarName);
-                plantMetadata.addProperty("likes", likes);
-                finalJsonArray.add(plantMetadata);
-                return finalJsonArray.toString();
-            }
-            if(dislikes == 0 ){
-                String cultivarName = "No Data";
-                plantMetadata.addProperty("cultivarName", cultivarName);
-                plantMetadata.addProperty("likes", dislikes);
-                finalJsonArray.add(plantMetadata);
-                return finalJsonArray.toString();
-            }
-            if(comments == 0){
-                String cultivarName = "No Data";
-                plantMetadata.addProperty("cultivarName", cultivarName);
-                plantMetadata.addProperty("likes", comments);
-                finalJsonArray.add(plantMetadata);
-                return finalJsonArray.toString();
-            }
-*/
             Map<String, Integer> finalMap = new HashMap<>();
             finalMap = sortByValue(result);
+            JsonArray finalJsonArray = new JsonArray();
             Set keyset = finalMap.keySet();
             List<?> list = new ArrayList<>(keyset);
+            int count = 0;
+            if(finalMap.size() < 21){
+                for(int i = 0; i < finalMap.size() ; i++) {
+                    JsonObject plantMetadata = new JsonObject();
+                    String cultivarName = "";
+                    int typeOfData = 0;
+                    cultivarName = (String) list.get(i);
+                    typeOfData = finalMap.get(cultivarName);
+                    if (count == 0 && typeOfData == 0){
+                        cultivarName = "";
+                        plantMetadata.addProperty("cultivarName", cultivarName);
+                        plantMetadata.addProperty("likes", typeOfData);
+                        finalJsonArray.add(plantMetadata);
+                        return finalJsonArray.toString();
+                    }
+                    if(typeOfData == 0){
+                        return finalJsonArray.toString();
+                    }
+                    plantMetadata.addProperty("cultivarName", cultivarName);
+                    plantMetadata.addProperty("likes", typeOfData);
+                    finalJsonArray.add(plantMetadata);
+                    count++;
+                }
+                return finalJsonArray.toString();
+            }
 
-
-            for(int i = 0; i < 20; i++) {
+            for(int i = 0; (i < 20) ; i++) {
+                JsonObject plantMetadata = new JsonObject();
                 String cultivarName = "";
                 int typeOfData = 0;
                 cultivarName = (String) list.get(i);
                 typeOfData = finalMap.get(cultivarName);
+                if (count == 0 && typeOfData == 0){
+                    cultivarName = "";
+                    plantMetadata.addProperty("cultivarName", cultivarName);
+                    plantMetadata.addProperty("likes", typeOfData);
+                    finalJsonArray.add(plantMetadata);
+                    return finalJsonArray.toString();
+                }
                 if(typeOfData == 0){
                     return finalJsonArray.toString();
                 }
-
                 plantMetadata.addProperty("cultivarName", cultivarName);
                 plantMetadata.addProperty("likes", typeOfData);
                 finalJsonArray.add(plantMetadata);
+                count++;
             }
             return finalJsonArray.toString();
 
