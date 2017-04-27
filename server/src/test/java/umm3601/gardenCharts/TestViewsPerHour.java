@@ -21,9 +21,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by carav008 on 4/14/17.
  */
-
 public class TestViewsPerHour{
-
     private final static String databaseName = "data-for-testing-only";
     public MongoClient mongoClient = new MongoClient();
     public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
