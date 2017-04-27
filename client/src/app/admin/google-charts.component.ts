@@ -206,8 +206,8 @@ export class GraphComponent implements OnInit {
         [45.593560, -95.875597], [45.593592, -95.875406], [45.593357, -95.875850], [45.593461, -95.875177]];
 
     //TODO: Same as previous todo, these are kind of random bubbles
-    public bedLocationsForBubble = [[36,33], [37,25], [49,16], [54,56], [61,24], [61,40],
-        [19,14], [30,4], [34,10], [42,25.5], [46.5,29], [46.1,45.3]]
+    public bedLocationsForBubble = [[15,40], [15,60], [22,41], [23,55], [32,37], [37,37],
+        [36,68], [47,51], [32,71], [58,70], [68,68], [22,68]]
 
     public mapOptions = {
         chartType: `Map`,
@@ -220,23 +220,23 @@ export class GraphComponent implements OnInit {
     public bubbleOption = {
         chartType: `BubbleChart`,
         dataTable: [['Bed Number', 'X', 'Y', 'Likes (Colour)', 'Views (Size)'],
-            ['10',    36,      33,                1,             1],
-            ['11',    37,      25,                1,             1],
-            ['13',    49,      16,                1,             1],
-            ['1N',    54,      56,                1,             1],
-            ['1S',    61,      24,                1,             1],
-            ['2N',    61,      40,                1,             1],
-            ['2S',    19,      14,                1,             1],
-            ['5' ,    30,       4,                1,             1],
-            ['6' ,    34,      10,                1,             1],
-            ['7' ,    42,    25.5,                1,             1],
-            ['9' ,    46.5,    29,                1,             1],
+            ['1N',    36,      33,                1,             1],
+            ['1S',    37,      25,                1,             1],
+            ['2N',    49,      16,                1,             1],
+            ['2S',    54,      56,                1,             1],
+            ['5',     15,      60,                1,             1],
+            ['6',    61,      40,                1,             1],
+            ['7',    19,      14,                1,             1],
+            ['9' ,    30,       4,                1,             1],
+            ['10' ,    34,      10,                1,             1],
+            ['11' ,    42,    25.5,                1,             1],
+            ['13' ,    46.5,    29,                1,             1],
             ['LG',    46.1,  45.3,                1,             1]
         ],
         options: {
             backgroundColor: 'none',
-            width: 1140,
-            height: 400,
+            width: 1074,
+            height: 636,
             chartArea: {
                 left: 0,
                 top: 0,
