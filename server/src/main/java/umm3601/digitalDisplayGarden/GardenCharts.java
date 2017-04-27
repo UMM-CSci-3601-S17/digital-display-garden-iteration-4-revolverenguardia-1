@@ -34,6 +34,7 @@ public class GardenCharts
 
     public String top20Charts(PlantController plantController, String uploadID, String type){
         try{
+            String[] plantID = plantController.getIDName(uploadID);
             String[] cultivar = plantController.getCultivars(uploadID);
             Map<String, Integer> result = new HashMap<>();
             for (int i = 0; i < cultivar.length; i++) {
@@ -43,6 +44,7 @@ public class GardenCharts
                 int comments = 0;
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
+                filter.append("id", plantID[i]);
 
                 FindIterable<Document> iter = plantCollection.find(filter);
                 for (Document plant : iter) {
@@ -56,7 +58,9 @@ public class GardenCharts
                     if (type.equals("comments")) {
                         comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
                     }
+
                 }
+
                 String key = cultivar[i];
                 if (type.equals("likes")) {
                     Integer value = (Integer) likes;
@@ -70,28 +74,36 @@ public class GardenCharts
                     Integer value = (Integer) comments;
                     result.put(key, value);
                 }
+
             }
+
             Map<String, Integer> finalMap = new HashMap<>();
             finalMap = sortByValue(result);
             JsonArray finalJsonArray = new JsonArray();
             Set keyset = finalMap.keySet();
             List<?> list = new ArrayList<>(keyset);
             int count = 0;
-            if(finalMap.size() < 21){
-                for(int i = 0; i < finalMap.size() ; i++) {
+            if (finalMap.size() < 20){
+                for(int i = 0; i < finalMap.size(); i++) {
                     JsonObject plantMetadata = new JsonObject();
                     String cultivarName = "";
                     int typeOfData = 0;
                     cultivarName = (String) list.get(i);
                     typeOfData = finalMap.get(cultivarName);
-                    if (count == 0 && typeOfData == 0){
+                    if(typeOfData == 0){
                         cultivarName = "";
+                        typeOfData = 0;
                         plantMetadata.addProperty("cultivarName", cultivarName);
                         plantMetadata.addProperty("likes", typeOfData);
                         finalJsonArray.add(plantMetadata);
                         return finalJsonArray.toString();
                     }
-                    if(typeOfData == 0){
+                    if (count == 0 && typeOfData == 0){
+                        cultivarName = "";
+                        typeOfData = 0;
+                        plantMetadata.addProperty("cultivarName", cultivarName);
+                        plantMetadata.addProperty("likes", typeOfData);
+                        finalJsonArray.add(plantMetadata);
                         return finalJsonArray.toString();
                     }
                     plantMetadata.addProperty("cultivarName", cultivarName);
@@ -101,8 +113,7 @@ public class GardenCharts
                 }
                 return finalJsonArray.toString();
             }
-
-            for(int i = 0; (i < 20) ; i++) {
+            for(int i = 0; i < 20; i++) {
                 JsonObject plantMetadata = new JsonObject();
                 String cultivarName = "";
                 int typeOfData = 0;
@@ -110,6 +121,7 @@ public class GardenCharts
                 typeOfData = finalMap.get(cultivarName);
                 if (count == 0 && typeOfData == 0){
                     cultivarName = "";
+                    typeOfData = 0;
                     plantMetadata.addProperty("cultivarName", cultivarName);
                     plantMetadata.addProperty("likes", typeOfData);
                     finalJsonArray.add(plantMetadata);
