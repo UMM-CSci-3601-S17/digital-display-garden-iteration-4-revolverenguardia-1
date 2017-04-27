@@ -308,8 +308,20 @@ public class Server {
 
         get("api/admin/charts/top20Likes", (req, res) -> {
             res.type("application/json");
+            String type = "likes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
 
-            return chartMaker.top20Charts(plantController, getLiveUploadId());
+        get("api/admin/charts/top20disLikes", (req, res) -> {
+            res.type("application/json");
+            String type = "dislikes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+        get("api/admin/charts/top20Comments", (req, res) -> {
+            res.type("application/json");
+            String type = "comments";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
         });
 
 
