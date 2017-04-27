@@ -89,7 +89,6 @@ public class TestAccessionPatching
             assertEquals("Does not have 13-2 Begonias",13-2, plants.count(and(eq("commonName", "Begonia"),eq("uploadId", "an even more arbitrary ID"))));
             assertEquals("A TARANTULA was found in ADD spreadsheet (how scary)", 0, plants.count(and(eq("commonName", "TARANTULA"), eq("uploadId", "an even more arbitrary ID"))));
 
-
         }
         finally {
             ExcelParser.setLiveUploadId(oldUploadId, testDB);

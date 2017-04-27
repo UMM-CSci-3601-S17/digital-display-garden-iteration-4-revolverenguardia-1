@@ -45,7 +45,7 @@ public class ExcelParser {
         this.stream = stream;
     }
 
-    public String[][] parseExcel() throws FileNotFoundException, NotOfficeXmlFileException{
+    public String[][] parseExcel() {
 
         String[][] arrayRepresentation = extractFromXLSX(stream);
 
@@ -72,7 +72,7 @@ public class ExcelParser {
                     [max(max(datatypeSheet.getRow(1).getLastCellNum(), datatypeSheet.getRow(2).getLastCellNum()),
                     datatypeSheet.getRow(3).getLastCellNum())];
 
-            for(Row currentRow : datatypeSheet) {
+            for (Row currentRow : datatypeSheet) {
                 //cellValues[currentRow.getRowNum()] = new String[currentRow.getLastCellNum()];
 
                 for (Cell currentCell : currentRow) {
@@ -83,18 +83,13 @@ public class ExcelParser {
                         cellValues[currentCell.getRowIndex()][currentCell.getColumnIndex()] = currentCell.getStringCellValue();
                     } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
                         cellValues[currentCell.getRowIndex()][currentCell.getColumnIndex()] =
-                                Integer.toString((int)Math.round(currentCell.getNumericCellValue()));
+                                Integer.toString((int) Math.round(currentCell.getNumericCellValue()));
                     }
 
                 }
 
             }
             return cellValues;
-
-        } catch (FileNotFoundException e) {
-            System.out.println("EVERYTHING BLEW UP STOP STOP STOP");
-            e.printStackTrace();
-            return null;
         } catch (IOException e) {
             System.out.println("EVERYTHING BLEW UP STOP STOP STOP");
             e.printStackTrace();

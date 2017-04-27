@@ -34,7 +34,7 @@ public class PlantController {
     private final MongoCollection<Document> bedCollection;
     private final MongoDatabase db;
 
-    public PlantController(MongoDatabase database) throws IOException {
+    public PlantController(MongoDatabase database) {
 
         plantCollection = database.getCollection("plants");
         commentCollection = database.getCollection("comments");
