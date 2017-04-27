@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -35,8 +36,8 @@ public class TestAccessionImporting {
 
 
     @Test
-    public void testSpeadsheetToDoubleArray(){
-        String[][] plantArray = parser.extractFromXLSX(fromFile);
+    public void testSpeadsheetToDoubleArray() throws FileNotFoundException{
+        String[][] plantArray = parser.parseExcel();
         //printDoubleArray(plantArray);
 
         assertEquals(1000, plantArray.length);

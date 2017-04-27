@@ -6,11 +6,14 @@ import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by frazi177 on 4/21/17.
@@ -37,7 +40,7 @@ public class TestAccessionPatching
     }
 
     @Test
-    public void testPatchDatabase(){
+    public void testPatchDatabase() throws FileNotFoundException {
         MongoCollection plants = testDB.getCollection("plants");
 
         //Clear the db-blah-test database BEFORE the test
@@ -46,7 +49,10 @@ public class TestAccessionPatching
         ExcelParser.clearUpload("a totally arbitrary ID", testDB);
         ExcelParser.clearUpload("an even more arbitrary ID", testDB);
 
-        String[][] plantArray = parser.extractFromXLSX(fromFile);
+        String[][] plantArray;
+
+        plantArray = parser.parseExcel();
+
         plantArray = parser.collapseHorizontally(plantArray);
         plantArray = parser.collapseVertically(plantArray);
         parser.replaceNulls(plantArray);
@@ -58,10 +64,8 @@ public class TestAccessionPatching
             assertEquals(286, plants.count(eq("uploadId", "an arbitrary ID")));
             assertEquals(13, plants.count(and(eq("commonName", "Begonia"),eq("uploadId", "an arbitrary ID"))));
 
-            plantArray = parser.extractFromXLSX(fromADDFile);
-            plantArray = parser.collapseHorizontally(plantArray);
-            plantArray = parser.collapseVertically(plantArray);
-            parser.replaceNulls(plantArray);
+            parser = new ExcelParser(fromADDFile, testDB);
+            plantArray = parser.parseExcel();
             parser.patchDatabase(plantArray, "an arbitrary ID", "a totally arbitrary ID");
 
 
@@ -70,10 +74,12 @@ public class TestAccessionPatching
             assertEquals("Does not have 13 Begonias",13, plants.count(and(eq("commonName", "Begonia"),eq("uploadId", "a totally arbitrary ID"))));
             assertEquals("No TARANTULA found in ADD spreadsheet", 1, plants.count(eq("commonName", "TARANTULA")));
 
-            plantArray = parser.extractFromXLSX(fromDELETEFile);
-            plantArray = parser.collapseHorizontally(plantArray);
-            plantArray = parser.collapseVertically(plantArray);
-            parser.replaceNulls(plantArray);
+            //Add a comment so that when the database is patched it will copy over a comment
+            PlantController plantController = new PlantController(testDB);
+            plantController.storePlantComment("{ plantId: \"16011.0\", comment : \"Here is our comment for this test\" }","a totally arbitrary ID");
+
+            parser = new ExcelParser(fromDELETEFile, testDB);
+            plantArray = parser.parseExcel();
             parser.patchDatabase(plantArray, "a totally arbitrary ID", "an even more arbitrary ID");
 
 
@@ -89,5 +95,11 @@ public class TestAccessionPatching
             ExcelParser.setLiveUploadId(oldUploadId, testDB);
         }
 
+        //For coverage
+        ExcelParser.printArray(new String[]{});
+        ExcelParser.printDoubleArray(new String[][]{});
+
     }
+
+
 }
