@@ -56,11 +56,15 @@ best to drop() the test database. In order to populate the database
 * the liveUploadId will be set to the latest data set imported
 * liveUploadId determines which set of data to refer to within the database.
 
-## Attempted and Completed Stories
+## Attempted and Completed Stories  
 
-#### Security
+#### Security :no_entry_sign:
+Provides authentication to the admin page (login screen) before letting a user use the admin page’s features. There will be just one “account”
+   * Very close to done
 
-#### Picture Uploading
+#### Picture Uploading :no_entry_sign:
+* The user will have a user interface that will allow them to select a single flower, and add a picture for that flower. That picture will change the flower picture for the flower page.
+    * Very close to done
 
 #### Improve Front-end &mdash; visitor's website :white_check_mark:
 * Plant/Bed List Page
@@ -71,7 +75,14 @@ best to drop() the test database. In order to populate the database
 * Both pages
     * Overhaul for the look of the entire website to make it look nicer
 
-#### Flexible: Google Charts
+#### Flexible: Google Charts  :white_check_mark:
+* Time vs Views
+    * Average data by day, and months, and *combo chart*
+* Heatmaps
+    * Make heatmaps work consistently
+    * Add heatmap of scan counts
+* Top 20 Charts
+    * Add charts that display the top 20 flowers by likes, dislikes, and comments
 
 #### Flexible: UMN logo (not chosen)
 * Add UMN logo to the header of the website &mdash; incomplete
@@ -91,7 +102,7 @@ best to drop() the test database. In order to populate the database
 #### Finished by previous iteration groups
 **Revolver En Guardia**
 * Allow admin users to update the spreadsheet without losing previously obtained visitor data
-* Export more metadata from plant information pages 
+* Export more metadata from plant information pages
 * Provide visual aids for visitor traffic data (i,e., Google charts) &mdash; partly
 * Allow a visitor to choose plants by common name
 * Provide social media links
