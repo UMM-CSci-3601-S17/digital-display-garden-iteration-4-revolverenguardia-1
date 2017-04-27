@@ -34,6 +34,8 @@ export class BedDropdownComponent implements OnInit{
 
         // Common name drop only have common names within current bed
         this.commonNameListService.updateCommonNamesDropdown(this.plantListService.getPlants(), bedName);
+
+        this.bedListService.reportBedVisit(bedName, false).subscribe();
     }
 
     /**
