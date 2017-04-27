@@ -101,7 +101,7 @@ describe("Plant Component", () => {
                 let plant: Observable<PlantFeedback> = Observable.of([
                     {
                         commentCount : 0,
-                        likeCount : 0,
+                        likeCount : 1,
                         dislikeCount : 0,
                     }
 
@@ -168,6 +168,20 @@ describe("Plant Component", () => {
         plantComponent.comment("");
         wasCommented = plantComponent.isCommented();
         expect(wasCommented).toBe(true);
+
+    });
+
+    /**
+     * Check that rating bar widths are initialized correctly.
+     * @author Iteration 4 - Team Revolver en Guardia++
+     */
+    it("Check Like and Dislike bar widths", () => {
+
+        let likeWidth: number = plantComponent.getLikeWidth(),
+            dislikeWidth: number = plantComponent.getDislikeWidth();
+
+        expect(Number.isNaN(likeWidth)).toBe(true);
+        expect(Number.isNaN(dislikeWidth)).toBe(true);
 
     });
 
