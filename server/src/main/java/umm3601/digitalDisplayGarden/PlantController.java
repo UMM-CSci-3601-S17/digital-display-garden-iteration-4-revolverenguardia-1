@@ -269,9 +269,8 @@ public class PlantController {
     }
 
     public JsonArray getGardenLocationsJSON(String uploadID){
-
         if (!ExcelParser.isValidUploadId(db, uploadID))
-            return null;
+            return new JsonArray();
 
         //Get garden locations and package them in a JsonArray
         String[] beds = getGardenLocations(uploadID);

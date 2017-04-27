@@ -76,6 +76,7 @@ public class GardenCharts
                     result.put(key, value);
                 }
 
+
             }
 
             Map<String, Integer> finalMap = new HashMap<>();
@@ -92,6 +93,16 @@ public class GardenCharts
                 cultivarName = (String) list.get(i);
                 typeOfData = finalMap.get(cultivarName);
                 if(typeOfData == 0){
+                    return finalJsonArray.toString();
+                }
+                System.out.println(finalMap.size());
+                if(finalMap.size()==0){
+                    cultivarName = "Sample Plant";
+                    plantMetadata.addProperty("cultivarName", cultivarName);
+                    plantMetadata.addProperty("likes", typeOfData);
+                    finalJsonArray.add(plantMetadata);
+
+                    System.out.println(finalJsonArray.toString());
                     return finalJsonArray.toString();
                 }
                 plantMetadata.addProperty("cultivarName", cultivarName);
@@ -205,7 +216,6 @@ public class GardenCharts
             int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
 
             int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
-            System.out.println();
             printArray(viewsPerHour);
 
             //String[] civilianTimeString = {"12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00"};
@@ -223,7 +233,6 @@ public class GardenCharts
                 }
             }
 
-            System.out.println();
             //print2DArray(dataTable);
 
             return makeJSON(dataTable);
