@@ -37,7 +37,7 @@ public class GardenCharts
         configCollection = database.getCollection("config");
     }
 
-    public String top20Charts(PlantController plantController, String uploadID){
+    public String top20Charts(PlantController plantController, String uploadID, String type){
         try{
             String[] plantID = plantController.getIDName(uploadID);
             String[] cultivar = plantController.getCultivar(uploadID);
@@ -45,6 +45,8 @@ public class GardenCharts
             for (int i = 0; i < cultivar.length; i++) {
 
                 int likes = 0;
+                int dislikes = 0;
+                int comments = 0;
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
                 filter.append("id", plantID[i]);
@@ -52,12 +54,32 @@ public class GardenCharts
                 FindIterable<Document> iter = plantCollection.find(filter);
                 for (Document plant : iter) {
                     long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
-                    likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                    if (type.equals("likes")) {
+                        likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                    }
+                    if (type.equals("dislikes")) {
+                        dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
+                    }
+                    if (type.equals("comments")) {
+                        comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+                    }
+
                 }
 
                 String key = cultivar[i];
-                Integer value = (Integer) likes;
-                result.put(key, value);
+                if (type.equals("likes")) {
+                    Integer value = (Integer) likes;
+                    result.put(key, value);
+                }
+                if (type.equals("dislikes")) {
+                    Integer value = (Integer) dislikes;
+                    result.put(key, value);
+                }
+                if (type.equals("comments")) {
+                    Integer value = (Integer) comments;
+                    result.put(key, value);
+                }
+
             }
 
             Map<String, Integer> finalMap = new HashMap<>();
@@ -70,14 +92,13 @@ public class GardenCharts
             for(int i = 0; i < 20; i++) {
                 JsonObject plantMetadata = new JsonObject();
                 String cultivarName = "";
-                int likes = 0;
+                int typeOfData = 0;
                 cultivarName = (String) list.get(i);
-                likes = finalMap.get(cultivarName);
+                typeOfData = finalMap.get(cultivarName);
                 plantMetadata.addProperty("cultivarName", cultivarName);
-                plantMetadata.addProperty("likes", likes);
+                plantMetadata.addProperty("likes", typeOfData);
                 finalJsonArray.add(plantMetadata);
             }
-            System.out.println(finalJsonArray.toString());
             return finalJsonArray.toString();
 
         }
