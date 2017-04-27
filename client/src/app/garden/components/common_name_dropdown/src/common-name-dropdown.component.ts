@@ -30,23 +30,14 @@ export class CommonNameDropdownComponent {
      * @param commonName - the common name to filter by
      */
     private handleCommonNameSelect(commonName): void {
-
-        console.log(commonName);
-
-        // If bed name is being deselected
-        if (commonName == this.plantListService.getCommonNameFilter())
-            // Then disable the filter
-            this.plantListService.setCommonNameFilter(PlantFilter.NO_FILTER);
-
-        // Else, bed name is being selected
-        else
-            // So enable the filter
-            this.plantListService.setCommonNameFilter(commonName);
-
+        this.plantListService.setCommonNameFilter(commonName);
     }
 
+    /**
+     * Ensures that the filter state persists when this component
+     * is loaded and re-loaded.
+     */
     ngOnInit(){
         this.selectedCommonName = this.plantListService.getCommonNameFilter();
-        console.log("Set common name filter " + this.selectedCommonName);
     }
 }

@@ -44,7 +44,5 @@ export class PlantListComponent implements OnInit {
             err => {
                 console.log(err);
             }
-
-
     }
 }

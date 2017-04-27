@@ -4,9 +4,10 @@
  *
  * @author Iteration 1 - Team Rayquaza
  * @editor Iteration 2 - Team Omar Anwar
+ * @editor Iteration 3 - Team Revolver en Guardia
+ * @editor Iteration 4 - Team Revolver en Guardia++
  */
 
-//Imports
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Plant } from './plant';
@@ -59,6 +60,11 @@ export class PlantService {
         return this.http.post(this.URL + "leaveComment", JSON.stringify(returnObject)).map(res => res.json());
     }
 
+    /**
+     * Requests the PlantFeedback data for a plant of id be retrieved from the server.
+     * @param id - the id of the plant to receive feedback for
+     * @returns {Observable<PlantFeedback>}
+     */
     getFeedbackForPlantByPlantID(id: string): Observable<PlantFeedback> {
         return this.http.request(this.URL + "/" + id + "/counts").map(res => res.json());
     }
