@@ -1,9 +1,7 @@
 package umm3601.admin;
 import com.google.zxing.WriterException;
-import com.google.zxing.qrcode.encoder.QRCode;
 import org.junit.After;
 import org.junit.Test;
-import umm3601.digitalDisplayGarden.PlantController;
 import umm3601.digitalDisplayGarden.QRCodes;
 
 import java.awt.image.BufferedImage;
@@ -17,7 +15,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-import static umm3601.digitalDisplayGarden.QRCodes.createQRFromBedURL;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static umm3601.digitalDisplayGarden.QRCodes.*;
 
 /**
  * Created by Brian on 4/5/2017.
@@ -26,6 +26,34 @@ public class TestQRCodes {
 
     String Test_Url = "http://localhost:2538" ;
     String path = "test";
+
+
+    @Test
+    public void TestCreateQRCodesFromAllBeds()throws IOException,WriterException{
+        String bedNames[] = new String[1];
+        bedNames[0] = "bed1";
+        String urlPrefix = this.Test_Url+ "/bed/";
+        String[] theBedURl = formBedURLs(bedNames,urlPrefix);
+        assertTrue("these should be the same url for test", theBedURl[0].equals("http://localhost:2538/bed/bed1?qr=true"));
+
+        List<BufferedImage> qrCodeImages = new ArrayList<BufferedImage>();
+        for(int i = 0; i < 1; i++) {
+            qrCodeImages.add(createQRFromBedURL(theBedURl[i]));
+        }
+
+        writeBufferedImagesToFile(qrCodeImages,bedNames,path);
+
+        String uploadID = "Upload ID";
+        String zipPathFromBed = writeZipPathForQRCodes(uploadID,path);
+
+
+        String zipPathFromURlPrefix = createQRCodesFromAllBeds(uploadID,bedNames,urlPrefix);
+
+
+        assertEquals("The correct path should be ", zipPathFromURlPrefix,zipPathFromBed);
+        assertFalse("This is the wrong upload Id ", createQRCodesFromAllBeds("wrong upload id",bedNames,urlPrefix).equals(zipPathFromBed));
+
+    }
 
     @Test
     public void TestFormBedURLs() throws IOException, WriterException{
