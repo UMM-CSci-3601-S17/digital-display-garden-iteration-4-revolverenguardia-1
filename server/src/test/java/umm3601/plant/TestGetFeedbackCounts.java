@@ -1,5 +1,7 @@
 package umm3601.plant;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 import umm3601.digitalDisplayGarden.PlantController;
@@ -14,13 +16,14 @@ import static junit.framework.TestCase.assertEquals;
 public class TestGetFeedbackCounts {
 
     private final static String databaseName = "data-for-testing-only";
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
     private PlantController plantController;
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
 
@@ -41,13 +44,13 @@ public class TestGetFeedbackCounts {
 
 
         String counts = plantController.getPlantFeedbackByPlantIdJSON("16001.0","first uploadId");
-
-        System.out.println(counts);
-
         assertEquals("this should be in json format","{ \"likeCount\" : 2 , \"dislikeCount\" : 1 , \"commentCount\" : 1}",counts);
 //        assertEquals("the count should have 2 likes ", "\"likeCount\" : 2",counts.substring(2,17));
 //        assertEquals("the count should have 1 dilikes ", "\"dislikeCount\" : 1",counts.substring(20,38));
 //        assertEquals("the count should have 1 comments ","\"commentCount\" : 1", counts.substring(41,59));
+
+        counts = plantController.getPlantFeedbackByPlantIdJSON("16001.0","invalid uploadId");
+        assertEquals("this should return \"null\"", "null", counts);
     }
 
 }

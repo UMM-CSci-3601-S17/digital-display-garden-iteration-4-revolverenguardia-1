@@ -22,22 +22,20 @@ public class FlowerRating {
 
     private final static String databaseName = "data-for-testing-only";
     private PlantController plantController;
+    public MongoClient mongoClient = new MongoClient();
+    public MongoDatabase testDB = mongoClient.getDatabase(databaseName);
 
     @Before
     public void populateDB() throws IOException {
-        PopulateMockDatabase db = new PopulateMockDatabase();
-        db.clearAndPopulateDBAgain();
-        plantController = new PlantController(databaseName);
+        PopulateMockDatabase.clearAndPopulateDBAgain(testDB);
+        plantController = new PlantController(testDB);
     }
 
     @Test
     public void AddFlowerRatingReturnsTrueWithValidInput() throws IOException{
 
         assertTrue(plantController.addFlowerRating("16001.0", true, "first uploadId"));
-
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = db.getCollection("plants");
+        MongoCollection plants = testDB.getCollection("plants");
 
         FindIterable doc = plants.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd202")));
         Iterator iterator = doc.iterator();
@@ -54,8 +52,9 @@ public class FlowerRating {
     @Test
     public void AddFlowerRatingReturnsFalseWithInvalidInput() throws IOException {
 
-        assertFalse(plantController.addFlowerRating("jfd;laj;asjfoisaf", true, "first uploadId"));
-        assertFalse(plantController.addFlowerRating("16005.0", true, "first uploadId"));
+        assertFalse("Added plant rating with malformed plantId", plantController.addFlowerRating("jfd;laj;asjfoisaf", true, "first uploadId"));
+        assertFalse("Added plant rating with nonexistent plantId", plantController.addFlowerRating("16005.0", true, "first uploadId"));
+        assertFalse("Added plant rating with invalid uploadId", plantController.addFlowerRating("16040.0", true, "invalid uploadId"));
     }
 
     @Test
@@ -72,9 +71,7 @@ public class FlowerRating {
 
         assertTrue(plantController.addFlowerRating(json, "first uploadId"));
 
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = db.getCollection("plants");
+        MongoCollection plants = testDB.getCollection("plants");
 
         FindIterable doc = plants.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd202")));
         Iterator iterator = doc.iterator();
@@ -91,10 +88,27 @@ public class FlowerRating {
     @Test
     public void AddFlowerRatingReturnsFalseWithInvalidJsonInput() throws IOException {
 
-        String json1 = "{like: true, id: \"dkjahfjafhlkasjdf\"}";
-        String json2 = "{like: true id: \"58d1c36efb0cac4e15afd201\"}";
+        String json = "{like: true, id: \"dkjahfjafhlkasjdf\"}";
+        assertFalse(plantController.addFlowerRating(json, "first uploadId"));
 
-        assertFalse(plantController.addFlowerRating(json1, "anything"));
-        assertFalse(plantController.addFlowerRating(json2, "anything"));
+        json = "{like: true id: \"58d1c36efb0cac4e15afd201\"}";
+        assertFalse(plantController.addFlowerRating(json, "first uploadId"));
+
+        json = "{ 02bv/,/33=-0 rasv< }";
+        assertFalse("Added flower rating using malformed JSON", plantController.addFlowerRating(json, "first uploadId"));
+
+        json = "";
+        assertFalse("Added flower rating using malformed JSON", plantController.addFlowerRating(json, "first uploadId"));
+
+        json = "{id: \"58d1c36efb0cac4e15afd202\"}";
+        assertFalse("Added flower rating without like=bool", plantController.addFlowerRating(json, "first uploadId"));
+
+        json = "{like: true}";
+        assertFalse("Added flower rating without id", plantController.addFlowerRating(json, "first uploadId"));
+
+        json = "{like: true, id: \"16001.0\"}";
+        assertFalse("Added flower rating with invalid uploadId", plantController.addFlowerRating(json, "invalid uploadId"));
+
+
     }
 }

@@ -22,29 +22,15 @@ import static org.junit.Assert.assertEquals;
 
 public class PopulateMockDatabase {
 
-    private final static String databaseName = "data-for-testing-only";
-
-    public PopulateMockDatabase(){
-
-    }
-
-    private PlantController plantController;
-    private String begoniaIdString;
-    public String hexAlternantheraID;
-
-    public void clearAndPopulateDB() throws IOException {
-    }
-
-    public void clearAndPopulateDBAgain() throws IOException {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection plants = db.getCollection("plants");
-        MongoCollection beds = db.getCollection("beds");
-        db.drop();
-        plantController = new PlantController(databaseName);
 
 
-        MongoCollection config = db.getCollection("config");
+    public static void clearAndPopulateDBAgain(MongoDatabase testDB) throws IOException {
+        MongoCollection plants = testDB.getCollection("plants");
+        MongoCollection beds = testDB.getCollection("beds");
+        testDB.drop();
+
+
+        MongoCollection config = testDB.getCollection("config");
         config.insertOne(new Document().append("liveUploadId", "first uploadId"));
 
 
