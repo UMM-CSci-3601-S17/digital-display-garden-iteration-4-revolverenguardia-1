@@ -48,9 +48,6 @@ public class PopulateMockDatabase {
         alternanthera.append("source", "PA");
         alternanthera.append("SSeedVVeg", "S");
 
-//        BsonArray visits = new BsonArray();
-//        ObjectId visit1 = new ObjectId("58e48858efbd6027e34b4c52");
-//        visits.add(new BsonObjectId(visit1));
 
         Document metadataDoc = new Document();
         metadataDoc.append("pageViews", 0);
@@ -260,7 +257,10 @@ public class PopulateMockDatabase {
 
         BsonArray mockVisits8 = new BsonArray();
         BsonDocument docV8 = new BsonDocument();
-        docV8.append("visit",new BsonObjectId(new ObjectId("58d1c36efb0cac4e15afd555")));
+        Date p8Date1 = new Date(2017 + 6, 0, 5,18,18,02);
+        ObjectId p8Obj1 = new ObjectId(p8Date1);
+        //System.out.println("ID: 16053.0 | Date: " + p8Obj1.getDate());
+        docV8.append("visit",new BsonObjectId(new ObjectId(p8Date1)));
         mockVisits8.add(docV8);
         metadataDoc8.append("visits", mockVisits8);
 
@@ -302,17 +302,26 @@ public class PopulateMockDatabase {
 
         BsonArray mockVisits = new BsonArray();
         BsonDocument docV1 = new BsonDocument();
-        docV1.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73801")));
+        Date p9Date1 = new Date(2017 + 6, 1, 20, 5, 34, 59);
+        ObjectId objID2 = new ObjectId(p9Date1);
+        //System.out.println("ID: 16037.0 | Date: " + objID2.getDate());
+        docV1.append("visit",new BsonObjectId(objID2));
         mockVisits.add(docV1);
         metadataDoc9.append("visits", mockVisits);
 
         BsonDocument docV2 = new BsonDocument();
-        docV2.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73802")));
+        Date p9Date2 = new Date(2017 + 6, 1,22,5,34, 2);
+        ObjectId objID3 = new ObjectId(p9Date2);
+        //System.out.println("ID: 16037.0 | Date: " + objID3.getDate());
+        docV2.append("visit",new BsonObjectId(objID3));
         mockVisits.add(docV2);
         metadataDoc9.append("visits", mockVisits);
 
         BsonDocument docV3 = new BsonDocument();
-        docV3.append("visit",new BsonObjectId(new ObjectId("58f03f9aad21334329e73803")));
+        Date p9Date4 = new Date(2017 + 6, 5, 30, 14, 47,3);
+        ObjectId objID4 = new ObjectId(p9Date4);
+        //System.out.println("ID: 16037.0 | Date: " + objID4.getDate());
+        docV3.append("visit",new BsonObjectId(objID4));
         mockVisits.add(docV3);
 
         metadataDoc9.append("visits", mockVisits);
