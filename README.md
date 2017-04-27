@@ -12,7 +12,7 @@ Our team members are:
 * Lenny
 
 Software Design S2017, Iteration 4, Team _Revolver en Guardia++_  
-You can find our website [here](http://revolverenguardia.dungeon.website:2538/)  
+You can find our website [here](http://revolverenguardia.dungeon.website)  
 Our IP address is: 138.197.120.23
 
 This repository is a mirror of [Iteration 3 , Team  Revolver En Guardia](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1)
