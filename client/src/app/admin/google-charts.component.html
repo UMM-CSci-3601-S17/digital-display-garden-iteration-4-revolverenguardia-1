@@ -50,9 +50,24 @@
 
 
 
-<div id = "top20Div" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
-    <google-chart [data] = "top20ChartData"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updatetop20()" >
+<div id = "top20LikesDiv" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
+    <google-chart [data] = "top20ChartDataLikes"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updatetop20likes()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+</div>
+<div id = "top20DislikesDiv" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
+    <google-chart [data] = "top20ChartDataDisLikes"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updatetop20dislikes()" >
+        <span aria-hidden="true"></span>
+        Update Graph
+    </button>
+
+</div>
+<div id = "top20CommentsDiv" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
+    <google-chart [data] = "top20ChartDataComments"></google-chart>
+    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updatetop20comments()" >
         <span aria-hidden="true"></span>
         Update Graph
     </button>
