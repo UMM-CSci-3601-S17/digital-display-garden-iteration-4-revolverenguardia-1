@@ -95,6 +95,9 @@ public class GardenCharts
                 int typeOfData = 0;
                 cultivarName = (String) list.get(i);
                 typeOfData = finalMap.get(cultivarName);
+                if(typeOfData == 0){
+                    return finalJsonArray.toString();
+                }
                 plantMetadata.addProperty("cultivarName", cultivarName);
                 plantMetadata.addProperty("likes", typeOfData);
                 finalJsonArray.add(plantMetadata);

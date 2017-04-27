@@ -86,10 +86,12 @@ export class GraphComponent implements OnInit {
     public top20ChartDataLikes = {
         chartType: `ColumnChart`,
         dataTable: [['Hour', 'Views'],
-            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
+            ['Sample Data',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
-        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Likes'}, legend:{position: 'none'}},
+        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Likes'}, legend:{position: 'none'},
+            height: 400,
+            bar: {groupWidth: '20%'}},
     }
 
     public top20ChartDataDisLikes = {
@@ -98,7 +100,8 @@ export class GraphComponent implements OnInit {
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
-        options: {'title': 'Top 20 Plants with Most DisLikes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Dislikes'}, legend:{position: 'none'}},
+        options: {'title': 'Top 20 Plants with Most DisLikes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Dislikes'}, legend:{position: 'none'},
+            height: 400, bar: {groupWidth: '20%'}},
     }
 
     public top20ChartDataComments = {
@@ -107,7 +110,8 @@ export class GraphComponent implements OnInit {
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
-        options: {'title': 'Top 20 Plants with Most Comments', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Comments'}, legend:{position: 'none'}},
+        options: {'title': 'Top 20 Plants with Most Comments', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Comments'}, legend:{position: 'none'},
+            height: 400, bar: {groupWidth: '20%'}},
     }
 
     public line_ChartData = {

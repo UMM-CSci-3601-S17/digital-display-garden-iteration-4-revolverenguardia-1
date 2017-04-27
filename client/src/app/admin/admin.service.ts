@@ -32,4 +32,12 @@ export class AdminService {
     get20MostLikes(): Observable<any[]> {
         return this.http.request(this.url + "admin/charts/top20Likes").map(res => res.json())
     }
+
+    get20MostDisLikes(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20disLikes").map(res => res.json())
+    }
+
+    get20MostComments(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20Comments").map(res => res.json())
+    }
 }
