@@ -38,7 +38,7 @@ public class TestBedController {
     @Test
     public void TestIncrementBedData(){
 
-        bedController.incrementBedMetadata("7.0","pageViews","first uploadId");
+        bedController.incrementBedMetadata("7.0","pageViews","second uploadId");
         MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
@@ -53,7 +53,7 @@ public class TestBedController {
 
     @Test
     public void TestBedVisit(){
-        bedController.addBedVisit("10.0","second uploadId");
+        bedController.addBedVisit("10.0","first uploadId");
         MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd303")));
@@ -80,7 +80,7 @@ public class TestBedController {
     @Test
     public void TestQRScansAndQRVisits(){
         //first lets test qr scans
-        bedController.incrementBedMetadata("7.0","qrScans","first uploadId");
+        bedController.incrementBedMetadata("7.0","qrScans","second uploadId");
         MongoCollection beds = testDB.getCollection("beds");
 
         FindIterable doc = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
@@ -96,7 +96,7 @@ public class TestBedController {
         // report only 1 scan in qrVisits Document
 
         // make sure that qr bed visits works
-        bedController.addBedQRVisit("7.0","first uploadId");
+        bedController.addBedQRVisit("7.0","second uploadId");
 
         FindIterable doc1 = beds.find(new Document().append("_id", new ObjectId("58d1c36efb0cac4e15afd302")));
         Iterator iterator1 = doc1.iterator();
@@ -125,10 +125,10 @@ public class TestBedController {
     @Test
     public void TestGetPageViews()
     {
-        int pageViews = bedController.getPageViews("7.0", "first uploadId");
+        int pageViews = bedController.getPageViews("7.0", "second uploadId");
         assertEquals("Pageviews at gardenLocation 7 isn't 0", 0, pageViews);
-        pageViews = bedController.getPageViews("1S", "first uploadId");
-        assertEquals("Pageviews at gardenLocation 1S isn't 10", 10, pageViews);
+        pageViews = bedController.getPageViews("20", "third uploadId");
+        assertEquals("Pageviews at gardenLocation 20 isn't 10", 10, pageViews);
     }
 
 }

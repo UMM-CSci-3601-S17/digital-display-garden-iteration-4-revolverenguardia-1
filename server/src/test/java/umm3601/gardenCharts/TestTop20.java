@@ -70,7 +70,7 @@ public class TestTop20 {
         String arraySub5 = array3.get(0).toString();
         String arraySub05 = "{\"cultivarName\":\"\",\"likes\":0}";
 
-       // assertEquals("the first index of the returned top 20 likes jsonarray should be Sun Kiss Cultivar ", arraySub01, arraySub0);
+        assertEquals("the first index of the returned top 20 likes jsonarray should be Sun Kiss Cultivar ", arraySub01, arraySub0);
         assertEquals("the first index of the returned top 20 likes jsonarray should be FireBall Cultivar ", arraySub02, arraySub1);
 
         assertEquals("the first index of the returned top 20 jsonarray should be Sun Kiss Cultivar ", arraySub03, arraySub3);

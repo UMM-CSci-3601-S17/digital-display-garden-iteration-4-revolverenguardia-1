@@ -51,11 +51,10 @@ public class TestGetBedMetadataForBubbleMap {
         //System.out.println(array);
         String arraySub0 = array.get(0).toString();
         String arraySub1 = array.get(1).toString();
-        String arraySub01 = "{\"gardenLocation\":\"2S\",\"likes\":2,\"pageViews\":0}";
-        String arraySub02 = "{\"gardenLocation\":\"5.0\",\"likes\":1,\"pageViews\":0}";
-
-        String arraySub3 = array.get(0).toString();
-        String arraySub03 = "{\"gardenLocation\":\"2S\",\"likes\":2,\"pageViews\":0}";
+        String arraySub3 = array3.get(0).toString();
+        String arraySub01 = "{\"gardenLocation\":\"2S\",\"likes\":2,\"pageViews\":10}";
+        String arraySub02 = "{\"gardenLocation\":\"5.0\",\"likes\":1,\"pageViews\":10}";
+        String arraySub03 = "{\"gardenLocation\":\"20\",\"likes\":0,\"pageViews\":10}";
 
         assertEquals("Should have the same likes, pageviews and bed 1", arraySub01, arraySub0);
         assertEquals("Should have the same likes, pageviews and bed 2", arraySub02, arraySub1);
