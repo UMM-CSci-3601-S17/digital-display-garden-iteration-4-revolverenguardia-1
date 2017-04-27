@@ -340,7 +340,7 @@ public class Server {
             System.out.println("we got to the correct endpoint");
             ImageHandler handler = new ImageHandler(res.raw().getOutputStream());
 
-            handler.getImageOnFilesystem(plantID);
+            handler.getImageOnFilesystem(plantID, "./src/main/java/umm3601/images/");
 
             return res;
         });
@@ -370,31 +370,7 @@ public class Server {
                 Image img = handler.extractImage();
                 String flowerName = handler.extractFlowerName(part0.getInputStream());
 
-                Random rand = new Random();
-                File newDir = new File(Server.imageDir);
-                File folderDir = new File(imageDir + "/" + flowerName);
-                newDir.mkdirs();
-                try {
-                    if (folderDir.listFiles().length != 0) {
-                        try {
-                            Files.delete(Paths.get(imageDir + "/" + flowerName + "/" + folderDir.listFiles()[0].getName()));
-                        } catch (NoSuchFileException e) {
-                            System.err.println("NoSuchFileException when trying to delete old file, path name =" + Paths.get(imageDir + "/" + flowerName + "/" + folderDir.listFiles()[0].getName()).toString());
-                        }
-                    }
-                } catch (NullPointerException e) {
-                    System.err.println("Null pointer when trying to list files");
-                }
-                String pathName = Server.imageDir + "/" + flowerName + "/" + rand.nextInt(9999999);
-                //photoDB.getCollection("photoFilepathCollection").insertOne();//(Document.parse("{ " + pathName.substring(1) + " }"));
-                File imageDir = new File(pathName);
-                imageDir.mkdirs();
-                try {
-                    ImageIO.write((RenderedImage)img,"png", imageDir);
-
-                } catch (IOException e) {
-
-                }
+                handler.storeImage(imageDir, flowerName, img);
 
                 String id = ImageHandler.getAvailableUploadId();
 
