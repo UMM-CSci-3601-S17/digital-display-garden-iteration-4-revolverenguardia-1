@@ -58,29 +58,23 @@ best to drop() the test database. In order to populate the database
 
 ## Attempted and Completed Stories
 
-#### Improve Admin :white_check_mark:
-* Allow admin users to update the spreadsheet without losing previously obtained visitor data
-* Export more data
-  * Comments: Basic Plant info, Plant Comments, Comment Date
-  * Plant Metadata: Likes, Dislikes, Comment Counts, Page Views
-  * Bed Metadata: Bed page Views, QR Scans
+#### Security
 
-#### Visual Aids for Visitor Traffic &mdash; Google Charts :white_check_mark:
-* Provide visual aids for visitor traffic data &mdash; to be enhanced
-* Track all forms of visitor traffic
-  * Track the number of times a flower page is visited
-  * Track the number of times a bed page is visited &mdash; complete
+#### Picture Uploading
 
 #### Improve Front-end &mdash; visitor's website :white_check_mark:
-* Allow visitors to filter plants by common name &mdash; complete
-* Provide visitors with social media links &mdash; complete
-* Improve the overall UIs &mdash; additional improvements can be made
+* Plant/Bed List Page
+    * Provide drop-down menus for beds and common names, replacing the side bar
+* Plant Page
+    * Fix the size of the image and place it after the plant information
+    * Add a bar that displays the number of likes and dislikes
+* Both pages
+    * Overhaul for the look of the entire website to make it look nicer
 
-#### Refactoring and Stories to polish :white_check_mark:
-Change all ObjectIds that are generated with the sole purpose of dates into some sort of Date object.
-  This has become a problem, because every object must have a unique ObjectId.
-  When the database is patched, all of the objects are duplicated and therefore have new ObjectIds.
-  This means all old data's dates (under the new uploadId) has new ObjectIds.
+#### Flexible: Google Charts
+
+#### Flexible: UMN logo (not chosen)
+* Add UMN logo to the header of the website &mdash; incomplete
 
 ## Future work  
 :soon: Google Charts: Some of the data Esther wants to see in our Google charts includes:  
@@ -95,6 +89,13 @@ Change all ObjectIds that are generated with the sole purpose of dates into some
 
 
 #### Finished by previous iteration groups
+**Revolver En Guardia**
+* Allow admin users to update the spreadsheet without losing previously obtained visitor data
+* Export more metadata from plant information pages 
+* Provide visual aids for visitor traffic data (i,e., Google charts) &mdash; partly
+* Allow a visitor to choose plants by common name
+* Provide social media links
+
 **Grimaldi** :us: :notes: :mortar_board: ∮
 * Leave comments about plants
 * Allow a visitor to rate a plant
@@ -124,23 +125,6 @@ Change all ObjectIds that are generated with the sole purpose of dates into some
 * **zxing** is used for generating QR codes (supports reading them if we want)
 * **joda** is used for making an unique LiveUploadID
 
-### Source of branches at end of Iteration 3
-
-* **database-patching**
-* **export-more-data**
-* **fix-footer** Fixed footer content and style in the very beginning of the iteration
-* **GoogleCharts** Working Line/Bar/Map/Bubble Chart with data from server display
-* **google-charts(actual-data)**
-* **home-page**
-* **measure-qrscans**
-* **merge-all**
-* **merge-grimanwar** Merged Grimaldi's back-end and OmanAnwar's front-end
-* **testing-PlantController**
-* **testing-admin**
-* **testing-client**
-* **visitor-interface-overhaul / vistor-interface-overhaul** Added the ability to filter by common name and improved the UIs of the visitor's website
-* **master**
-
 ## Resources
 
 - [Bootstrap Components][bootstrap]
@@ -157,6 +141,4 @@ Change all ObjectIds that are generated with the sole purpose of dates into some
 [bootstrap]: https://getbootstrap.com/components/
 [mongo-jdbc]: https://docs.mongodb.com/ecosystem/drivers/java/  
 
-:octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::octopus::fork_and_knife:  
-:rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice::rice: =  
-:sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi::sushi:
+:octopus::fork_and_knife::rice::sushi:
