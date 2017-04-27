@@ -250,7 +250,7 @@ public class Server {
         // List all uploadIds
         get("api/admin/uploadIds", (req, res) -> {
             res.type("application/json");
-            return ExcelParser.listUploadIds(database);
+            return ExcelParser.listUploadIdsJSON(database);
         });
 
         get("api/admin/qrcodes", (req, res) -> {
