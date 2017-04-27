@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -33,14 +34,13 @@ public class TestAccessionImporting {
     }
 
 
-
     @Test
-    public void testSpeadsheetToDoubleArray(){
-        String[][] plantArray = parser.extractFromXLSX(fromFile);
+    public void testSpeadsheetToDoubleArray() throws FileNotFoundException {
+        String[][] plantArray = parser.parseExcel();
         //printDoubleArray(plantArray);
 
-        assertEquals(1000, plantArray.length);
-        assertEquals(plantArray[40].length, plantArray[963].length);
+        assertEquals(362, plantArray.length);
+        assertEquals(plantArray[40].length, plantArray[120].length);
         assertEquals("2016 Accession List: Steve's Design", plantArray[0][1]);
         assertEquals("Begonia", plantArray[6][1]);
 
