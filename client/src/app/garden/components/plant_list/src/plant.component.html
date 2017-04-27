@@ -66,7 +66,10 @@
         }
         .plant-info {
             width: 50%;
-            margin: 1em auto;
+            margin-top: 0.5em;
+            margin-bottom: 1em;
+            margin-left: auto;
+            margin-right: auto;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-style: normal;
             font-size: 1em;
@@ -135,7 +138,8 @@
             -webkit-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
-            padding: 1.5em 0em;
+            padding-top: 1.5em;
+            padding-bottom: 2.5em;
         }
         @media only screen and (max-width: 768px) {
             [class="user-feedback"] {
@@ -201,7 +205,10 @@
             border-radius: 0.25em;
             line-height: 1.5em;
             width: 50%;
-            margin: 1em auto;
+            margin-top: 1em;
+            margin-bottom: 2em;
+            margin-right: auto;
+            margin-left: auto;
             font-size: 1em;
             height: 1.5em;
         }
@@ -227,6 +234,7 @@
             -webkit-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             -moz-box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
             box-shadow: 0px 7px 23px 0px rgba(82,82,82,1);
+            font-size: 1.05em;
         }
         </style>
     </head>
@@ -294,8 +302,8 @@
                 </div>
 
                 <div class="feedback-to-user-action">
-                    <p *ngIf="!rated && ratingInTransit">Submitting feedback to server...</p>
-                    <p *ngIf="rated && !ratingInTransit">Thanks for your feedback!</p>
+                    <p *ngIf="!rated && ratingInTransit">Your feedback is being submitted...</p>
+                    <!--<p *ngIf="rated && !ratingInTransit">Thanks for your feedback!</p>-->
                 </div>
 
 
@@ -338,7 +346,7 @@
                 </div>
 
                 <div class="feedback-to-user-action" *ngIf="commented">
-                    <p>Your comment has been submitted.</p>
+                    <p>Thank you for your feedback!</p>
                 </div>
             </div>
             <!--comment ends here-->
