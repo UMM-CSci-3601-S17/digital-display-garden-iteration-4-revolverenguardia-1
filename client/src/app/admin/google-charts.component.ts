@@ -17,6 +17,7 @@ export class GraphComponent implements OnInit {
     ngOnInit(): void {
         this.updateLineChart();
         this.updateBarChart();
+        this.updateComboChart();
         this.updateMap();
         this.updateBubble();
     }
@@ -38,6 +39,14 @@ export class GraphComponent implements OnInit {
                 }, err => console.log(err));
     }
 
+    public updateComboChart(): void {
+        this.adminService.getComboChart()
+            .subscribe(result => {
+                this.comboChart["dataTable"] = result;
+                this.comboChart = Object.create(this.comboChart);
+            })
+    }
+
     public updateMap(): void{
         this.adminService.getBedMetadataForMap()
             .subscribe(result => {
@@ -57,7 +66,7 @@ export class GraphComponent implements OnInit {
 
 
     public line_ChartData = {
-        chartType: `LineChart`,
+        chartType: `AreaChart`,
         dataTable: [['Hour', 'Views'],
             ['0',  0],
             ['1',  0],
@@ -96,6 +105,65 @@ export class GraphComponent implements OnInit {
             ],
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     }
+
+    public comboChart = {
+        chartType: 'ComboChart',
+        dataTable: [['Hour', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Average'],
+                    ['1',  165,      938,         522,             998,           450,      614.6, 998, 599],
+                    ['2',  135,      1120,        599,             1268,          288,      682, 998, 599],
+                    ['3',  157,      1167,        587,             807,           397,      623, 876, 599],
+                    ['4',  139,      1110,        615,             968,           215,      609.4, 998, 1026],
+                    ['5',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['6',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['7',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['8',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['9',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+                    ['10',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['11',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['12',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['1',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['2',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+                    ['3',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['4',  136,      691,         629,             1026,          366,      569.6, 998, 1026],
+                    ['5',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['6',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['7',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['8',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['9',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['10',  136,      691,         629,             1026,          366,      569.6, 998, 599],
+                    ['11',  136,      691,         629,             1026,          366,      569.6, 998, 599]],
+        options: {
+            title: 'Combo Chart - Hour of the day vs. Views',
+            //backgroundColor: `#ECF0F1`,
+            backgroundColor: `#D2D7D9`,
+            height: 400,
+            hAxis: {title: 'Time (In hours)'},
+            vAxis: {title: 'Views'},
+            seriesType: `bars`,
+            series: {
+                // 0: {color: `#3498DB`},
+                // 1: {color: `#3498DB`},
+                // 2: {color: `#317EB3`},
+                // 3: {color: `#30719F`},
+                // 4: {color: `#2F648B`},
+                // 5: {color: `#2E5777`},
+                // 6: {color: `#2D4A63`},
+                // 7: {color: `#E74C3C`, type: `line`},
+                0: {color: `#1E3D5A`},
+                1: {color: `#303C54`},
+                2: {color: `#423C4F`},
+                3: {color: `#543B4A`},
+                4: {color: `#663B45`},
+                5: {color: `#783A40`},
+                6: {color: `#8B3A3B`},
+                7: {color: `#60BF17`,
+                    curveType: `function`,
+                    lineWidth: 3,
+                    type: `line`},
+            }
+        },
+    }
+
 
     //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm locations with customer)
     public bedLocations = [[45.593823, -95.875248],
