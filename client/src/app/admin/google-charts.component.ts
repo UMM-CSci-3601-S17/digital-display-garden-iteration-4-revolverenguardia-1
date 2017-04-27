@@ -353,7 +353,7 @@ export class GraphComponent implements OnInit {
         for(var i : number = 0; i < toolWindow.length+1; i++){
             dataTable[i] = new Array<any>(2);
         }
-        dataTable[0][0] = "Plant ID";
+        dataTable[0][0] = "Cultivar Name";
         dataTable[0][1] = "";
         for(var i : number = 0; i < toolWindow.length; i++)
         {

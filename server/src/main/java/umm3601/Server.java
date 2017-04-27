@@ -166,7 +166,7 @@ public class Server {
                 String id = ExcelParser.generateNewUploadId();
                 String[][] excelFile = parser.parseExcel();
                 parser.populateDatabase(excelFile, id);
-
+                System.out.println(id);
                 return JSON.serialize(id);
 
             } catch (NotOfficeXmlFileException e) {

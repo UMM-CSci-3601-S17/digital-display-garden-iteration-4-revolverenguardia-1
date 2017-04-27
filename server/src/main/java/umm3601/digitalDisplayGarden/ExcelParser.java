@@ -197,7 +197,6 @@ public class ExcelParser {
     // Uses the document to one at a time, add flower information into the database.
     public void populateDatabase(String[][] cellValues, String uploadId){
         setLiveUploadId(uploadId, database);
-
         String[] keys = getKeys(cellValues);
 
         Document emptyMetadataDoc = new Document();
@@ -223,10 +222,10 @@ public class ExcelParser {
             // Initialize the empty metadata
             doc.append("metadata", emptyMetadataDoc);
             doc.append("uploadId", uploadId);
-
             plantCollection.insertOne(doc);
 
         }
+
         //Get distinct list of beds
         Document uploadIdFilter = new Document();
         uploadIdFilter.append("uploadId", uploadId);
@@ -240,8 +239,6 @@ public class ExcelParser {
             bedDoc.append("uploadId", uploadId);
             bedCollection.insertOne(bedDoc);
         }
-
-
 
 
     }
