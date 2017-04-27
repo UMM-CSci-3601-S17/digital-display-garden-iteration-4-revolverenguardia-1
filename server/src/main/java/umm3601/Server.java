@@ -25,7 +25,7 @@ import javax.servlet.http.Part;
 
 public class Server {
 
-    public static final String API_URL = "https://localhost:2538";
+    public static final String API_URL = "https://revolverenguardia.dungeon.website";
 
     public static String databaseName = "test";
     public static MongoDatabase database;
