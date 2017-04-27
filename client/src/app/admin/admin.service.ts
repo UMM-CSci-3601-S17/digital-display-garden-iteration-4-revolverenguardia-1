@@ -21,6 +21,10 @@ export class AdminService {
         return this.http.request(this.url + "admin/charts/viewsPerHour").map(res => res.json())
     }
 
+    getComboChart(): Observable<any [][]> {
+        return this.http.request(this.url + "admin/charts/comboChart").map(res => res.json());
+    }
+
     getBedMetadataForMap(): Observable<any[]> {
         return this.http.request(this.url + "admin/charts/plantMetadataMap").map(res => res.json())
     }

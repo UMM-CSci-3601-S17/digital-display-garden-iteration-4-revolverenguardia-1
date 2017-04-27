@@ -1,18 +1,17 @@
 <!--
-    Provides the header of the website.
+    Provides an interface to view and interact with all Common Name specific data.
 
-    @author Iteration 1 - Team Rayquaza
-    @editor Iteration 2 - Team Omar Anwar
-    @editor Iteration 3 - Team Revolver en Guardia
-    @editor Iteration 4 - Team Revolver en Guardia++
+    @author Iteration 3 - Team Revolver en Guardia
 -->
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:700' rel='stylesheet'>
+        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
         <style>
-            /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
+            /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
+            License: none (public domain) */
             html, body, div, span, applet, object, iframe,
             h1, h2, h3, h4, h5, h6, p, blockquote, pre,
             a, abbr, acronym, address, big, cite, code,
@@ -63,47 +62,28 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
-            .row-header {
-                background-color: #7a0019;
-                padding: 0.75em 0em;
-            }
-            .site-name {
-                font-family: "Open Sans Condensed";
+            .common-name-dropdown {
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                 font-style: normal;
-                width: 50%;
-                margin: 0em auto;
-            }
-            @media only screen and (max-width: 768px) {
-                [class="site-name"] {
-                    width: 95%;
-                }
-            }
-            .site-name a {
-                font-weight: 700;
-                font-size: 2em;
+                font-size: 1.5em;
                 line-height: 1em;
-                color: white;
-                text-decoration: none;
             }
-            .site-name a:hover {
-                color: #FFDE7A;
+            .common-name-dropdown select {
+                border-radius: 0.5em;
+                background-color: #ffffff;
+                padding: 0.8em 0.2em;
             }
-            .site-name p {
-                font-weight: 500;
-                font-size: 1.25em;
-                line-height: 1em;
-                margin-top: 0.5em;
-                color: #FFDE7A;
-            }
-
         </style>
     </head>
 
-    <div class="row-header">
-        <div class="site-name">
-            <a [routerLink]="['/']">Digital Display Garden</a>
-            <p>West Central Research and Outreach Center - Morris, MN</p>
-        </div>
+    <div class="common-name-dropdown">
+        <select (change)="handleCommonNameSelect($event.target.value)">
+            <option disabled selected value>Choose Common Name</option>
+            <option value="ALL">All</option>
+            <option *ngFor="let commonName of commonNameListService.getCommonNames()" [selected]="selectedCommonName == commonName._id">
+                {{commonName._id}}
+            </option>
+        </select>
     </div>
 
 </html>

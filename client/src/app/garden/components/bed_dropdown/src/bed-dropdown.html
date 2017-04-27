@@ -1,0 +1,91 @@
+<!--
+    Provides an interface to view and interact with all Bed specific data.
+
+    @author Iteration 2 - Team Omar Anwar
+    @editor Iteration 3 - Team Revolver en Guardia
+    @editor Iteration 4 - Team Revolver en Guardia++
+-->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:300' rel='stylesheet'>
+        <style>
+            /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
+            License: none (public domain) */
+             html, body, div, span, applet, object, iframe,
+             h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+             a, abbr, acronym, address, big, cite, code,
+             del, dfn, em, img, ins, kbd, q, s, samp,
+             small, strike, strong, sub, sup, tt, var,
+             b, u, i, center,
+             dl, dt, dd, ol, ul, li,
+             fieldset, form, label, legend,
+             table, caption, tbody, tfoot, thead, tr, th, td,
+             article, aside, canvas, details, embed,
+             figure, figcaption, footer, header, hgroup,
+             menu, nav, output, ruby, section, summary,
+             time, mark, audio, video {
+                 margin: 0;
+                 padding: 0;
+                 border: 0;
+                 font-size: 100%;
+                 font: inherit;
+                 vertical-align: baseline;
+             }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure,
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+            *,
+            *:before,
+            *:after {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .bed-dropdown {
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-style: normal;
+                font-size: 1.5em;
+                line-height: 1em;
+            }
+            .bed-dropdown select {
+                border-radius: 0.5em;
+                background-color: #ffffff;
+                padding: 0.8em 0.2em;
+            }
+        </style>
+    </head>
+
+    <div class="bed-dropdown">
+        <select (change)="handleBedSelect($event.target.value)">
+            <option disabled selected value>Choose Bed</option>
+            <option value="ALL">All beds</option>
+            <option *ngFor="let bed of bedListService.getBedNames()" [selected]="selectedBed == bed._id">
+                {{bed._id}}
+            </option>
+        </select>
+    </div>
+
+</html>

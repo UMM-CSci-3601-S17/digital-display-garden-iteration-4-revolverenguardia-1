@@ -4,17 +4,23 @@
  * @author Iteration 3 - Team revolver en guardia
  */
 import {Component} from "@angular/core";
-import {CommonNameListService} from "./common-name-list.service";
+import {CommonNameDropdownService} from "./common-name-dropdown.service";
 import {PlantListService} from "../../plant_list/src/plant-list.service";
 import {PlantFilter} from "../../plant_list/src/plantfilter";
 
 @Component({
-    selector: 'common-name-list',
-    templateUrl: 'common-name-list.component.html'
+    selector: 'common-name-dropdown',
+    templateUrl: 'common-name-dropdown.component.html'
 })
-export class CommonNameListComponent {
+export class CommonNameDropdownComponent {
 
-    constructor(private commonNameListService: CommonNameListService,
+    /**
+     * TODO: Comment
+     * @type {string}
+     */
+    private selectedCommonName: string = PlantFilter.NO_FILTER;
+
+    constructor(private commonNameListService: CommonNameDropdownService,
                 private plantListService: PlantListService) {
     }
 
@@ -23,7 +29,9 @@ export class CommonNameListComponent {
      * a click event for a list item.
      * @param commonName - the common name to filter by
      */
-    private handleCommonNameListClick(commonName): void {
+    private handleCommonNameSelect(commonName): void {
+
+        console.log(commonName);
 
         // If bed name is being deselected
         if (commonName == this.plantListService.getCommonNameFilter())
@@ -35,5 +43,10 @@ export class CommonNameListComponent {
             // So enable the filter
             this.plantListService.setCommonNameFilter(commonName);
 
+    }
+
+    ngOnInit(){
+        this.selectedCommonName = this.plantListService.getCommonNameFilter();
+        console.log("Set common name filter " + this.selectedCommonName);
     }
 }

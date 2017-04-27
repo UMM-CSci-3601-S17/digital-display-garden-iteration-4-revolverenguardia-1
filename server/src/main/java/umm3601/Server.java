@@ -250,7 +250,7 @@ public class Server {
         // List all uploadIds
         get("api/admin/uploadIds", (req, res) -> {
             res.type("application/json");
-            return ExcelParser.listUploadIds(database);
+            return ExcelParser.listUploadIdsJSON(database);
         });
 
         get("api/admin/qrcodes", (req, res) -> {
@@ -298,6 +298,12 @@ public class Server {
             res.type("application/json");
 
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
+        });
+
+        get("api/admin/charts/comboChart", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getComboChart(getLiveUploadId());
         });
 
         get("api/admin/charts/plantMetadataBubbleMap", (req, res) -> {

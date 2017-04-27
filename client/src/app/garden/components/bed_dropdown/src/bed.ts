@@ -7,6 +7,6 @@
  */
 export class Bed {
 
-    constructor(public bedName: string){ }
+    constructor(public _id: string){ }
 }
 

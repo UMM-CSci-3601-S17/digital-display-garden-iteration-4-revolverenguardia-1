@@ -7,9 +7,9 @@
  */
 export class CommonName {
 
-    /**
+    /*
      * Creates a CommonName object with the specified common name.
-     * @param commonName - common name to use
+     * @param _id - common name to use
      */
-    constructor(public commonName: string){ }
+    constructor(public _id: string){ }
 }
