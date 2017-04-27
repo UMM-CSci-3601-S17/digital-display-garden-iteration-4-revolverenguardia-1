@@ -53,7 +53,8 @@ public class TestGardenLocations {
         assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocations);
 
         JsonArray gardenLocationsJSON = plantController.getGardenLocationsJSON("invalid uploadId");
-        assertNull("Incorrect uploadId for garden location did not return no beds", gardenLocationsJSON);
+        assertEquals("Incorrect uploadId for garden location did not return no beds", gardenLocationsJSON, new JsonArray());
+
 
     }
 

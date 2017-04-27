@@ -16,10 +16,9 @@ describe("Test CommonName Class", () => {
             commonName2: CommonName = new CommonName("CommonName2"),
             commonName3: CommonName = new CommonName("CommonName3");
 
-        expect(commonName1.commonName).toBe("CommonName1");
-        expect(commonName2.commonName).toBe("CommonName2");
-        expect(commonName3.commonName).toBe("CommonName3");
-
+        expect(commonName1._id).toBe("CommonName1");
+        expect(commonName2._id).toBe("CommonName2");
+        expect(commonName3._id).toBe("CommonName3");
     });
 
 });

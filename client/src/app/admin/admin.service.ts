@@ -21,11 +21,27 @@ export class AdminService {
         return this.http.request(this.url + "admin/charts/viewsPerHour").map(res => res.json())
     }
 
+    getComboChart(): Observable<any [][]> {
+        return this.http.request(this.url + "admin/charts/comboChart").map(res => res.json());
+    }
+
     getBedMetadataForMap(): Observable<any[]> {
         return this.http.request(this.url + "admin/charts/plantMetadataMap").map(res => res.json())
     }
 
     getBedMetadataForBubble(): Observable<any[]> {
         return this.http.request(this.url + "admin/charts/plantMetadataBubbleMap").map(res => res.json())
+    }
+
+    get20MostLikes(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20Likes").map(res => res.json())
+    }
+
+    get20MostDisLikes(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20disLikes").map(res => res.json())
+    }
+
+    get20MostComments(): Observable<any[]> {
+        return this.http.request(this.url + "admin/charts/top20Comments").map(res => res.json())
     }
 }

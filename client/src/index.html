@@ -1,19 +1,26 @@
 <html>
-<head>
-    <base href="/">
-    <title>Digital Display Garden</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <base href="/">
+        <title>Digital Display Garden</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .the-whole {
+                background-color: #e0e5e8;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="the-whole"]{
+                    background-color: #ffffff;
+                }
+            }
+        </style>
 
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"
+        type="text/javascript"></script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"
-    type="text/javascript"></script>
+    </head>
 
-</head>
-
-
-<body style="background-color:#e0e5e8">
-
-<app>Loading...</app>
-</body>
+    <body class="the-whole">
+        <app>Loading...</app>
+    </body>
 </html>

@@ -34,7 +34,7 @@ public class PlantController {
     private final MongoCollection<Document> bedCollection;
     private final MongoDatabase db;
 
-    public PlantController(MongoDatabase database) throws IOException {
+    public PlantController(MongoDatabase database) {
 
         plantCollection = database.getCollection("plants");
         commentCollection = database.getCollection("comments");
@@ -242,10 +242,22 @@ public class PlantController {
         return beds.toArray(new String[beds.size()]);
     }
 
-    public JsonArray getGardenLocationsJSON(String uploadID){
+    public String[] getCultivars(String uploadID){
+        Document filter = new Document();
+        filter.append("uploadId", uploadID);
+        DistinctIterable<String>  idIterator = plantCollection.distinct("cultivar", filter, String.class);
+        List<String> id = new ArrayList<String>();
+        for(String s : idIterator)
+        {
+            id.add(s);
+        }
+        //Then sort the gardenLocations as according to BedComparator
+        return id.toArray(new String[id.size()]);
+    }
 
+    public JsonArray getGardenLocationsJSON(String uploadID){
         if (!ExcelParser.isValidUploadId(db, uploadID))
-            return null;
+            return new JsonArray();
 
         //Get garden locations and package them in a JsonArray
         String[] beds = getGardenLocations(uploadID);

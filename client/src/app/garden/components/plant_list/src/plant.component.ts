@@ -10,6 +10,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Plant} from './plant';
 import {PlantService} from './plant.service';
 import 'rxjs/add/operator/switchMap';
+import {PlantFeedback} from "./plant-feedback";
 
 @Component({
     selector: 'plant-component',
@@ -20,11 +21,18 @@ export class PlantComponent implements OnInit {
     // Has the current PlantComponent been liked or disliked?
     public rated: Boolean = false;
 
+    // Is there a current submit to the server for rating submission?
+    public ratingInTransit: Boolean = false;
+
     // Has the current PlantComponent been commented on?
     private commented: Boolean = false;
 
     // Placeholder plant for loading Plant data for the PlantComponent
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
+
+    // Tracks the feedback for the current plant
+    private plantFeedback: PlantFeedback = new PlantFeedback();
+
 
     /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,
@@ -33,19 +41,27 @@ export class PlantComponent implements OnInit {
      * @param plantService - the PlantService that provides data
      * @param route - the routing service that routes to specific PlantComponent pages
      */
-    constructor(private plantService: PlantService, private route: ActivatedRoute ) { }
+    constructor(private plantService: PlantService,
+                private route: ActivatedRoute ) { }
 
 
     /**
+     * TODO
      * On initialization generates the URL with the proper plant ID and also helps to
      * populate the PlantComponent page with the Plant data referneced by the id.
      *
      * For example, a URL for the Alternanthera would be http://localhost:9000/plant/16001
      */
     ngOnInit(): void {
+        // Get the actual plant
         this.route.params
             .switchMap((params: Params) => this.plantService.getPlantById(params['id']))
             .subscribe(plant => this.plant = plant);
+
+        // Get the feedback data for the plant
+        this.route.params
+            .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
+            .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
     }
 
     /**
@@ -53,9 +69,14 @@ export class PlantComponent implements OnInit {
      * @param rating - the rating to be provided
      */
     public rate(rating: boolean): void {
-        if (!this.rated) {this.rated = false;
+        if (!this.rated) {
+            this.ratingInTransit = true;
             this.plantService.ratePlant(this.plant.id, rating)
-                .subscribe(succeeded => this.rated = succeeded);
+                .subscribe(succeeded => {
+                    this.rated = succeeded;
+                    this.refreshFeedback();
+                    this.ratingInTransit = false;
+                });
         }
     }
 
@@ -67,9 +88,20 @@ export class PlantComponent implements OnInit {
         if (!this.commented) {
             if (comment != null) {
                 this.plantService.commentPlant(this.plant.id, comment)
-                    .subscribe(succeeded => this.commented = succeeded);
+                    .subscribe(succeeded => this.commented = succeeded)
+                this.commented = true;
             }
         }
+    }
+
+    /**
+     * TODO
+     */
+    private refreshFeedback(): void {
+        //Update flower feedback numbers
+        this.route.params
+            .switchMap((params: Params) => this.plantService.getFeedbackForPlantByPlantID(params['id']))
+            .subscribe((plantFeedback: PlantFeedback) => this.plantFeedback = plantFeedback);
     }
 
     /**
@@ -88,6 +120,28 @@ export class PlantComponent implements OnInit {
      */
     public isCommented(): Boolean{
         return this.commented;
+    }
+
+    /**
+     * TODO
+     * @returns {number}
+     */
+    public getLikeWidth(): number{
+        let likes: number = this.plantFeedback.likeCount,
+            dislikes: number = this.plantFeedback.dislikeCount;
+
+        return likes / (likes + dislikes) * 100;
+    }
+
+    /**
+     * TODO
+     * @returns {number}
+     */
+    public getDislikeWidth(): number{
+        let likes: number = this.plantFeedback.likeCount,
+            dislikes: number = this.plantFeedback.dislikeCount;
+
+        return dislikes / (likes + dislikes) * 100;
     }
 }
 

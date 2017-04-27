@@ -166,7 +166,7 @@ public class Server {
                 String id = ExcelParser.generateNewUploadId();
                 String[][] excelFile = parser.parseExcel();
                 parser.populateDatabase(excelFile, id);
-
+                System.out.println(id);
                 return JSON.serialize(id);
 
             } catch (NotOfficeXmlFileException e) {
@@ -250,7 +250,7 @@ public class Server {
         // List all uploadIds
         get("api/admin/uploadIds", (req, res) -> {
             res.type("application/json");
-            return ExcelParser.listUploadIds(database);
+            return ExcelParser.listUploadIdsJSON(database);
         });
 
         get("api/admin/qrcodes", (req, res) -> {
@@ -300,11 +300,36 @@ public class Server {
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
+        get("api/admin/charts/comboChart", (req, res) -> {
+            res.type("application/json");
+
+            return chartMaker.getComboChart(getLiveUploadId());
+        });
+
         get("api/admin/charts/plantMetadataBubbleMap", (req, res) -> {
             res.type("application/json");
 
             return chartMaker.getBedMetadataForBubbleMap(plantController, bedController, getLiveUploadId());
         });
+
+        get("api/admin/charts/top20Likes", (req, res) -> {
+            res.type("application/json");
+            String type = "likes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+        get("api/admin/charts/top20disLikes", (req, res) -> {
+            res.type("application/json");
+            String type = "dislikes";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
+        get("api/admin/charts/top20Comments", (req, res) -> {
+            res.type("application/json");
+            String type = "comments";
+            return chartMaker.top20Charts(plantController, getLiveUploadId(), type);
+        });
+
 
         //Host the aerial image of the Garden
         get("api/admin/gardenPicture", (req, res) -> {

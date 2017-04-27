@@ -1,5 +1,5 @@
 <!--
-    Provides the header of the website.
+    Provides an interface to view PlantListComponent filtering options.
 
     @author Iteration 1 - Team Rayquaza
     @editor Iteration 2 - Team Omar Anwar
@@ -10,7 +10,6 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href='//fonts.googleapis.com/css?family=Open Sans Condensed:700' rel='stylesheet'>
         <style>
             /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126                  License: none (public domain) */
             html, body, div, span, applet, object, iframe,
@@ -63,47 +62,65 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
-            .row-header {
-                background-color: #7a0019;
-                padding: 0.75em 0em;
+            .row-filter {
+                background: linear-gradient(#FFDE7A, #ffcc00);
+                padding-top: 1em;
+                padding-bottom: 1.5em;
             }
-            .site-name {
-                font-family: "Open Sans Condensed";
-                font-style: normal;
+            @media only screen and (max-width: 768px) {
+                [class="row-filter"] {
+                    padding-bottom: 1em;
+                }
+            }
+            .drop-downs {
                 width: 50%;
                 margin: 0em auto;
             }
             @media only screen and (max-width: 768px) {
-                [class="site-name"] {
+                [class="drop-downs"] {
                     width: 95%;
                 }
             }
-            .site-name a {
-                font-weight: 700;
-                font-size: 2em;
-                line-height: 1em;
-                color: white;
-                text-decoration: none;
+            .bed,
+            .common-name{
+                display: inline-block;
             }
-            .site-name a:hover {
-                color: #FFDE7A;
+            .bed {
+                margin-right: 1em;
             }
-            .site-name p {
-                font-weight: 500;
-                font-size: 1.25em;
-                line-height: 1em;
-                margin-top: 0.5em;
-                color: #FFDE7A;
+            @media only screen and (max-width: 375px) {
+                [class="bed"]{
+                    margin-bottom: .5em;
+                }
             }
-
+            .just-deco {
+                background: linear-gradient(#537d39, #283d1c);
+                padding: 3em 0em;
+            }
+            @media only screen and (max-width: 768px) {
+                [class="just-deco"] {
+                    padding: 0em;
+                }
+            }
         </style>
     </head>
 
-    <div class="row-header">
-        <div class="site-name">
-            <a [routerLink]="['/']">Digital Display Garden</a>
-            <p>West Central Research and Outreach Center - Morris, MN</p>
+    <div class="row-filter">
+
+        <div class="drop-downs">
+
+            <div class="bed">
+                <bed-dropdown></bed-dropdown>
+            </div>
+
+            <div class="common-name">
+                <common-name-dropdown></common-name-dropdown>
+            </div>
+
         </div>
+
     </div>
+
+    <div class="just-deco"></div>
 
 </html>

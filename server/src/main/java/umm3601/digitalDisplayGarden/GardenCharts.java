@@ -3,8 +3,8 @@ package umm3601.digitalDisplayGarden;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mongodb.MongoClient;
 import com.mongodb.client.*;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -19,9 +19,6 @@ import static com.mongodb.client.model.Projections.fields;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Created by Dogxx000 on 4/8/17.
- */
 public class GardenCharts
 {
     private final MongoCollection<Document> plantCollection;
@@ -35,6 +32,102 @@ public class GardenCharts
         commentCollection = database.getCollection("comments");
         configCollection = database.getCollection("config");
     }
+
+    public String top20Charts(PlantController plantController, String uploadID, String type){
+        try{
+            String[] cultivar = plantController.getCultivars(uploadID);
+            Map<String, Integer> result = new HashMap<>();
+            JsonArray finalJsonArray = new JsonArray();
+            JsonObject plantMetadata = new JsonObject();
+            int likes = 0;
+            int dislikes = 0;
+            int comments = 0;
+            for (int i = 0; i < cultivar.length; i++) {
+                Document filter = new Document();
+                filter.append("uploadId", uploadID);
+
+                FindIterable<Document> iter = plantCollection.find(filter);
+                for (Document plant : iter) {
+                    long[] feedback = plantController.getPlantFeedbackByPlantId(plant.getString("id"), uploadID);
+                    if (type.equals("likes")) {
+                        likes += feedback[PlantController.PLANT_FEEDBACK_LIKES];
+                    }
+                    if (type.equals("dislikes")) {
+                        dislikes += feedback[PlantController.PLANT_FEEDBACK_DISLIKES];
+                    }
+                    if (type.equals("comments")) {
+                        comments += feedback[PlantController.PLANT_FEEDBACK_COMMENTS];
+                    }
+
+                }
+
+                String key = cultivar[i];
+                if (type.equals("likes")) {
+                    Integer value = (Integer) likes;
+                    result.put(key, value);
+                }
+                if (type.equals("dislikes")) {
+                    Integer value = (Integer) dislikes;
+                    result.put(key, value);
+                }
+                if (type.equals("comments")) {
+                    Integer value = (Integer) comments;
+                    result.put(key, value);
+                }
+
+            }
+
+            /*if(likes == 0){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", likes);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+            if(dislikes == 0 ){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", dislikes);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+            if(comments == 0){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", comments);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+*/
+            Map<String, Integer> finalMap = new HashMap<>();
+            finalMap = sortByValue(result);
+            Set keyset = finalMap.keySet();
+            List<?> list = new ArrayList<>(keyset);
+
+
+            for(int i = 0; i < 20; i++) {
+                String cultivarName = "";
+                int typeOfData = 0;
+                cultivarName = (String) list.get(i);
+                typeOfData = finalMap.get(cultivarName);
+                if(typeOfData == 0){
+                    return finalJsonArray.toString();
+                }
+
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", typeOfData);
+                finalJsonArray.add(plantMetadata);
+            }
+            return finalJsonArray.toString();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 
     public String getPlantViewsPerHour(String uploadID) {
 
@@ -67,40 +160,93 @@ public class GardenCharts
 
             }
 
-            //Create a Map between Hours and page visit times
-            HashMap<Integer, Integer> hours = new HashMap<Integer, Integer>();
-            for (Date date : dates){
-                int hour = date.getHours();
+            ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
 
-                if(hours.get(hour) == null) {
-                    hours.put(hour, 1);
-                }
-                else
-                {
-                    int visits = hours.get(hour);
-                    hours.put(hour, visits + 1);
-                }
+            int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
+
+            int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
 
 
-            }
-
-
-            for(int i = 0; i < 25; i++){
-                if(hours.get(i) == null){
-                    hours.put(i, 0);
-                }
-            }
-
-
+            int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
             for (int i = 1; i < 24 + 1; i++) {
-                dataTable[i][0] = Integer.toString(i - 1);
-                dataTable[i][1] = hours.get(i - 1).intValue();
+                dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
+                dataTable[i][1] = viewsPerHour[i - 1];
             }
 
             return makeJSON(dataTable);
         }
         catch(Exception e)
         {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public String getComboChart (String uploadID) {
+        try {
+            Object[][] dataTable = new Object[24 + 1][9];
+
+            Document filter = new Document();
+            filter.put("uploadId", uploadID);
+
+            dataTable[0][0] = "Hour";
+            dataTable[0][1] = "Sunday";
+            dataTable[0][2] = "Monday";
+            dataTable[0][3] = "Tuesday";
+            dataTable[0][4] = "Wednesday";
+            dataTable[0][5] = "Thursday";
+            dataTable[0][6] = "Friday";
+            dataTable[0][7] = "Saturday";
+            dataTable[0][8] = "Average";
+
+
+            ArrayList<Date> dates = new ArrayList<Date>();
+
+            //Get all plants
+            FindIterable doc = plantCollection.find(filter);
+
+            Iterator iterator = doc.iterator();
+            while(iterator.hasNext()) {
+                Document result = (Document) iterator.next();
+
+                //Get metadata.rating array
+                List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
+
+                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
+                for(int i = 0; i < ratings.size(); i++){
+                    Document d = ratings.get(i);
+                    dates.add(((ObjectId) d.get("visit")).getDate());
+                }
+
+            }
+
+            ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
+
+            int[][] viewsPerHourPerDayOfWeek = averageViewsPerDayOfWeek(hoursOfDay);
+
+            int[] viewsPerHour = flaten_averageByHour(viewsPerHourPerDayOfWeek);
+            printArray(viewsPerHour);
+
+            //String[] civilianTimeString = {"12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00"};
+
+            int[] civilianTime = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+            for (int i = 1; i < 24 + 1; i++) {
+                //dataTable[i][0] = civilianTimeString[i - 1];
+                dataTable[i][0] = Integer.toString(civilianTime[i - 1]);
+                dataTable[i][8] = viewsPerHour[i - 1];
+            }
+
+            for(int i = 0; i < viewsPerHourPerDayOfWeek.length; i++){
+                for(int j = 0; j < viewsPerHourPerDayOfWeek[i].length; j++){
+                    dataTable[i + 1][j + 1] = viewsPerHourPerDayOfWeek[i][j];
+                }
+            }
+
+            //print2DArray(dataTable);
+
+            return makeJSON(dataTable);
+        }
+        catch (Exception e){
             e.printStackTrace();
             throw e;
         }
@@ -211,6 +357,11 @@ public class GardenCharts
     }
 
 
+    /*
+        ******************************** UTILITIES ************************************
+     */
+
+
     /**
      * Creates a two dimensional Json array from an Object[][] in.
      *
@@ -251,6 +402,251 @@ public class GardenCharts
         return outerArray.toString();
     }
 
+    public ArrayList<Date> convertToDates(ArrayList<Object> objectDates){
+        try {
+            ArrayList<Date> dates = new ArrayList<>();
+            for(Object objectDate : objectDates){
+                Date date = (Date)objectDate;
+                dates.add(date);
+            }
+            return dates;
+        }catch (Exception e){
+            System.out.println("Object arrayList cannot be cast into date arrayList");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void printPartitionByMonth(ArrayList<Date>[] in){
+        System.out.println("[");
+        for(int i = 0; i < in.length; i++){
+            System.out.println(in[i] + ",");
+        }
+        System.out.println("]");
+    }
+
+    public void printPartitionByDayOfWeek(ArrayList<Date>[][] in){
+        System.out.println("Partitioned by day of the week");
+        System.out.println("[");
+        for(int i = 0; i < in.length; i++){
+            for(int j = 0; j < in[i].length; j++) {
+                System.out.print(in[i][j]);
+                System.out.print("  |  ");
+            }
+            System.out.println();
+        }
+        System.out.println("]");
+    }
+
+    public void print2DArray(int[][] in){
+        System.out.println("Printing 2d array");
+        for(int i = 0; i < in.length; i++){
+            for(int j = 0; j < in[i].length; j++){
+                if(j != in[i].length - 1){
+                    System.out.print(in[i][j] + " | ");
+                }else{
+                    System.out.println(in[i][j]);
+                }
+            }
+        }
+        System.out.println();
+    }
+    // prints a 1D array
+    public static void printArray(int[] input){
+        System.out.print("[");
+        for(int i = 0; i < input.length; i++){
+            if(i != input.length - 1){
+                System.out.print(input[i] + ", ");
+            }else{
+                System.out.println(input[i] + "]");
+            }
+        }
+    }
+
+    public int[] flaten_averageByHour(int[][] viewsByHourAndDayOfWeek){
+        int[] avgHour = new int[24];
+        for(int i = 0 ; i < viewsByHourAndDayOfWeek.length; i++) {
+            int avg = 0;
+            int avgNumerator = 0;
+            int avgDenominator = 0;
+            for(int j = 0; j < viewsByHourAndDayOfWeek[i].length; j++) {
+                if(viewsByHourAndDayOfWeek[i][j] > 0) {
+                    avgNumerator += viewsByHourAndDayOfWeek[i][j];
+                    avgDenominator++;
+                }
+            }
+            if(avgDenominator != 0) avg = avgNumerator/avgDenominator;
+            avgHour[i] = avg;
+        }
+        return avgHour;
+    }
+
+    public int[][] averageViewsPerDayOfWeek(ArrayList<Date>[] hoursOfDay){
+        int[][] viewsPerHourPerDayOfWeek = new int[24][7];
+
+        for(int i = 0; i < hoursOfDay.length; i++){
+            int[] views1DArray = new int[7];
+            if(hoursOfDay[i] != null) {
+                views1DArray = averageViewsPerDayOfWeekPerHour(hoursOfDay[i]);
+            }
+            viewsPerHourPerDayOfWeek[i] = views1DArray;
+        }
+        //print2DArray(viewsPerHourPerDayOfWeek);
+        return viewsPerHourPerDayOfWeek;
+    }
+
+    public int[] averageViewsPerDayOfWeekPerHour(ArrayList<Date> hoursOfDay){
+        int[] views1DArray = new int[7];
+
+        if(hoursOfDay != null) {
+            ArrayList<Date> specificHour = hoursOfDay;
+
+            ArrayList<Date>[][] threeDArray = partitionByDayOfWeek(partitionByMonth(specificHour));
+            int[][] views2dArray = flaten_viewsByDayAndMonth(threeDArray);
+            views1DArray = flaten_AverageByMonth(views2dArray);
+
+            //System.out.print("Hour " + i + " ");
+            //printArray(views1DArray);
+
+        }
+        return views1DArray;
+    }
+
+    public ArrayList<Date>[] partitionByHour(ArrayList<Date> dates){
+        ArrayList<Date>[] hoursOfDay = new ArrayList[24];
+
+        for(Date date : dates){
+            int hour = date.getHours();
+            ArrayList<Date> oneHour = new ArrayList<>();
+            if(hoursOfDay[hour] != null){
+                oneHour = hoursOfDay[hour];
+                oneHour.add(date);
+                hoursOfDay[hour] = oneHour;
+            }else {
+                oneHour.add(date);
+                hoursOfDay[hour] = oneHour;
+            }
+        }
+
+        return hoursOfDay;
+    }
+
+    public ArrayList<Date>[] partitionByMonth(ArrayList<Date> dates){
+        ArrayList<Date>[] months = new ArrayList[12];
+        for(Date date : dates){
+            int month = date.getMonth();
+            ArrayList<Date> datesInMonth;
+
+            if(months[month] != null){
+                datesInMonth = months[month];
+                datesInMonth.add(date);
+                months[month] = datesInMonth;
+            }else {
+                datesInMonth = new ArrayList<>();
+                datesInMonth.add(date);
+                months[month] = datesInMonth;
+            }
+        }
+        return months;
+    }
+
+    /*
+    ArrayList<Date>[dayOfWeek][month] = new int[7][12]
+    NOT TESTED
+     */
+    public ArrayList<Date>[][] partitionByDayOfWeek(ArrayList<Date>[] datesByMonth){
+        ArrayList<Date>[][] datesPerDayAndMonth = new ArrayList[7][12];
+
+        for(int i = 0; i < datesByMonth.length; i++){
+            if(datesByMonth[i] != null) {
+                for (Date date : datesByMonth[i]) {
+
+                    int dayOfWeek = date.getDay();
+                    int month = i;
+                    ArrayList<Date> dates;
+
+                    if (datesPerDayAndMonth[dayOfWeek][month] != null) {
+                        dates = datesPerDayAndMonth[dayOfWeek][month];
+                        dates.add(date);
+                        datesPerDayAndMonth[dayOfWeek][month] = dates;
+                    } else {
+                        dates = new ArrayList<>();
+                        dates.add(date);
+                        datesPerDayAndMonth[dayOfWeek][month] = dates;
+                    }
+                }
+            }
+        }
+
+        return datesPerDayAndMonth;
+    }
+
+    /*
+    int[dayOfWeek][month] = new int[7][12]
+    NOT TESTED
+     */
+    public int[][] flaten_viewsByDayAndMonth(ArrayList<Date>[][] dates){
+        int[][] viewsPerDayAndMonth = new int[7][12];
+
+        for(int i = 0; i < dates.length; i++){
+            if(dates[i] != null){
+                for(int j = 0; j < dates[i].length; j++){
+                    //System.out.println("for index " + i + ", dates[i].length is: " + dates[i].length);
+                    if(dates[i][j] != null){
+                        viewsPerDayAndMonth[i][j] = dates[i][j].size();
+                    }
+                }
+            }
+        }
+        return viewsPerDayAndMonth;
+    }
+
+
+    /*
+    int[dayOfWeek][month] = new int[7][12]
+    NOT TESTED
+     */
+    public int[] flaten_AverageByMonth(int[][] viewsByDayOfWeekAndMonth){
+        int[] averagePerDayOfWeek = new int[7];
+        for(int i = 0; i < viewsByDayOfWeekAndMonth.length; i++){
+
+            int average = 0;
+            int averageNumerator = 0;
+            int averageDenominator = 0;
+
+            for(int j = 0; j < viewsByDayOfWeekAndMonth[i].length; j++){
+                if(viewsByDayOfWeekAndMonth[i][j] > 0) averageDenominator++;
+                averageNumerator += viewsByDayOfWeekAndMonth[i][j];
+            }
+
+            if(averageDenominator != 0){
+                average = averageNumerator/averageDenominator;
+            }
+            averagePerDayOfWeek[i] = average;
+        }
+        return averagePerDayOfWeek;
+    }
+
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+        List<Map.Entry<String, Integer>> list =
+                new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return -(o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
 
 
 }
+
+

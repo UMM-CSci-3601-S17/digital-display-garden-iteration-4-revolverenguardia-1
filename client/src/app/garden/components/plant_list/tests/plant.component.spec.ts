@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {RouterTestingModule} from "@angular/router/testing";
 import {FooterComponent} from "../../footer/src/footer.component";
+import {PlantFeedback} from "../src/plant-feedback";
 
 describe("Plant Component", () => {
 
@@ -22,7 +23,7 @@ describe("Plant Component", () => {
     let plantServiceStub: {
         ratePlant: (id: string, rating: string) => Observable<Boolean>;
         commentPlant: (id: string, comment: string) => Observable<Boolean>;
-
+        getFeedbackForPlantByPlantID: (id: string) => Observable<PlantFeedback>;
     };
 
     beforeEach(() => {
@@ -93,6 +94,20 @@ describe("Plant Component", () => {
                 else
                     return Observable.of(false);
 
+            },
+
+            getFeedbackForPlantByPlantID: (id: string) => {
+
+                let plant: Observable<PlantFeedback> = Observable.of([
+                    {
+                        commentCount : 0,
+                        likeCount : 0,
+                        dislikeCount : 0,
+                    }
+
+                ].find(plantFeedback => plantFeedback.commentCount==0));
+
+                return plant;
             }
         };
 
