@@ -19,7 +19,9 @@ export class GraphComponent implements OnInit {
         this.updateBarChart();
         this.updateMap();
         this.updateBubble();
-        this.updatetop20();
+        this.updatetop20likes();
+        this.updatetop20dislikes();
+        this.updatetop20comments();
     }
 
     public updateLineChart(): void{
@@ -36,7 +38,7 @@ export class GraphComponent implements OnInit {
             .subscribe(result => {
                 this.columnChartOptions["dataTable"] = result;
                 this.columnChartOptions = Object.create(this.columnChartOptions);
-                }, err => console.log(err));
+            }, err => console.log(err));
     }
 
     public updateMap(): void{
@@ -55,32 +57,65 @@ export class GraphComponent implements OnInit {
             }, err => console.log(err));
     }
 
-    public updatetop20(): void{
-
+    public updatetop20likes(): void{
         this.adminService.get20MostLikes()
             .subscribe(result => {
-                console.log(result);
-                this.top20ChartData.dataTable = this.createDataTableTop20(result);
-                this.top20ChartData = Object.create(this.top20ChartData);
+                this.top20ChartDataLikes["dataTable"] = this.createDataTableTop20(result);
+                this.top20ChartDataLikes = Object.create(this.top20ChartDataLikes);
             }, err => console.log(err));
     }
 
-    public top20ChartData = {
+    public updatetop20dislikes(): void{
+
+        this.adminService.get20MostDisLikes()
+            .subscribe(result => {
+                this.top20ChartDataDisLikes["dataTable"] = this.createDataTableTop20(result);
+                this.top20ChartDataDisLikes = Object.create(this.top20ChartDataDisLikes);
+            }, err => console.log(err));
+    }
+
+    public updatetop20comments(): void{
+
+        this.adminService.get20MostComments()
+            .subscribe(result => {
+                this.top20ChartDataComments["dataTable"] = this.createDataTableTop20(result);
+                this.top20ChartDataComments = Object.create(this.top20ChartDataComments);
+            }, err => console.log(err));
+    }
+
+    public top20ChartDataLikes = {
         chartType: `ColumnChart`,
         dataTable: [['Hour', 'Views'],
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
-        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Likes'}},
+        options: {'title': 'Top 20 Plants with Most Likes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Likes'}, legend:{position: 'none'}},
+    }
+
+    public top20ChartDataDisLikes = {
+        chartType: `ColumnChart`,
+        dataTable: [['Hour', 'Views'],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
+            ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
+        ],
+        options: {'title': 'Top 20 Plants with Most DisLikes', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Dislikes'}, legend:{position: 'none'}},
+    }
+
+    public top20ChartDataComments = {
+        chartType: `ColumnChart`,
+        dataTable: [['Hour', 'Views'],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
+            ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
+        ],
+        options: {'title': 'Top 20 Plants with Most Comments', hAxis : {'title' :'Cultivar Name'}, vAxis : {'title' :'Amount of Comments'}, legend:{position: 'none'}},
     }
 
     public line_ChartData = {
         chartType: `LineChart`,
         dataTable: [['Hour', 'Views'],
-            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0],
-            ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0],
-            ['12',  0], ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0],
-            ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
+            ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0],
+            ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0], ['13',  0],
+            ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
         ],
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     };
@@ -91,24 +126,14 @@ export class GraphComponent implements OnInit {
         dataTable: [['Hour', 'Views'],
             ['0',  0], ['1',  0], ['2',  0], ['3',  0], ['4',  0], ['5',  0], ['6',  0], ['7',  0], ['8',  0], ['9',  0], ['10',  0], ['11',  0], ['12',  0],
             ['13',  0], ['14',  0], ['15',  0], ['16',  0], ['17',  0], ['18',  0], ['19',  0], ['20',  0], ['21',  0], ['22',  0], ['23',  0],
-            ],
+        ],
         options: {'title': 'Flower View Counts over Time', hAxis : {'title' :'Time (hours)'}, vAxis : {'title' :'Flower View Counts'}},
     }
 
     //Latitude and Longitude of POSSIBLE gardenLocations (TODO:confirm locations with customer)
-    public bedLocations = [[45.593823, -95.875248],
-        [45.593831, -95.875525],
-        [45.593113, -95.877688],
-        [45.593008, -95.876990],
-        [45.593512, -95.876351],
-        [45.593284, -95.877349],
-        [45.593689, -95.874984],
-        [45.593712, -95.875958],
-        [45.593826, -95.875539],
-        [45.593560, -95.875597],
-        [45.593592, -95.875406],
-        [45.593357, -95.875850],
-        [45.593461, -95.875177]];
+    public bedLocations = [[45.593823, -95.875248], [45.593831, -95.875525], [45.593113, -95.877688], [45.593008, -95.876990],
+        [45.593512, -95.876351], [45.593284, -95.877349], [45.593689, -95.874984], [45.593712, -95.875958], [45.593826, -95.875539],
+        [45.593560, -95.875597], [45.593592, -95.875406], [45.593357, -95.875850], [45.593461, -95.875177]];
 
     //TODO: Same as previous todo, these are kind of random bubbles
     public bedLocationsForBubble = [[36,33], [37,25], [49,16], [54,56], [61,24], [61,40],
@@ -125,18 +150,18 @@ export class GraphComponent implements OnInit {
     public bubbleOption = {
         chartType: `BubbleChart`,
         dataTable: [['Bed Number', 'X', 'Y', 'Likes (Colour)', 'Views (Size)'],
-                ['10',    36,      33,                1,             1],
-                ['11',    37,      25,                1,             1],
-                ['13',    49,      16,                1,             1],
-                ['1N',    54,      56,                1,             1],
-                ['1S',    61,      24,                1,             1],
-                ['2N',    61,      40,                1,             1],
-                ['2S',    19,      14,                1,             1],
-                ['5' ,    30,       4,                1,             1],
-                ['6' ,    34,      10,                1,             1],
-                ['7' ,    42,    25.5,                1,             1],
-                ['9' ,    46.5,    29,                1,             1],
-                ['LG',    46.1,  45.3,                1,             1]
+            ['10',    36,      33,                1,             1],
+            ['11',    37,      25,                1,             1],
+            ['13',    49,      16,                1,             1],
+            ['1N',    54,      56,                1,             1],
+            ['1S',    61,      24,                1,             1],
+            ['2N',    61,      40,                1,             1],
+            ['2S',    19,      14,                1,             1],
+            ['5' ,    30,       4,                1,             1],
+            ['6' ,    34,      10,                1,             1],
+            ['7' ,    42,    25.5,                1,             1],
+            ['9' ,    46.5,    29,                1,             1],
+            ['LG',    46.1,  45.3,                1,             1]
         ],
         options: {
             backgroundColor: 'none',
@@ -257,7 +282,7 @@ export class GraphComponent implements OnInit {
             dataTable[i] = new Array<any>(2);
         }
         dataTable[0][0] = "Plant ID";
-        dataTable[0][1] = "Likes";
+        dataTable[0][1] = "";
         for(var i : number = 0; i < toolWindow.length; i++)
         {
 
