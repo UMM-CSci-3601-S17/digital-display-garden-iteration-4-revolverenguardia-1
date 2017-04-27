@@ -365,13 +365,10 @@ public class Server {
 
 
                 Part part = req.raw().getPart("file[]");
-                Part part0 = req.raw().getPart("name");
-                Part part1 = req.raw().getPart("flower");
-
-                ImageHandler handler = new ImageHandler(part.getInputStream(), part0.getInputStream(), part1.getInputStream());
+                Part part0 = req.raw().getPart("flower");
+                ImageHandler handler = new ImageHandler(part.getInputStream());
                 Image img = handler.extractImage();
-                String fileName = handler.extractFileName();
-                String flowerName = handler.extractFlowerName();
+                String flowerName = handler.extractFlowerName(part0.getInputStream());
 
                 Random rand = new Random();
                 File newDir = new File(Server.imageDir);
@@ -388,7 +385,7 @@ public class Server {
                 } catch (NullPointerException e) {
                     System.err.println("Null pointer when trying to list files");
                 }
-                String pathName = Server.imageDir + "/" + flowerName + "/" + fileName + rand.nextInt(9999999);
+                String pathName = Server.imageDir + "/" + flowerName + "/" + rand.nextInt(9999999);
                 //photoDB.getCollection("photoFilepathCollection").insertOne();//(Document.parse("{ " + pathName.substring(1) + " }"));
                 File imageDir = new File(pathName);
                 imageDir.mkdirs();

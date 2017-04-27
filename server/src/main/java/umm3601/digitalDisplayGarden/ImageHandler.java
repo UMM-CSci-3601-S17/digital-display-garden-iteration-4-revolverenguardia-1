@@ -22,17 +22,14 @@ public class ImageHandler {
 
     private InputStream stream;
     private InputStream stream0;
-    private InputStream stream1;
     private OutputStream streamOut;
     private Image image;
     private BufferedImage outputImage;
     private String fileName;
     private String imgFileName;
 
-    public ImageHandler(InputStream stream, InputStream stream0, InputStream stream1) {
+    public ImageHandler(InputStream stream) {
         this.stream = stream;
-        this.stream0 = stream0;
-        this.stream1 = stream1;
     }
 
     public ImageHandler(OutputStream outStream) {
@@ -48,15 +45,12 @@ public class ImageHandler {
         return image;
     }
 
-    public String extractFileName() {
 
+
+    public String extractFlowerName(InputStream stream) {
+
+        InputStream stream0 = stream;
         String toReturn = convertStreamToString(stream0);
-        return toReturn;
-    }
-
-    public String extractFlowerName() {
-
-        String toReturn = convertStreamToString(stream1);
         return toReturn;
 
     }
