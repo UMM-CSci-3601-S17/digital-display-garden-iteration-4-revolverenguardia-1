@@ -25,6 +25,10 @@ export class PlantComponent implements OnInit {
 
     private imageService: ImageDisplayService;
 
+    private pic: string = "";
+
+    public No_Image_URL: string = API_URL + "admin/getImage/" + "No Image";
+
 
     // Has the current PlantComponent been liked or disliked?
     public rated: Boolean = false;
@@ -36,6 +40,8 @@ export class PlantComponent implements OnInit {
     private plant: Plant = {id: "", commonName: "", cultivar: "", source: "", gardenLocation: ""};
 
     public Image_URL: string;
+
+    public goto_URL: string;
         /**
      * Creates a new PlantComponent that uses a PlantService for requesting Plant data. Also,
      * has a route to provide routing to specific PlantComponent pages that have unique URLs based on
@@ -43,7 +49,9 @@ export class PlantComponent implements OnInit {
      * @param plantService - the PlantService that provides data
      * @param route - the routing service that routes to specific PlantComponent pages
      */
-    constructor(private plantService: PlantService, private route: ActivatedRoute ) { }
+    constructor(private plantService: PlantService, private route: ActivatedRoute ) {
+        //@ViewChild('imgdisplay') imageDisplay: ElementRef;
+        }
 
 
     /**
@@ -60,6 +68,7 @@ export class PlantComponent implements OnInit {
             .subscribe(plant => {
                 this.plant = plant;
                 this.Image_URL = API_URL + "admin/getImage/" + this.plant.cultivar;
+                this.goto_URL = this.Image_URL;
             });
 
 
@@ -107,5 +116,11 @@ export class PlantComponent implements OnInit {
     public isCommented(): Boolean{
         return this.commented;
     }
+
+    setDefaultPic() {
+        this.pic = "assets/images/my-image.png";
+    }
+
+
 }
 

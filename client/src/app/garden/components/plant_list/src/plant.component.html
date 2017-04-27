@@ -52,21 +52,30 @@
         </style>
     </head>
 
-    <img [src]="Image_URL">
 
 
     <a id="back-button" href="javascript:history.go(-1)" class="alignleft" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span></a>
 
+    <!--<img [src]="Image_URL">-->
+    <!--<img ng-src="Image_URL" on-error-src="../res/wroc.jpg"/>-->
+    <!--<img ng-src="{{ Image_URL || '../res/wroc.jpg' }}"/>-->
+    <div>
+        <!--<img ng-src="{{ Image_URL }}" onerror="this.src='../res/wroc.jpg'">-->
+
+    </div>
+
     <div class="image">
-        <img src="../res/wroc.jpg" width="100%"/>
+        <!--<img src="../res/wroc.jpg" width="100%"/>-->
     </div>
 
     <p *ngIf="plant == null"> The plant you are looking for does not exist!</p>
 
+    <img  class="thumbnail-image" [src]="goto_URL" alt="..." width="100%"
+          (error)="this.goto_URL=No_Image_URL;">
     <div *ngIf="plant !== null" class= "text-center">
 
         <!--<h3>{{plant.cultivar}}</h3>-->
-        <h3>{{Image_URL}}</h3>
+        <h3>{{this.plant.cultivar}}</h3>
         <h4> Common Name: {{plant.commonName}}</h4>
         <h4> Bed Number: {{plant.gardenLocation}}</h4>
 
