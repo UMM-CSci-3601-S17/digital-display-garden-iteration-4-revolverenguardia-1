@@ -41,7 +41,7 @@ export class BedDropdownService {
      * @returns {Observable<R>} - the bed name collection from the server
      */
     private getBedNamesFromServer(): Observable<Bed[]> {
-        return this.http.request(API_URL + "/gardenLocations").map(res => res.json());
+        return this.http.request(API_URL + "gardenLocations").map(res => res.json());
     }
 
     /**
