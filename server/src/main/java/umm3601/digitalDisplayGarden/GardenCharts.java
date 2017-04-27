@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mongodb.client.*;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -36,11 +37,12 @@ public class GardenCharts
         try{
             String[] cultivar = plantController.getCultivars(uploadID);
             Map<String, Integer> result = new HashMap<>();
+            JsonArray finalJsonArray = new JsonArray();
+            JsonObject plantMetadata = new JsonObject();
+            int likes = 0;
+            int dislikes = 0;
+            int comments = 0;
             for (int i = 0; i < cultivar.length; i++) {
-
-                int likes = 0;
-                int dislikes = 0;
-                int comments = 0;
                 Document filter = new Document();
                 filter.append("uploadId", uploadID);
 
@@ -73,18 +75,37 @@ public class GardenCharts
                     result.put(key, value);
                 }
 
-
             }
 
+            /*if(likes == 0){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", likes);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+            if(dislikes == 0 ){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", dislikes);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+            if(comments == 0){
+                String cultivarName = "No Data";
+                plantMetadata.addProperty("cultivarName", cultivarName);
+                plantMetadata.addProperty("likes", comments);
+                finalJsonArray.add(plantMetadata);
+                return finalJsonArray.toString();
+            }
+*/
             Map<String, Integer> finalMap = new HashMap<>();
             finalMap = sortByValue(result);
-            JsonArray finalJsonArray = new JsonArray();
             Set keyset = finalMap.keySet();
             List<?> list = new ArrayList<>(keyset);
 
 
             for(int i = 0; i < 20; i++) {
-                JsonObject plantMetadata = new JsonObject();
                 String cultivarName = "";
                 int typeOfData = 0;
                 cultivarName = (String) list.get(i);
@@ -92,16 +113,7 @@ public class GardenCharts
                 if(typeOfData == 0){
                     return finalJsonArray.toString();
                 }
-                System.out.println(finalMap.size());
-                if(finalMap.size()==0){
-                    cultivarName = "Sample Plant";
-                    plantMetadata.addProperty("cultivarName", cultivarName);
-                    plantMetadata.addProperty("likes", typeOfData);
-                    finalJsonArray.add(plantMetadata);
 
-                    System.out.println(finalJsonArray.toString());
-                    return finalJsonArray.toString();
-                }
                 plantMetadata.addProperty("cultivarName", cultivarName);
                 plantMetadata.addProperty("likes", typeOfData);
                 finalJsonArray.add(plantMetadata);
