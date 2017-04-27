@@ -650,19 +650,21 @@ public class GardenCharts
         List<Map.Entry<String, Integer>> list =
                 new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
 
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return -(o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
+        Collections.sort(list, new RatingsComparator());
         Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
 
         return sortedMap;
+    }
+
+    public static class RatingsComparator implements Comparator<Map.Entry<String, Integer>>
+    {
+        public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2)
+        {
+            return -(o1.getValue()).compareTo(o2.getValue());
+        }
     }
 
 
