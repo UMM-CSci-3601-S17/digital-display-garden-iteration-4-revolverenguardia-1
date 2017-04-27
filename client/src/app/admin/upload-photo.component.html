@@ -1,5 +1,7 @@
 
 <h2>Upload Photo</h2>
+
+<p class=warningthing>WARNING: Photo filename must end with .jpg!</p>
 <!--<file-upload #fu (change)="filename = undefined; uploadAttempted = false" [multiple]="false">-</file-upload>-->
 
 
@@ -96,3 +98,9 @@
 <div>
     <button  [routerLink]="['/admin']" class="btn btn-primary" style="float: right">Back to Admin Page</button>
 </div>
+
+<style>
+
+    .warningthing {color: red}
+
+</style>

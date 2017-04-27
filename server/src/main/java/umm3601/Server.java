@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Random;
 import com.mongodb.BasicDBObject;
@@ -374,7 +375,19 @@ public class Server {
 
                 Random rand = new Random();
                 File newDir = new File(Server.imageDir);
+                File folderDir = new File(imageDir + "/" + flowerName);
                 newDir.mkdirs();
+                try {
+                    if (folderDir.listFiles().length != 0) {
+                        try {
+                            Files.delete(Paths.get(imageDir + "/" + flowerName + "/" + folderDir.listFiles()[0].getName()));
+                        } catch (NoSuchFileException e) {
+                            System.err.println("NoSuchFileException when trying to delete old file, path name =" + Paths.get(imageDir + "/" + flowerName + "/" + folderDir.listFiles()[0].getName()).toString());
+                        }
+                    }
+                } catch (NullPointerException e) {
+                    System.err.println("Null pointer when trying to list files");
+                }
                 String pathName = Server.imageDir + "/" + flowerName + "/" + fileName + rand.nextInt(9999999);
                 //photoDB.getCollection("photoFilepathCollection").insertOne();//(Document.parse("{ " + pathName.substring(1) + " }"));
                 File imageDir = new File(pathName);

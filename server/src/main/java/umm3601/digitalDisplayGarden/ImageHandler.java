@@ -75,7 +75,7 @@ public class ImageHandler {
             fileToBeRead = new File("./src/main/java/umm3601/images/" + flowerName + "/" + flowerFolder.listFiles()[0].getName());
             System.out.println(fileToBeRead.toString());
         } catch (NullPointerException e) {
-            System.err.println("Null pointer when trying to read file" + flowerFolder.listFiles());
+            System.err.println("Null pointer when trying to read file " + flowerFolder.listFiles());
             System.out.println(flowerFolder.listFiles().toString());
         }
 
