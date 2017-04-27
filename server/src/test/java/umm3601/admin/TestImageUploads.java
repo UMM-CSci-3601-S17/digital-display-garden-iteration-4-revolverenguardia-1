@@ -58,7 +58,7 @@ public class TestImageUploads {
         }
         handler.storeImage(imageTestDir,testFlowerName,img);
         assertNotNull(testFile.listFiles()[0]);
-        assertEquals(img.toString().substring(23), extImg.toString().substring(23));
+        assertEquals(img.toString().substring(23), extImg.toString().substring(21));
     }
 
     /*@Test
