@@ -90,7 +90,7 @@ public class ImageHandler {
     }
 
     public void getImageOnFilesystem(String flowerName, String filePath) {
-        File flowerFolder = new File("./src/main/java/umm3601/images/" + flowerName);
+        File flowerFolder = new File("./images/" + flowerName);
         File fileToBeRead = null;
         //FileOutputStream returnStream = null;
         System.out.println(flowerFolder.toString());

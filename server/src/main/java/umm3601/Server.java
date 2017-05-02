@@ -46,7 +46,7 @@ public class Server {
 
     private static String excelTempDir = "/tmp/digital-display-garden";
 
-    private static String imageDir = "./src/main/java/umm3601/images";
+    private static String imageDir = "./images";
 
     public static void main(String[] args) throws IOException {
 
@@ -340,7 +340,7 @@ public class Server {
             System.out.println("we got to the correct endpoint");
             ImageHandler handler = new ImageHandler(res.raw().getOutputStream());
 
-            handler.getImageOnFilesystem(plantID, "./src/main/java/umm3601/images/");
+            handler.getImageOnFilesystem(plantID, imageDir + "/");
 
             return res;
         });
