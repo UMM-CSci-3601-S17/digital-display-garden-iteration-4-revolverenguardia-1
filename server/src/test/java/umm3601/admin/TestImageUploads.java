@@ -24,7 +24,7 @@ public class TestImageUploads {
     public InputStream testStreamPhoto;
     public String testFlowerName;
     public Image testPhoto;
-    public String imageTestDir = "./";
+    public String imageTestDir = "./images/";
     Object o = new Object();
     public File testFile;
     public ImageHandler handler1;
@@ -58,6 +58,8 @@ public class TestImageUploads {
             }
         } catch (IOException e) {
             System.err.println("IOException when reading files in test folder");
+        } catch (NullPointerException e) {
+            System.err.println("Null Pointer when trying to list files");
         }
         handler.storeImage(imageTestDir,testFlowerName,img);
         assertNotNull(testFile.listFiles()[0]);
