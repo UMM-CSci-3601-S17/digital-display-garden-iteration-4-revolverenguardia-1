@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'adminj148iz5noq50aaq5', component: AdminComponent },
     { path: 'adminj148iz5noq50aaq5/importData', component: ImportComponent},
     { path: 'adminj148iz5noq50aaq5/exportData', component: ExportComponent},
-    { path: 'graph', component: GraphComponent},
+    { path: 'adminj148iz5noq50aaq5/graph', component: GraphComponent},
 
 ];
 
