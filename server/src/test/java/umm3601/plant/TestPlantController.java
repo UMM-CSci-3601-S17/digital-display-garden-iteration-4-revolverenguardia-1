@@ -136,8 +136,8 @@ public class TestPlantController {
         cultivar[0] = "Experimental";
         cultivar[1] = "Megawatt Rose Green Leaf";
 
-        assertEquals("this cultivar should be Experimental ",plantController.getCultivars("first uploadId")[0], cultivar[0]);
-        assertEquals("this cultivar should be Megawatt Rose Green Leaf",plantController.getCultivars("first uploadId")[1],cultivar[1]);
-        assertFalse("Should return false since its the wrong upload id",plantController.getCultivars("second uploadId")[1].equals(cultivar[1]));
+        assertEquals("this cultivar should be Experimental ",plantController.listCultivars("first uploadId")[0], cultivar[0]);
+        assertEquals("this cultivar should be Megawatt Rose Green Leaf",plantController.listCultivars("first uploadId")[1],cultivar[1]);
+        assertFalse("Should return false since its the wrong upload id",plantController.listCultivars("second uploadId")[1].equals(cultivar[1]));
     }
 }

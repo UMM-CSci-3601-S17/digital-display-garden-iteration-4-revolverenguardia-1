@@ -38,7 +38,6 @@ public class QRCodes {
      *
      * @return the path to the new .zip file or null if there was a disk IO issue
      */
-
     public static String createQRCodesFromAllBeds(String uploadId, String bedNames[], String urlPrefix) throws IOException,WriterException{
         String[] bedUrls = formBedURLs(bedNames,urlPrefix);
         List<BufferedImage> qrCodeImages = createBufferedImages(bedUrls);
@@ -48,7 +47,7 @@ public class QRCodes {
     }
 
 
-        //Get all unique beds from Database
+    //Get all unique beds from Database
     //Create URLs for all unique beds
     public static String[] formBedURLs(String bedNames[], String urlPrefix) throws IOException {
 
@@ -65,8 +64,7 @@ public class QRCodes {
 
     }
 
-        //Create QRCode BufferedImages for all URLs
-
+    //Create QRCode BufferedImages for all URLs
     public static List<BufferedImage> createBufferedImages(String bedURLs[]) throws IOException, WriterException{
         final int numBeds = bedURLs.length;
 

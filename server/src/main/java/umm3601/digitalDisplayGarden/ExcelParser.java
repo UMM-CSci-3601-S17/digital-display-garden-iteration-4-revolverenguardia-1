@@ -238,6 +238,15 @@ public class ExcelParser {
 
     }
 
+    /**
+     * When the database is patched the database is populated with the new data exactly as populateDatabase
+     * Then any metadata from the oldUploadId is copied from any plant, bed, and comment collections
+     * and inserted into the corresponding  plant, bed, and comment collections with the newUploadId
+     * Finally, the liveUploadId is set to the newUploadId
+     * @param cellValues
+     * @param oldUploadId
+     * @param newUploadId
+     */
     public void patchDatabase(String[][] cellValues, String oldUploadId, String newUploadId){
 
         populateDatabase(cellValues, newUploadId);
@@ -335,12 +344,22 @@ public class ExcelParser {
     --------------------------- SERVER UTILITIES -------------------------------
      */
 
+    /**
+     * Sets the liveUploadId within config collection to uploadId within the provided database.
+     * @param uploadID
+     * @param database
+     */
     public static void setLiveUploadId(String uploadID, MongoDatabase database){
         MongoCollection<Document> configCollection = database.getCollection("config");
         configCollection.deleteMany(exists("liveUploadId"));
         configCollection.insertOne(new Document().append("liveUploadId", uploadID));
     }
 
+    /**
+     * Creates a new uploadId from the time:
+     * format("%d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, seconds);
+     * @return
+     */
     public static String generateNewUploadId() {
         java.util.Date juDate = new Date();
         DateTime dt = new DateTime(juDate);
@@ -382,7 +401,7 @@ public class ExcelParser {
 
     /**
      *
-     * @return a sorted JSON array of all the distinct uploadIds in the DB
+     * @return a date-sorted List of all the distinct uploadIds in the DB
      */
     public static List<String> listUploadIds(MongoDatabase database) {
         MongoCollection<Document> plantCollection = database.getCollection("plants");
@@ -400,12 +419,18 @@ public class ExcelParser {
         return lst;
     }
 
+    /**
+     * Get a JSON document of an array of uploadIds.
+     * @param database
+     * @return
+     */
     public static String listUploadIdsJSON(MongoDatabase database) {
         return JSON.serialize(listUploadIds(database));
     }
 
     /**
      * The primary method of getting the liveUploadId
+     * @param database the database to get the liveUploadId from within its' config collection
      * @return
      */
     public static String getLiveUploadId(MongoDatabase database) {
@@ -427,6 +452,12 @@ public class ExcelParser {
         }
     }
 
+    /**
+     * Checks whether the given uploadId is an uploadId that the system knows about.
+     * @param database the database to check within (in config collection)
+     * @param uploadId the uploadId to check
+     * @return
+     */
     public static boolean isValidUploadId(MongoDatabase database, String uploadId)
     {
         List<String> uploadIds = listUploadIds(database);

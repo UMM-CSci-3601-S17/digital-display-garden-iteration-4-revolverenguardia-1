@@ -3,6 +3,9 @@ package umm3601.digitalDisplayGarden;
 import org.bson.types.ObjectId;
 
 
+/**
+ * Java object to hold plant information from the server
+ */
 public class Plant {
     public ObjectId _id;
     public String commonName;

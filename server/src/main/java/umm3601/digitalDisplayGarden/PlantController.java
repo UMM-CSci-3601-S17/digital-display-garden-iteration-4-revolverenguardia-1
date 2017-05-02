@@ -68,7 +68,12 @@ public class PlantController {
         return null != plantCollection.findOneAndUpdate(searchDocument, updateDocument);
     }
 
-    // List plants
+    /**
+     * List all plants within the database, filtered by uploadId, gardenLocation and commonName
+     * @param queryParams
+     * @param uploadId
+     * @return
+     */
     public String listPlants(Map<String, String[]> queryParams, String uploadId) {
 
         if (!ExcelParser.isValidUploadId(db, uploadId))
@@ -90,6 +95,7 @@ public class PlantController {
         }
 
         FindIterable<Document> matchingPlants = plantCollection.find(filterDoc);
+        matchingPlants.sort(Sorts.ascending("commonName", "cultivar"));
 
         return JSON.serialize(matchingPlants);
     }
@@ -155,6 +161,14 @@ public class PlantController {
                             PLANT_FEEDBACK_DISLIKES = 1,
                             PLANT_FEEDBACK_COMMENTS = 2;
 
+    /**
+     * This gets an array of feedback counts for plants.
+     * Use PLANT_FEEDBACK_LIKES, PLANT_FEEDBACK_DISLIKES and PLANT_FEEDBACK_COMMENTS
+     * to index within the returned array.
+     * @param plantID
+     * @param uploadID
+     * @return
+     */
     public long[] getPlantFeedbackByPlantId(String plantID, String uploadID) {
 
         if (!ExcelParser.isValidUploadId(db, uploadID))
@@ -223,6 +237,12 @@ public class PlantController {
         return JSON.serialize(out);
     }
 
+    /**
+     * Returns an array of Strings of all garden locations for the current uploadId
+     * sorted according to the BedComparator
+     * @param uploadID
+     * @return
+     */
     public String[] getGardenLocations(String uploadID){
 
         if (!ExcelParser.isValidUploadId(db, uploadID))
@@ -242,7 +262,12 @@ public class PlantController {
         return beds.toArray(new String[beds.size()]);
     }
 
-    public String[] getIDName(String uploadID){
+    /**
+     * Returns a list of all distinct plantIds in the plants collection and with the current uploadId
+     * @param uploadID
+     * @return
+     */
+    public String[] listPlantIDs(String uploadID){
         Document filter = new Document();
         filter.append("uploadId", uploadID);
         DistinctIterable<String>  idIterator = plantCollection.distinct("id", filter, String.class);
@@ -251,19 +276,26 @@ public class PlantController {
         {
             id.add(s);
         }
-        //Then sort the gardenLocations as according to BedComparator
+
         return id.toArray(new String[id.size()]);
     }
 
-    public String[] getCultivars(String uploadID){
+    /**
+     * List unique cultivars
+     * @param uploadID
+     * @return
+     */
+    public String[] listCultivars(String uploadID){
         Document filter = new Document();
         filter.append("uploadId", uploadID);
         DistinctIterable<String>  idIterator = plantCollection.distinct("cultivar", filter, String.class);
+
         List<String> id = new ArrayList<String>();
         for(String s : idIterator)
         {
             id.add(s);
         }
+        id.sort(String::compareTo);
         //Then sort the gardenLocations as according to BedComparator
         return id.toArray(new String[id.size()]);
     }
@@ -286,7 +318,11 @@ public class PlantController {
     }
 
 
-
+    /**
+     * Get a json containing a list of commonNames sorted by common name
+     * @param uploadID
+     * @return
+     */
     public String getCommonNamesJSON(String uploadID){
         if (!ExcelParser.isValidUploadId(db, uploadID))
             return "null";
@@ -296,7 +332,7 @@ public class PlantController {
                 Arrays.asList(
                         Aggregates.match(eq("uploadId", uploadID)), //!! Order is important here
                         Aggregates.group("$commonName"),
-                        Aggregates.sort(Sorts.ascending("_id"))
+                        Aggregates.sort(Sorts.ascending("commonName"))
                 ));
         return JSON.serialize(documents);
     }
@@ -444,7 +480,6 @@ public class PlantController {
      * @param uploadID Dataset to find the plant
      * @return true iff the operation succeeded.
      */
-
     public boolean addFlowerRating(String json, String uploadID){
 
         if (!ExcelParser.isValidUploadId(db, uploadID))
@@ -502,6 +537,12 @@ public class PlantController {
         return true;
     }
 
+    /**
+     * Write all comments to the comments sheet
+     * @param feedbackWriter
+     * @param uploadId
+     * @return
+     */
     public boolean writeToCommentSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
         if (!ExcelParser.isValidUploadId(db, uploadId))
@@ -543,6 +584,12 @@ public class PlantController {
         return true;
     }
 
+    /**
+     * Write plant metadata to the plant metadata sheet
+     * @param feedbackWriter
+     * @param uploadId
+     * @return
+     */
     public boolean writeToPlantMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
         if (!ExcelParser.isValidUploadId(db, uploadId))
@@ -591,6 +638,12 @@ public class PlantController {
         return true;
     }
 
+    /**
+     * Write Bed metadata to the bed metadata sheet
+     * @param feedbackWriter
+     * @param uploadId
+     * @return
+     */
     public boolean writeToBedMetadataSheet(FeedbackWriter feedbackWriter, String uploadId)
     {
         if (!ExcelParser.isValidUploadId(db, uploadId))
