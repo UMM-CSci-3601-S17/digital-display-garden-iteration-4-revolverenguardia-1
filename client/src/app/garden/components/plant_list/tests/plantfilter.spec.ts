@@ -15,7 +15,7 @@ describe("Test Plant Filter", () => {
      * @editor Iteration 3 - Team Revolver en Guardia
      */
     it("Check No Filter Flag", () => {
-        expect(PlantFilter.NO_FILTER).toBe("ALL");
+        expect(PlantFilter.NO_FILTER).toBe("all");
     });
 
     /**
