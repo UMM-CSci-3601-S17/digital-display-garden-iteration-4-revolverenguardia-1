@@ -36,7 +36,7 @@ public class TestImageUploads {
         testFlowerName = "TestFlower";
         handler = new ImageHandler(testStreamPhoto);
         //testPhoto = handler.extractImage();
-        testFile = new File("./" + testFlowerName);
+        testFile = new File("./images/" + testFlowerName);
         //handler.storeImage(imageTestDir,testFlowerName,testPhoto);
 
     }
