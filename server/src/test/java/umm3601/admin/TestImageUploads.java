@@ -53,9 +53,11 @@ public class TestImageUploads {
         Image img = handler.extractImage();
         Image extImg = null;
         try {
-            extImg = ImageIO.read(testFile.listFiles()[0]);
+            if (testFile.listFiles().length > 0) {
+                extImg = ImageIO.read(testFile.listFiles()[0]);
+            }
         } catch (IOException e) {
-            System.err.println("IOException when reading thingy");
+            System.err.println("IOException when reading files in test folder");
         }
         handler.storeImage(imageTestDir,testFlowerName,img);
         assertNotNull(testFile.listFiles()[0]);
