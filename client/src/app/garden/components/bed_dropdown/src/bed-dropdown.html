@@ -70,8 +70,8 @@
     <div class="bed-dropdown">
         <select class="form-control" (change)="handleBedSelect($event.target.value)">
             <option disabled selected value>Choose Bed</option>
-            <option value="ALL">All beds</option>
-            <option *ngFor="let bed of bedListService.getBedNames()" [selected]="selectedBed == bed._id">
+            <option value="all">All beds</option>
+            <option *ngFor="let bed of bedListService.getBedNames()" [selected]="plantListService.getBedFilter() == bed._id">
                 {{bed._id}}
             </option>
         </select>

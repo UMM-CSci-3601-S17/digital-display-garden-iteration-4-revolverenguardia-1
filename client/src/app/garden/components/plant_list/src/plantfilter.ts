@@ -12,7 +12,7 @@ export class PlantFilter {
     /**
      * Denotes that no filter should be applied
      */
-    public static readonly NO_FILTER: string = "ALL";
+    public static readonly NO_FILTER: string = "all";
 
     /**
      * Filters the provided plant collection by the provided bed name.

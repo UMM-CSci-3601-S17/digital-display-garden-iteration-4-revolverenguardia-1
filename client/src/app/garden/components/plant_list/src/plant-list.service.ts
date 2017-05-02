@@ -70,7 +70,7 @@ export class PlantListService {
      * Requests that the PlantListComponent be updated according to the currently set filters.
      */
     private filterPlants(): void{
-        console.log(this.bedFilter);
+
         // Filter from the master plant collection
         let plantsBeingFiltered: Plant[] = this.plantCollection.getPlants();
 
@@ -90,6 +90,9 @@ export class PlantListService {
         return this.filteredPlants;
     }
 
+    /**
+     * Todo
+     */
     public getPlants(): Plant[]{
         return this.plantCollection.getPlants();
     }
@@ -139,6 +142,18 @@ export class PlantListService {
      */
     public getCommonNameFilter(): string{
         return this.commonNameFilter;
+    }
+
+    /**
+     * TODO
+     */
+    public clearFilters(): void{
+
+        console.log("Clear Filters");
+
+        this.commonNameFilter = PlantFilter.NO_FILTER
+        this.bedFilter = PlantFilter.NO_FILTER;
+        this.filterPlants();
     }
 
 }

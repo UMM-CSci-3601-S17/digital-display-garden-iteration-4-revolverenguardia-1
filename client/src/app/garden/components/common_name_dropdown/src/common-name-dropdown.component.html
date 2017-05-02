@@ -68,7 +68,7 @@
     <div class="common-name-dropdown">
         <select class="form-control" (change)="handleCommonNameSelect($event.target.value)">
             <option disabled selected value>Choose Common Name</option>
-            <option value="ALL">All common names</option>
+            <option value="all">All common names</option>
             <option *ngFor="let commonName of commonNameListService.getCommonNames()" [selected]="selectedCommonName == commonName._id">
                 {{commonName._id}}
             </option>

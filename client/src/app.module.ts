@@ -28,6 +28,7 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { FilterGardenComponent } from "./app/garden/components/filter_garden_sidebar/src/filter-garden.component";
 import { FooterComponent } from "./app/garden/components/footer/src/footer.component";
 import { RouterModule } from "@angular/router";
+import {ReloadGardenComponent} from "./app/navbar/reload-garden.component";
 
 @NgModule({
     imports: [
@@ -56,7 +57,7 @@ import { RouterModule } from "@angular/router";
         FileUploadComponent,
         FooterComponent,
         GraphComponent,
-
+        ReloadGardenComponent
     ],
     providers: [
         PlantListService,

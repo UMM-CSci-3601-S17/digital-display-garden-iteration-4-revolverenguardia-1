@@ -38,7 +38,7 @@ export class BedDropdownComponent implements OnInit{
         // Common name drop only have common names within current bed
         this.commonNameListService.updateCommonNamesDropdown(this.plantListService.getPlants(), bedName);
 
-
+        // Report that a bed was visited
         this.bedListService.reportBedVisit(bedName, false).subscribe();
     }
 
@@ -47,7 +47,7 @@ export class BedDropdownComponent implements OnInit{
      * is loaded and re-loaded.
      */
     ngOnInit(){
+        // Set currently selected bed
         this.selectedBed = this.plantListService.getBedFilter();
     }
-
 }
