@@ -195,8 +195,7 @@ public class GardenCharts
             dataTable[0][8] = "Average";
 
             /*
-            This array list will be full of all ObjectId's in the db corresponding to page vistis.
-            These Object ID's encode a date. This date is how we sort visits by hour.
+            dates is an ArrayList that contains all the dates of the visits from the db.
              */
             ArrayList<Date> dates = getDatesFromDB(uploadID);
 
