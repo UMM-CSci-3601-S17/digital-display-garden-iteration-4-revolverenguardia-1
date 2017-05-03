@@ -34,8 +34,8 @@ public class GardenCharts
 
     public String top20Charts(PlantController plantController, String uploadID, String type){
         try{
-            String[] plantID = plantController.getIDName(uploadID);
-            String[] cultivar = plantController.getCultivars(uploadID);
+            String[] plantID = plantController.listPlantIDs(uploadID);
+            String[] cultivar = plantController.listCultivars(uploadID);
             Map<String, Integer> result = new HashMap<>();
             for (int i = 0; i < cultivar.length; i++) {
 

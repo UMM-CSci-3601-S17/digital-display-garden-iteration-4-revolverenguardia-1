@@ -12,8 +12,8 @@ public class FeedbackWriter {
 
     OutputStream outputStream;
     XSSFWorkbook workbook;
-    XSSFSheet bedmetadataSheet;
 
+    XSSFSheet bedmetadataSheet;
     XSSFSheet commentSheet;
     XSSFSheet metadataSheet;
     int commentRowCount;
@@ -53,7 +53,7 @@ public class FeedbackWriter {
                             SHEET_METADATA = 1,
                             SHEET_BEDMETADATA = 2;
 
-    public FeedbackWriter(OutputStream outputStream) throws IOException{
+    public FeedbackWriter(OutputStream outputStream) throws IOException {
         this.outputStream = outputStream;
         this.workbook = new XSSFWorkbook();
 
@@ -72,8 +72,10 @@ public class FeedbackWriter {
     }
 
 
-
-
+    /**
+     * Prepare the Comment Sheet within the Excel document
+     * Sets up row titles and formatting.
+     */
     private void prepareCommentSheet()
     {
         this.commentSheet = workbook.createSheet("Comments");
@@ -129,6 +131,10 @@ public class FeedbackWriter {
         commentRowCount = 2;
     }
 
+    /**
+     * Prepare the Plant Metadata Sheet within the Excel document
+     * Sets up row titles and formatting.
+     */
     private void preparePlantMetadata()
     {
         this.metadataSheet = workbook.createSheet("Plant Metadata");
@@ -191,6 +197,10 @@ public class FeedbackWriter {
         metadataRowCount = 2;
     }
 
+    /**
+     * Prepare the Bed Metadata Sheet within the Excel document
+     * Sets up row titles and formatting.
+     */
     private void prepareBedMetadataSheet()
     {
         this.bedmetadataSheet = workbook.createSheet("Bed Metadata");
@@ -239,6 +249,7 @@ public class FeedbackWriter {
     /**
      * Adds the given information as a new row to the provided sheet
      * @param data: an array of strings to write to different cells of a new row in the sheet
+     * * @see SHEET_METADATA
      */
     public void writeToSheet(String[] data, int SHEET){
         XSSFSheet sheet;
