@@ -2,14 +2,14 @@
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1)   We are *Revolver En Guardia++* :es: :movie_camera:!  
 [![IMAGE ALT TEXT HERE](Documentation/Graphics/RevolverEnGuardia.png)](https://youtu.be/Szy2T0uHCU0)   
 Our team members are:
-* Skye
-* Dan
+* Skye Antinozzi
+* Dan Frazier
 * Brian
-* Ai
-* Andy
-* Spencer
-* RJ
-* Lenny
+* Ai Sano
+* Andy Hong Lau
+* Spencer Hammersten
+* RJ Holman
+* Lenny Scott
 
 Software Design S2017, Iteration 4, Team _Revolver en Guardia++_  
 You can find our website [here](http://revolverenguardia.dungeon.website)  
@@ -19,6 +19,69 @@ This repository is a mirror of [Iteration 3 , Team  Revolver En Guardia](https:/
 which is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
 which is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-1-claudearabo).
 and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-omaranwar.git)
+## Before you Start
+Before starting this project you will need a couple of tools to help you prosper!
+  * [IntelliJ](https://www.jetbrains.com/idea/) or other multi language IDE
+  * The latest version of [MongoDB](https://www.mongodb.com/download-center#community)
+  * A grasp of [TypeScript](https://www.typescriptlang.org/docs/tutorial.html),
+  [Angular-2](https://angular.io/docs/ts/latest/ ) and [Java's Apache Spark Platform](https://spark.apache.org/docs/latest/api/java/)
+  
+
+##  Introduction :hibiscus: :tulip: :cherry_blossom:
+
+We were asked to build a web application for the West Central Research Outreach Center (WCROC) in Morris, MN. This web application was built to help communicate feedback from visitors visiting the garden located at WCROC to garden administrators. 
+The web application was split into two parts the Visitor Interface and Administration Interface. 
+
+## Key features:
+####Visitor Interface:exclamation:
+###### Filter Functionality :mag:
+* Search by Bed and Search by Common Name
+
+###### Flower Page includes the following :cherry_blossom:
+* Default Garden Picture
+* Common Name, Cultivar, and Bed location
+* ***Feedback Functionality:***
+  * Like/Dislikes/Feedback progress bar
+  * Comments
+  * Comment count left on certain plant
+
+###### Footer :heavy_check_mark:
+* Links to the WCROC:
+  * [Website](https://wcroc.cfans.umn.edu/public-gardens)
+  * [Facebook](https://www.facebook.com/HorticultureDisplayGarden)
+  * [Twitter](https://twitter.com/WCROCMorris)
+  * [Youtube](https://m.youtube.com/channel/UCxU3Nsu5XjCy8XLfxHp1_Wg)
+
+#### Administration Interface:exclamation: 
+###### Import :arrow_up:
+* Gives functionality to import Accession List spreadsheet to populate website with plants.
+
+###### Update :arrows_counterclockwise:
+* Allows administrators to update the website without losing any past feedback data  
+
+###### Export :arrow_down:
+* Allows administrators to export collected feedback metadata from website into three different Excel sheets 
+  * Comments: comments from visitors with timestamp of each comment
+  * Plant Metadata:  likes, dislikes, comment count, and page views
+  * Bed Metadata: page views and QR scan count
+  
+###### Qr Codes :calling:
+* Ability to download QR Codes into a .zip file with a QR image for each garden location.
+
+###### Google Charts  :bar_chart:
+* Allows administrators to view garden statistics in Real time using google charts
+  * Flower View Counts over Time
+  * Combo Chart - Hour of the day vs. Views
+  * HeatMap containing map of Garden with different metadata displayed for each bed
+  * Top 20 Plants with Most Likes
+  * Top 20 Plants with Most Dislikes
+  * Top 20 Plants with Most Comments
+
+  
+###### Upload Images :camera:
+* Allows administrators to upload an image for a certain flower 
+
+
 
 
 ## Documentation  
