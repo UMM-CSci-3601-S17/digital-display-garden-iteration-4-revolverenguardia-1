@@ -33,42 +33,42 @@ We were asked to build a web application for the West Central Research Outreach 
 The web application was split into two parts the Visitor Interface and Administration Interface. 
 
 ## Key features:
-####Visitor Interface:exclamation:
-###### Filter Functionality :mag:
+### Visitor Interface:exclamation:
+#### Filter Functionality :mag:
 * Search by Bed and Search by Common Name
 
-###### Flower Page includes the following :cherry_blossom:
+#### Flower Page includes the following :cherry_blossom:
 * Default Garden Picture
 * Common Name, Cultivar, and Bed location
-* ***Feedback Functionality:***
+* Feedback Functionality:
   * Like/Dislikes/Feedback progress bar
   * Comments
   * Comment count left on certain plant
 
-###### Footer :heavy_check_mark:
+#### Footer :heavy_check_mark:
 * Links to the WCROC:
   * [Website](https://wcroc.cfans.umn.edu/public-gardens)
   * [Facebook](https://www.facebook.com/HorticultureDisplayGarden)
   * [Twitter](https://twitter.com/WCROCMorris)
   * [Youtube](https://m.youtube.com/channel/UCxU3Nsu5XjCy8XLfxHp1_Wg)
 
-#### Administration Interface:exclamation: 
-###### Import :arrow_up:
+### Administration Interface:exclamation: 
+#### Import :arrow_up:
 * Gives functionality to import Accession List spreadsheet to populate website with plants.
 
-###### Update :arrows_counterclockwise:
+#### Update :arrows_counterclockwise:
 * Allows administrators to update the website without losing any past feedback data  
 
-###### Export :arrow_down:
+#### Export :arrow_down:
 * Allows administrators to export collected feedback metadata from website into three different Excel sheets 
   * Comments: comments from visitors with timestamp of each comment
   * Plant Metadata:  likes, dislikes, comment count, and page views
   * Bed Metadata: page views and QR scan count
   
-###### Qr Codes :calling:
+#### Qr Codes :calling:
 * Ability to download QR Codes into a .zip file with a QR image for each garden location.
 
-###### Google Charts  :bar_chart:
+#### Google Charts  :bar_chart:
 * Allows administrators to view garden statistics in Real time using google charts
   * Flower View Counts over Time
   * Combo Chart - Hour of the day vs. Views
@@ -78,7 +78,7 @@ The web application was split into two parts the Visitor Interface and Administr
   * Top 20 Plants with Most Comments
 
   
-###### Upload Images :camera:
+#### Upload Images :camera:
 * Allows administrators to upload an image for a certain flower 
 
 
