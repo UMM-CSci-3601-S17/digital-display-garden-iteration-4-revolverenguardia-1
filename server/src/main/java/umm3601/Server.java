@@ -113,6 +113,7 @@ public class Server {
             return plantController.getCommonNamesJSON(getLiveUploadId());
         });
 
+        //Post req to rate a plant
         post("api/plant/rate", (req, res) -> {
             System.out.println("api/plant/rate " + req.body());
             res.type("application/json");
@@ -120,7 +121,7 @@ public class Server {
         });
 
 
-
+        //Post req to tell Server that a bed was visited
         post("api/bedVisit", (req, res) -> {
             res.type("application/json");
             String body = req.body();
@@ -129,6 +130,7 @@ public class Server {
             return true;
         });
 
+        //Post req to tell Server that a bed was visited by reading a QR code
         post("api/qrVisit", (req, res) -> {
             res.type("application/json");
             String body = req.body();
@@ -139,7 +141,7 @@ public class Server {
             return true;
         });
 
-        // Posting a comment
+        //Posting a comment
         post("api/plant/leaveComment", (req, res) -> {
             res.type("application/json");
             return plantController.storePlantComment(req.body(), getLiveUploadId());
@@ -170,12 +172,33 @@ public class Server {
                 return JSON.serialize(id);
 
             } catch (NotOfficeXmlFileException e) {
-                throw e;//suppress printing of  non-office worksheets
-            } catch (Exception e) {
+                res.status(500);
+//                return "{" +
+//                           "\"error\" : \"Was not an XLSX File\"," +
+//                           "\"code\":\"NOT_XLSX\"" +
+//                       "}";
+                throw e;
+            } catch (NullPointerException e) {
+                res.status(500);
                 e.printStackTrace();
+//                return "{" +
+//                        "\"error\" : \"Empty post request\"," +
+//                        "\"code\":\"MALFORMED_REQUEST\"" +
+//                        "}";
+                throw e;
+            }
+
+            catch (Exception e) {
+                res.status(500);
+                e.printStackTrace();
+//                    return "{" +
+//                            "\"error\" : \"Exception thrown in api/admin/import\"," +
+//                            "\"code\":\"ERROR\"" +
+//                            "}";
                 throw e;
             }
             catch (Error e) {
+                res.status(500);
                 e.printStackTrace();
                 throw e;
             }
@@ -202,7 +225,34 @@ public class Server {
 
                 return JSON.serialize(newUploadId);
 
-            } catch (Exception e) {
+            } catch (NotOfficeXmlFileException e) {
+                res.status(500);
+//                return "{" +
+//                           "\"error\" : \"Was not an XLSX File\"," +
+//                           "\"code\":\"NOT_XLSX\"" +
+//                       "}";
+                throw e;
+            } catch (NullPointerException e) {
+                res.status(500);
+                e.printStackTrace();
+//                return "{" +
+//                        "\"error\" : \"Empty post request\"," +
+//                        "\"code\":\"MALFORMED_REQUEST\"" +
+//                        "}";
+                throw e;
+            }
+
+            catch (Exception e) {
+                res.status(500);
+                e.printStackTrace();
+//                    return "{" +
+//                            "\"error\" : \"Exception thrown in api/admin/import\"," +
+//                            "\"code\":\"ERROR\"" +
+//                            "}";
+                throw e;
+            }
+            catch (Error e) {
+                res.status(500);
                 e.printStackTrace();
                 throw e;
             }
@@ -253,6 +303,7 @@ public class Server {
             return ExcelParser.listUploadIdsJSON(database);
         });
 
+        //Get a file attatchment of a .zip archive of QR codes
         get("api/admin/qrcodes", (req, res) -> {
             res.type("application/zip");
 
@@ -278,6 +329,7 @@ public class Server {
             return bytes;
         });
 
+        //Get a string representing the liveUploadId
         get("api/admin/liveUploadId", (req, res) -> {
             res.type("application/json");
             return JSON.serialize(getLiveUploadId());
@@ -288,18 +340,21 @@ public class Server {
             BEGIN CHARTS
         *////////////////////////////////////////////////////////////////////
 
-        // Views per Hour
+        //Get the ViewsPerHour chart
         get("api/admin/charts/viewsPerHour", (req, res) -> {
             res.type("application/json");
             return chartMaker.getPlantViewsPerHour(getLiveUploadId());
         });
 
+        //Get the data to put in the plant metadata map
         get("api/admin/charts/plantMetadataMap", (req, res) -> {
             res.type("application/json");
 
             return chartMaker.getBedMetadataForMap(plantController, getLiveUploadId());
         });
 
+        //Get the data to put in the plant comboChart
+        //(could be refactored to be /api/admin/charts/gardenViewsComboChart)
         get("api/admin/charts/comboChart", (req, res) -> {
             res.type("application/json");
 
