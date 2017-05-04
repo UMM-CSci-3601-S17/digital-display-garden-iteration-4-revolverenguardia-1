@@ -32,6 +32,9 @@ and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https
 ## Digital Display Garden: Visitor View
 ![IMAGE ALT TEXT HERE](Documentation/Graphics/DigitalDisplayGarden.png)
 
+## Digital Display Garden: Administration View of Some Garden Statistics
+![IMAGE ALT TEXT HERE](Documentation/Graphics/DigitalDisplayGardenCharts.png)
+
 
 ## Documentation  
 We have an entire folder full of thorough documentation!
@@ -40,8 +43,11 @@ We have an entire folder full of thorough documentation!
 * [ExcelParser](/Documentation/ExcelParser.md): Explains how the cloud-arabo and Grimaldi iterations parse excel spreadsheets. This wil be updated to reflect how Revolver En Guardia uses `ExcelParser.java`  
 * [ExcelFileRequirements](/Documentation/ExcelFileRequirements.md): This will be updated soon to reflect some extra features that Revolver En Guardia have implemented.
 * [User Guide](/Documentation/UserGuide/DDGUserGuide-RevolverenGuardia.pdf): This is a guide that explains how the Administration and visitor interface operate.
-* [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden 
-* [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes
+* [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden.
+* [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes.
+* [Development Instructions](/Documentation/Development.md):Explains how to run the project in Development as well as how to simulate running in Production. 
+* [Future TODO's and Known Issues](): Explains future goals for the project as well as bugs known to the developers
+
 
 ## Libraries used
 ### Client-Side
