@@ -188,6 +188,15 @@ public class ExcelParser {
         return keys;
     }
 
+    public static boolean ignoreRow(String[] keys, String[][] cellValue, int rowNum, String column, String searchBy) {
+        for(int i = 0; i < keys.length; i++) {
+            if(keys[i].equals(column) && cellValue[rowNum][i].toLowerCase().equals(searchBy)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Moves row by row through the 2D array and adds content for every flower paired with keys into a document
     // Uses the document to one at a time, add flower information into the database.
     public void populateDatabase(String[][] cellValues, String uploadId){
@@ -207,18 +216,22 @@ public class ExcelParser {
 
         for (int i = 4; i < cellValues.length; i++){
             Document doc = new Document();
-            for(int j = 0; j < cellValues[i].length; j++){
-                doc.append(keys[j], cellValues[i][j]);
+            boolean emptyBed = ignoreRow(keys,cellValues,i,"gardenLocation", "");
+            boolean xed = ignoreRow(keys,cellValues,i,"notIncluded", "x");
+
+            if(!emptyBed && !xed) {
+                for (int j = 0; j < cellValues[i].length; j++) {
+                    doc.append(keys[j], cellValues[i][j]);
+                }
+
+                if (doc.get("gardenLocation").equals(""))
+                    continue;
+
+                // Initialize the empty metadata
+                doc.append("metadata", emptyMetadataDoc);
+                doc.append("uploadId", uploadId);
+                plantCollection.insertOne(doc);
             }
-
-            if(doc.get("gardenLocation").equals(""))
-                continue;
-
-            // Initialize the empty metadata
-            doc.append("metadata", emptyMetadataDoc);
-            doc.append("uploadId", uploadId);
-            plantCollection.insertOne(doc);
-
         }
 
         //Get distinct list of beds
