@@ -35,11 +35,15 @@ We have an entire folder full of thorough documentation!
 * [Google-Charts](/Documentation/Google-Charts.md): Walks through how we implement Google Charts in Angular 2.  
 * [ExcelParser](/Documentation/ExcelParser.md): Explains how the cloud-arabo and Grimaldi iterations parse excel spreadsheets. This wil be updated to reflect how Revolver En Guardia uses `ExcelParser.java`  
 * [ExcelFileRequirements](/Documentation/ExcelFileRequirements.md): This will be updated soon to reflect some extra features that Revolver En Guardia have implemented.
+* [User Guide](/Documentation/UserGuide/DDGUserGuide-RevolverenGuardia.pdf): This is a guide that explains how the Administration and visitor interface operate.
+* [Garden Pamphlet](](/Documentation/Pamphlet.md)): A document for Steve to take to any conference to show off details about the Digital Display Garden 
+* [QR Sign Suggestions]((/Documentation/QR-Sign-Suggestions.md)): Explains perhaps what might be written on the signs that also contain the QR codes
 
 ## Libraries used
 ### Client-Side
 * **Angular 2**
 * **Jasmine** and **Karma**
+* **Gradle**
 
 ### Server-Side
 * **Java**
@@ -48,6 +52,7 @@ We have an entire folder full of thorough documentation!
 * **Apache** is used for importing and exporting data in .xlsx format
 * **zxing** is used for generating QR codes (supports reading them if we want)
 * **joda** is used for making an unique LiveUploadID
+* **Gradle**
 
 ## Resources
 
@@ -56,6 +61,7 @@ We have an entire folder full of thorough documentation!
 - [What _is_ Angular 2... why TypeScript?][angular-2]
 - [What _is_ webpack...?][whats-webpack]
 - [Testing Angular 2 with Karma/Jasmine][angular2-karma-jasmine]
+- [What is Spark?](http://sparkjava.com/documentation.html)
 
 [angular-2]: https://www.infoq.com/articles/Angular2-TypeScript-High-Level-Overview
 [angular2-karma-jasmine]: http://twofuckingdevelopers.com/2016/01/testing-angular-2-with-karma-and-jasmine/
