@@ -13,7 +13,8 @@ Google Charts:
 Color scheme for the combo chart needs to be changed
 * Making a map of where people walk through the garden
 * Refactor top 20 Charts on the server side
-* Drop-down menu for charts to select which to display
+* Drop-down menu for charts to select which to display  
+* Top 20 Charts should include both the common name and cultivar
 
 Potential Problems  
 Server:
