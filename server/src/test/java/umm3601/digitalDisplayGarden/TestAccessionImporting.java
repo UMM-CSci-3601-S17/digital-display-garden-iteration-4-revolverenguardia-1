@@ -39,7 +39,7 @@ public class TestAccessionImporting {
         String[][] plantArray = parser.parseExcel();
         //printDoubleArray(plantArray);
 
-        assertEquals(362, plantArray.length);
+        assertEquals(363, plantArray.length);
         assertEquals(plantArray[40].length, plantArray[120].length);
         assertEquals("2016 Accession List: Steve's Design", plantArray[0][1]);
         assertEquals("Begonia", plantArray[6][1]);
@@ -57,10 +57,10 @@ public class TestAccessionImporting {
 
         //printDoubleArray(plantArray);
 
-        assertEquals(362, plantArray.length);
-        assertEquals(8, plantArray[30].length);
-        assertEquals(8, plantArray[0].length);
-        assertEquals(8, plantArray[3].length);
+        assertEquals(363, plantArray.length);
+        assertEquals(9, plantArray[30].length);
+        assertEquals(9, plantArray[0].length);
+        assertEquals(9, plantArray[3].length);
     }
 
     @Test
@@ -92,8 +92,10 @@ public class TestAccessionImporting {
 
 
         try {
+            assertEquals(0, plants.count(eq("commonName", "UMM"))); //Tests that x'ed flower got removed
             assertEquals(286, plants.count());
             assertEquals(11, plants.count(eq("commonName", "Geranium")));
+
         }
         finally {
             ExcelParser.clearUpload("an arbitrary ID", testDB);

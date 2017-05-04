@@ -11,20 +11,24 @@
 
 <div style="min-height: 40px"></div>
 
-<div class="chart" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">
-    <google-chart [data]="columnChartOptions"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateBarChart()" >
-        <span aria-hidden="true"></span>
-        Update Graph
-    </button>
-</div>
-<div class="chart">
-    <google-chart [data]="line_ChartData"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateLineChart()" >
-        <span aria-hidden="true"></span>
-        Update Graph
-    </button>
-</div>
+<!--****************  Unused Bar and Line Chart *******************-->
+
+<!--<div class="chart" style="padding-left: 5%; padding-right: 5%; padding-top: 1%; padding-bottom: 1%;">-->
+    <!--<google-chart [data]="columnChartOptions"></google-chart>-->
+    <!--<button type="button" class="btn btn-primary btn-lg" (click) = "this.updateBarChart()" >-->
+        <!--<span aria-hidden="true"></span>-->
+        <!--Update Graph-->
+    <!--</button>-->
+<!--</div>-->
+<!--<div class="chart">-->
+    <!--<google-chart [data]="line_ChartData"></google-chart>-->
+    <!--<button type="button" class="btn btn-primary btn-lg" (click) = "this.updateLineChart()" >-->
+        <!--<span aria-hidden="true"></span>-->
+        <!--Update Graph-->
+    <!--</button>-->
+<!--</div>-->
+
+<!--****************  Unused Bar and Line Chart *******************-->
 
 <div class="chart">
     <google-chart [data]="comboChart"></google-chart>
@@ -34,13 +38,16 @@
     </button>
 </div>
 
-<div class="chart">
-    <google-chart [data]="mapOptions"></google-chart>
-    <button type="button" class="btn btn-primary btn-lg" (click) = "this.updateMap()" >
-        <span aria-hidden="true"></span>
-        Update Graph
-    </button>
-</div>
+
+<!--****************  Unused Map *******************-->
+<!--<div class="chart">-->
+    <!--<google-chart [data]="mapOptions"></google-chart>-->
+    <!--<button type="button" class="btn btn-primary btn-lg" (click) = "this.updateMap()" >-->
+        <!--<span aria-hidden="true"></span>-->
+        <!--Update Graph-->
+    <!--</button>-->
+<!--</div>-->
+<!--****************  Unused Map *******************-->
 
 <div id = "chartDiv" padding="5%">
     <google-chart [data] = "bubbleOption"></google-chart>
