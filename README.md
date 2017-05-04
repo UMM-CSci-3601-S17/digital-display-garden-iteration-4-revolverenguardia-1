@@ -39,7 +39,8 @@ and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https
 
 
 ## Documentation  
-We have an entire folder full of thorough documentation!
+We have an entire folder full of thorough documentation!  
+* [Development Instructions](/Documentation/Development.md):Explains how to run the project in Development as well as how to simulate running in Production. 
 * [Deployment Instructions](/Documentation/DEPLOY.MD): Explains how to start up the project on digital ocean.  
 * [Google-Charts](/Documentation/Google-Charts.md): Walks through how we implement Google Charts in Angular 2.  
 * [ExcelParser](/Documentation/ExcelParser.md): Explains how the cloud-arabo and Grimaldi iterations parse excel spreadsheets. This wil be updated to reflect how Revolver En Guardia uses `ExcelParser.java`  
@@ -47,7 +48,6 @@ We have an entire folder full of thorough documentation!
 * [User Guide](/Documentation/UserGuide/DDGUserGuide-RevolverenGuardia.pdf): This is a guide that explains how the Administration and visitor interface operate.
 * [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden.
 * [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes.
-* [Development Instructions](/Documentation/Development.md):Explains how to run the project in Development as well as how to simulate running in Production. 
 * [Future TODO's and Known Issues](/Documentation/FutureTodosKnownProblems.md): Explains future goals for the project as well as bugs known to the developers
 
 
