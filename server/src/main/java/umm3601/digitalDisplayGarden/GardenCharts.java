@@ -151,31 +151,10 @@ public class GardenCharts
         try {
             Object[][] dataTable = new Object[24 + 1][2];
 
-            Document filter = new Document();
-            filter.put("uploadId", uploadID);
-
             dataTable[0][0] = "Hour";
             dataTable[0][1] = "Views";
 
-            ArrayList<Date> dates = new ArrayList<Date>();
-
-            //Get all plants
-            FindIterable doc = plantCollection.find(filter);
-
-            Iterator iterator = doc.iterator();
-            while(iterator.hasNext()) {
-                Document result = (Document) iterator.next();
-
-                //Get metadata.rating array
-                List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
-
-                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
-                for(int i = 0; i < ratings.size(); i++){
-                    Document d = ratings.get(i);
-                    dates.add(((ObjectId) d.get("visit")).getDate());
-                }
-
-            }
+            ArrayList<Date> dates = getDatesFromDB(uploadID);
 
             ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
 
@@ -202,10 +181,8 @@ public class GardenCharts
 
     public String getComboChart (String uploadID) {
         try {
+            // This is the double array that will be sent to the client as a JSON Array
             Object[][] dataTable = new Object[24 + 1][9];
-
-            Document filter = new Document();
-            filter.put("uploadId", uploadID);
 
             dataTable[0][0] = "Hour";
             dataTable[0][1] = "Sunday";
@@ -217,26 +194,10 @@ public class GardenCharts
             dataTable[0][7] = "Saturday";
             dataTable[0][8] = "Average";
 
-
-            ArrayList<Date> dates = new ArrayList<Date>();
-
-            //Get all plants
-            FindIterable doc = plantCollection.find(filter);
-
-            Iterator iterator = doc.iterator();
-            while(iterator.hasNext()) {
-                Document result = (Document) iterator.next();
-
-                //Get metadata.rating array
-                List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
-
-                //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
-                for(int i = 0; i < ratings.size(); i++){
-                    Document d = ratings.get(i);
-                    dates.add(((ObjectId) d.get("visit")).getDate());
-                }
-
-            }
+            /*
+            dates is an ArrayList that contains all the dates of the visits from the db.
+             */
+            ArrayList<Date> dates = getDatesFromDB(uploadID);
 
             ArrayList<Date>[] hoursOfDay = partitionByHour(dates);
 
@@ -389,11 +350,10 @@ public class GardenCharts
      * @param in
      * @return
      */
-        public String makeJSON(Object[][] in) {
+    public String makeJSON(Object[][] in) {
 
         JsonArray outerArray = new JsonArray();
-        for(int i = 0; i < in.length; i++)
-        {
+        for(int i = 0; i < in.length; i++) {
             JsonArray innerArray = new JsonArray();
             for(int j = 0; j < in[i].length; j++) {
                 Object a = in[i][j];
@@ -480,6 +440,32 @@ public class GardenCharts
                 System.out.println(input[i] + "]");
             }
         }
+    }
+
+    public ArrayList<Date> getDatesFromDB(String uploadID){
+        Document filter = new Document();
+        filter.put("uploadId", uploadID);
+
+        ArrayList<Date> dates = new ArrayList<Date>();
+
+        //Get all
+        FindIterable doc = plantCollection.find(filter);
+
+        Iterator iterator = doc.iterator();
+        while(iterator.hasNext()) {
+            Document result = (Document) iterator.next();
+
+            //Get metadata.rating array
+            List<Document> ratings = (List<Document>) ((Document) result.get("metadata")).get("visits");
+
+            //Loop through all of the entries within the array, counting like=true(like) and like=false(dislike)
+            for(int i = 0; i < ratings.size(); i++){
+                Document d = ratings.get(i);
+                dates.add(((ObjectId) d.get("visit")).getDate());
+            }
+
+        }
+        return  dates;
     }
 
     public int[] flaten_averageByHour(int[][] viewsByHourAndDayOfWeek){
@@ -571,7 +557,6 @@ public class GardenCharts
 
     /*
     ArrayList<Date>[dayOfWeek][month] = new int[7][12]
-    NOT TESTED
      */
     public ArrayList<Date>[][] partitionByDayOfWeek(ArrayList<Date>[] datesByMonth){
         ArrayList<Date>[][] datesPerDayAndMonth = new ArrayList[7][12];
@@ -602,7 +587,6 @@ public class GardenCharts
 
     /*
     int[dayOfWeek][month] = new int[7][12]
-    NOT TESTED
      */
     public int[][] flaten_viewsByDayAndMonth(ArrayList<Date>[][] dates){
         int[][] viewsPerDayAndMonth = new int[7][12];
@@ -623,7 +607,6 @@ public class GardenCharts
 
     /*
     int[dayOfWeek][month] = new int[7][12]
-    NOT TESTED
      */
     public int[] flaten_AverageByMonth(int[][] viewsByDayOfWeekAndMonth){
         int[] averagePerDayOfWeek = new int[7];
