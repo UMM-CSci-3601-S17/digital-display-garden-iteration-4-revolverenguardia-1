@@ -1,4 +1,4 @@
-###Digital Display Garden Pamphlet
+### Digital Display Garden Pamphlet
 
 Below is the pamphlet of Digital Display Garden. One is pdf and the other is Microsoft Office PowerPoint so that it is editable.
 

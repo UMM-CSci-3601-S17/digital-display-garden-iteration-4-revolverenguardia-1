@@ -28,7 +28,10 @@ which is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci
 which is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-1-claudearabo).
 and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-omaranwar.git)
 
+
+## Digital Display Garden: Visitor View
 ![IMAGE ALT TEXT HERE](Documentation/Graphics/DigitalDisplayGarden.png)
+
 
 ## Documentation  
 We have an entire folder full of thorough documentation!
