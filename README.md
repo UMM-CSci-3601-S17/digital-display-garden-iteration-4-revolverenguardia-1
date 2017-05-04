@@ -1,19 +1,29 @@
 # :movie_camera: :es: *Revolver En Guardia++* :es: :movie_camera:  
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1.svg?branch=master)](https://travis-ci.org/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1)   We are *Revolver En Guardia++* :es: :movie_camera:!  
 [![IMAGE ALT TEXT HERE](Documentation/Graphics/RevolverEnGuardia.png)](https://youtu.be/Szy2T0uHCU0)   
-Our team members are:
-* Skye
-* Dan
-* Brian
-* Ai
-* Andy
-* Spencer
-* RJ
-* Lenny
+
+ We were approached by the West Central Research Outreach Center (WCROC) in Morris Minnesota, to design software that would enhance visitor experience at their horticulture gardens, and provide feedback for WCROC. The Digital Display Garden allows visitors to learn more about the garden, and leave feedback for garden staff, all in a non-obtrusive, low footprint way that doesn't take away from aesthetics of the garden.  
+ 
+Visitors can access the Digital Display Garden via QR Codes located at each bed. From there, visitors can rate, comment, and view information about the garden. Meanwhile, WCROC staff, can track when and where in the garden people are viewing, liking, and commenting on plants through interactive graphics, and exportable spreadsheets.  
+ 
+In addition, The Digital Display Garden was designed with low maintenance in mind. WCROC staff can populate the website by uploading a single excel spreadsheet that they already use to keep track of plants into our Admin console. From there, they can change what data the Digital Display Garden is working from, by uploading a corrected spreadsheet using our update function. Getting the correct QR codes for each bed in the garden is a simple as using our *Download QR Codes* feature, that downloads a zipped folder containing all the QR codes needed for the garden. They can regularly view real time data about the garden by using our charts feature, or can download an excel spreadsheet with complete data from all of the garden.   
+  
+The Digital Display Garden is due to enter service in the WCROC garden, during summer 2017, and will be further developed to improve visitor and staff experience alike. This project is made possible by the students, and faculty of C-SCI 3601, *Software Development and Design*, at University of Minnesota Morris, and by the staff of the West Central Research Outreach Center.
+
 
 Software Design S2017, Iteration 4, Team _Revolver en Guardia++_  
 You can find our website [here](http://revolverenguardia.dungeon.website)  
 Our IP address is: 138.197.120.23
+
+Our Groups team members are:
+* Skye Antinozzi (Skyebug)
+* Dan Frazier (danfrz)
+* Brian Caravantes (carav008)
+* Ai Sano (sanox013)
+* Andy Hong Lau (tszhonglau)
+* Spencer Hammersten (hamme503)
+* RJ Holman (holma198)
+* Lenny Scott (morrislenny)
 
 This repository is a mirror of [Iteration 3 , Team  Revolver En Guardia](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1)
 which is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
@@ -21,120 +31,41 @@ which is a fork from [Iteration 1 , Team _Claude Arabo_](https://github.com/UMM-
 and substantially incorporates code from [Iteration 2 , Team _Oman Anwar_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-omaranwar.git)
 
 
+## Digital Display Garden: Visitor View
+![IMAGE ALT TEXT HERE](Documentation/Graphics/DigitalDisplayGarden.png)
+
+## Digital Display Garden: Administration View of Some Garden Statistics
+![IMAGE ALT TEXT HERE](Documentation/Graphics/DigitalDisplayGardenCharts.png)
+
+
 ## Documentation  
-We have an entire folder full of thorough documentation!
+We have an entire folder full of thorough documentation!  
+* [Development Instructions](/Documentation/Development.md):Explains how to run the project in Development as well as how to simulate running in Production. 
 * [Deployment Instructions](/Documentation/DEPLOY.MD): Explains how to start up the project on digital ocean.  
 * [Google-Charts](/Documentation/Google-Charts.md): Walks through how we implement Google Charts in Angular 2.  
 * [ExcelParser](/Documentation/ExcelParser.md): Explains how the cloud-arabo and Grimaldi iterations parse excel spreadsheets. This wil be updated to reflect how Revolver En Guardia uses `ExcelParser.java`  
 * [ExcelFileRequirements](/Documentation/ExcelFileRequirements.md): This will be updated soon to reflect some extra features that Revolver En Guardia have implemented.
+* [User Guide](/Documentation/UserGuide/DDGUserGuide-RevolverenGuardia.pdf): This is a guide that explains how the Administration and visitor interface operate.
+* [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden.
+* [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes.
+* [Future TODO's and Known Issues](/Documentation/FutureTodosKnownProblems.md): Explains future goals for the project as well as bugs known to the developers
 
-## Setup
-
-Cloning the project inside IntelliJ:
-
-- When prompted to create a new IntelliJ project, select **yes**.
-- Select **import project from existing model** and select **Gradle.**
-- Make sure **Use default Gradle wrapper** is selected.
-- Click **Finish.**
-
-:fire: If IntelliJ ever prompts you to compile typescript files into
-javascript **say no!**. Doing this will confuse webpack and break the client
-side of your project during build. No permanent damage will be done, but it's
-pretty annoying to deal with.
-
-When you load the project on a new machine, tell Gradle to Refresh linked Gradle projects.
-
-## Running your project
-> Run the server  
-> Run the client  
-
-If you have data in the database from a previous version it would be
-best to drop() the test database. In order to populate the database
-* Run the Server and Client
-* go to localhost:9000/admin (or whatever ip/port the client is running on)
-* Import the data set from the Excel spreadsheet (.xlsx)
-* the liveUploadId will be set to the latest data set imported
-* liveUploadId determines which set of data to refer to within the database.
-
-## Attempted and Completed Stories  
-
-#### Security :no_entry_sign:
-Provides authentication to the admin page (login screen) before letting a user use the admin page’s features. There will be just one “account”
-   * Very close to done
-
-#### Picture Uploading :no_entry_sign:
-* The user will have a user interface that will allow them to select a single flower, and add a picture for that flower. That picture will change the flower picture for the flower page.
-    * Very close to done
-
-#### Improve Front-end &mdash; visitor's website :white_check_mark:
-* Plant/Bed List Page
-    * Provide drop-down menus for beds and common names, replacing the side bar
-* Plant Page
-    * Fix the size of the image and place it after the plant information
-    * Add a bar that displays the number of likes and dislikes
-* Both pages
-    * Overhaul for the look of the entire website to make it look nicer
-
-#### Flexible: Google Charts  :white_check_mark:
-* Time vs Views
-    * Average data by day, and months, and *combo chart*
-* Heatmaps
-    * Make heatmaps work consistently
-    * Add heatmap of scan counts
-* Top 20 Charts
-    * Add charts that display the top 20 flowers by likes, dislikes, and comments
-
-#### Flexible: UMN logo (not chosen)
-* Add UMN logo to the header of the website &mdash; incomplete
-
-## Future work  
-:soon: Google Charts: Some of the data Esther wants to see in our Google charts includes:  
-1. Graphing time against the # of flower/bed page visits. This allows Steave and Esther to find the most popular time people are using the digital display garden and which beds are most popular.  
-2. People's location in the Garden when they enter the digital garden.  
-3. Making a map of where people walk through the garden.   
-4. Top 20 plants that have the most comments, the top 20 plants that have the most likes, and the top 20 that have the most dislikes.  
-5. A static function has been written in ExcelParser that deletes an uploadId, but there is no endpoint or client UI to make this happen.
-
-:soon: Currently, all coordinates on the Map and the bubbleChart are hard coded. WCROC admin staff should have the ability to add new coordinate and bed to the Map and bubbleChart.   
-:soon: An option for them to download the charts maybe useful to them in the future.
-
-
-#### Finished by previous iteration groups
-**Revolver En Guardia**
-* Allow admin users to update the spreadsheet without losing previously obtained visitor data
-* Export more metadata from plant information pages
-* Provide visual aids for visitor traffic data (i,e., Google charts) &mdash; partly
-* Allow a visitor to choose plants by common name
-* Provide social media links
-
-**Grimaldi** :us: :notes: :mortar_board: ∮
-* Leave comments about plants
-* Allow a visitor to rate a plant
-* Display counts of likes and dislikes on visitor website
-* Display counts of comments on visitor website
-* Generate QR Codes
-
-**Oman Anwar** :gb: 🏏
-* Present plant data in a list
-* Filter by bed number
-* Display specific plant information
-* Gather metadata from plant information pages; obtain likes, dislikes, page-views, and comments from plant pages, and store them on the server
-
-**Claude Arabo** :fr: 🤺 🥈
-* Import Excel Spreadsheet to Database
 
 ## Libraries used
 ### Client-Side
-* **Angular 2**
+* **Angular 2** 
+* **TypeScript** is the language mostly used on the client side
 * **Jasmine** and **Karma**
+* **Gradle** is used to tell **Yarn** to orchestrate the client side 
 
 ### Server-Side
-* **Java**
+* **Java** is the language used on the server side
 * **Spark** is used for the server operations
 * **JUnit** is used for testing
 * **Apache** is used for importing and exporting data in .xlsx format
 * **zxing** is used for generating QR codes (supports reading them if we want)
 * **joda** is used for making an unique LiveUploadID
+* **Gradle** is used to build the project 
 
 ## Resources
 
@@ -143,6 +74,7 @@ Provides authentication to the admin page (login screen) before letting a user u
 - [What _is_ Angular 2... why TypeScript?][angular-2]
 - [What _is_ webpack...?][whats-webpack]
 - [Testing Angular 2 with Karma/Jasmine][angular2-karma-jasmine]
+- [What is Spark?](http://sparkjava.com/documentation.html)
 
 [angular-2]: https://www.infoq.com/articles/Angular2-TypeScript-High-Level-Overview
 [angular2-karma-jasmine]: http://twofuckingdevelopers.com/2016/01/testing-angular-2-with-karma-and-jasmine/
