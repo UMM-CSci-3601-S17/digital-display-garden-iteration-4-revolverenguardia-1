@@ -37,12 +37,12 @@ We have an entire folder full of thorough documentation!
 * [ExcelParser](/Documentation/ExcelParser.md): Explains how the cloud-arabo and Grimaldi iterations parse excel spreadsheets. This wil be updated to reflect how Revolver En Guardia uses `ExcelParser.java`  
 * [ExcelFileRequirements](/Documentation/ExcelFileRequirements.md): This will be updated soon to reflect some extra features that Revolver En Guardia have implemented.
 * [User Guide](/Documentation/UserGuide/DDGUserGuide-RevolverenGuardia.pdf): This is a guide that explains how the Administration and visitor interface operate.
-* [Garden Pamphlet](](/Documentation/Pamphlet.md)): A document for Steve to take to any conference to show off details about the Digital Display Garden 
-* [QR Sign Suggestions]((/Documentation/QR-Sign-Suggestions.md)): Explains perhaps what might be written on the signs that also contain the QR codes
+* [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden 
+* [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes
 
 ## Libraries used
 ### Client-Side
-* **Angular 2**
+* **Angular 2** 
 * **TypeScript** is the language mostly used on the client side
 * **Jasmine** and **Karma**
 * **Gradle** is used to tell **Yarn** to orchestrate the client side 
