@@ -146,7 +146,6 @@ Provides authentication to the admin page (login screen) before letting a user u
 
 [angular-2]: https://www.infoq.com/articles/Angular2-TypeScript-High-Level-Overview
 [angular2-karma-jasmine]: http://twofuckingdevelopers.com/2016/01/testing-angular-2-with-karma-and-jasmine/
-[labtasks]: LABTASKS.md
 [travis]: https://travis-ci.org/
 [whats-webpack]: https://webpack.github.io/docs/what-is-webpack.html
 [bootstrap]: https://getbootstrap.com/components/
