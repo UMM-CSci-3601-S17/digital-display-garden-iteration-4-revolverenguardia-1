@@ -289,6 +289,7 @@ public class Server {
                     {
                         //If all attempts fail, produce an Internal Server Error 500
                         throw e;
+
                     }
                 }
             }

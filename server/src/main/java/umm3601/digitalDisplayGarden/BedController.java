@@ -16,7 +16,8 @@ import java.io.IOException;
 
 import static com.mongodb.client.model.Updates.push;
 /**
- * Created by carav008 on 4/11/17.
+ * Used to perform bed related operations on the database.
+ *
  */
 public class BedController {
 

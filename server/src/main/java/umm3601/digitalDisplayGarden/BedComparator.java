@@ -3,7 +3,11 @@ package umm3601.digitalDisplayGarden;
 import java.util.Comparator;
 
 /**
- * Created by frazi177 on 4/13/17.
+ * Compares Strings that may or may not begin with
+ * a number, and then some characters afterwards prioritizing
+ * characters representing cardinal directions.
+ *
+ * 1 < 2 < 2N < 2E < 2S < 2W < 2A < 2B < 2C < 20 ...
  */
 public class BedComparator implements Comparator<String>{
 

@@ -26,8 +26,14 @@ import org.joda.time.DateTime;
 import javax.print.Doc;
 //import sun.text.normalizer.UTF16;
 
+/**
+ * Parses .xlsx files into a String[] and populates
+ * the database with flowers corresponding to entries within the xlsx file.
+ */
 public class ExcelParser {
 
+    /* Input stream to parse as an .xlsx file */
+    //TODO: this should be refactored as an input to parseExcel (not doing it right now, on master)
     private InputStream stream;
 
     private final MongoDatabase database;
@@ -45,6 +51,12 @@ public class ExcelParser {
         this.stream = stream;
     }
 
+    /**
+     * Takes the .xlsx file in the input stream, writes the cells into
+     * an array of strings, then collapse empty rows and columns.
+     * any entries that are empty are the empty string "".
+     * @return
+     */
     public String[][] parseExcel() {
 
         String[][] arrayRepresentation = extractFromXLSX(stream);
@@ -55,13 +67,13 @@ public class ExcelParser {
         return verticallyCollapsed;
     }
 
-    /*
-    Uses Apache POI to extract information from xlsx file into a 2D array.
-    Here is where we got our starter code: http://www.mkyong.com/java/apache-poi-reading-and-writing-excel-file-in-java/
-    Look at example number 4, Apache POI library – Reading an Excel file.
+    /**
+        Uses Apache POI to extract information from xlsx file into a 2D array.
+        Here is where we got our starter code: http://www.mkyong.com/java/apache-poi-reading-and-writing-excel-file-in-java/
+        Look at example number 4, Apache POI library – Reading an Excel file.
 
-    This file originally just printed data, that is why there are several commented out lines in the code.
-    We have repurposed this method to put all data into a 2D String array and return it.
+        This file originally just printed data, that is why there are several commented out lines in the code.
+        We have repurposed this method to put all data into a 2D String array and return it.
      */
     public String[][] extractFromXLSX(InputStream excelFile) throws NotOfficeXmlFileException {
         try {
@@ -93,7 +105,7 @@ public class ExcelParser {
         } catch (IOException e) {
             System.out.println("EVERYTHING BLEW UP STOP STOP STOP");
             e.printStackTrace();
-            return null;
+            return null; //TODO: this should not return null. This should continue.
         }
 
     }
@@ -136,7 +148,12 @@ public class ExcelParser {
         return trimmedArray;
     }
 
-    // helper function for collapseHorizontally() decreases the number of rows in the array
+    /**
+     * Helper function for collapseHorizontally()
+     *
+     * Returns a new String[verticalBound][] with the values from cellValues
+     * copied into it.
+     */
     public static String[][] trimArrayVertically(String[][] cellValues, int verticalBound){
         String[][] trimmedArray = new String[verticalBound][];
         for(int i = 0; i < verticalBound; i++) {
@@ -146,7 +163,9 @@ public class ExcelParser {
         return trimmedArray;
     }
 
-    // replaces all cells with null values with an empty string (avoids future null pointer exceptions)
+    /**
+     * Replaces all cells with null values with an empty string (avoids future null pointer exceptions)
+     */
     public static void replaceNulls(String[][] cellValues) {
         for(int i = 0; i < cellValues.length; i++) {
             for(int j = 0; j < cellValues[i].length; j++) {
@@ -157,12 +176,14 @@ public class ExcelParser {
         }
     }
 
-    /* Helper method for populateDatabase().
-    looks at rows 2 through 4 (xlsx file is 1 based) and:
-    1. Concatenates all content in rows 2 through 4 for a given column
-    2. Adds all keys into a 1D string array
-    3. Replaces certain key words so they match with the standard committee's requirements
-     */
+    /**
+    * Helper method for populateDatabase()
+    * looks at rows 2 through 4 (xlsx file is 1 based) and:
+    * 1. Concatenates all content in rows 2 through 4 for a given column
+    * 2. Adds all keys into a 1D string array
+    * 3. Replaces certain key words so they match with the standard committee's requirements
+    * @param cellValues  
+    */
     public static String[] getKeys(String[][] cellValues){
         String[] keys = new String[cellValues[0].length];
 
@@ -190,6 +211,15 @@ public class ExcelParser {
         return keys;
     }
 
+    /**
+     *
+     * @param keys
+     * @param cellValue
+     * @param rowNum
+     * @param column
+     * @param searchBy
+     * @return
+     */
     public static boolean ignoreRow(String[] keys, String[][] cellValue, int rowNum, String column, String searchBy) {
         for(int i = 0; i < keys.length; i++) {
             if(keys[i].equals(column) && cellValue[rowNum][i].toLowerCase().equals(searchBy)) {
