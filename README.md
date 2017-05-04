@@ -14,14 +14,14 @@ You can find our website [here](http://revolverenguardia.dungeon.website)
 Our IP address is: 138.197.120.23
 
 Our Groups team members are:
-* Skye
-* Dan
-* Brian
-* Ai
-* Andy
-* Spencer
-* RJ
-* Lenny
+* Skye Antinozzi (Skyebug)
+* Dan Frazier (danfrz)
+* Brian Caravantes (carav008)
+* Ai Sano (sanox013)
+* Andy Hong Lau (tszhonglau)
+* Spencer Hammersten (hamme503)
+* RJ Holman (holma198)
+* Lenny Scott (morrislenny)
 
 This repository is a mirror of [Iteration 3 , Team  Revolver En Guardia](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-4-revolverenguardia-1)
 which is a fork from [Iteration 2 , Team _Grimaldi_](https://github.com/UMM-CSci-3601-S17/digital-display-garden-iteration-2-grimaldi.git)
@@ -42,17 +42,18 @@ We have an entire folder full of thorough documentation!
 ## Libraries used
 ### Client-Side
 * **Angular 2**
+* **TypeScript** is the language mostly used on the client side
 * **Jasmine** and **Karma**
-* **Gradle**
+* **Gradle** is used to tell **Yarn** to orchestrate the client side 
 
 ### Server-Side
-* **Java**
+* **Java** is the language used on the server side
 * **Spark** is used for the server operations
 * **JUnit** is used for testing
 * **Apache** is used for importing and exporting data in .xlsx format
 * **zxing** is used for generating QR codes (supports reading them if we want)
 * **joda** is used for making an unique LiveUploadID
-* **Gradle**
+* **Gradle** is used to build the project 
 
 ## Resources
 
