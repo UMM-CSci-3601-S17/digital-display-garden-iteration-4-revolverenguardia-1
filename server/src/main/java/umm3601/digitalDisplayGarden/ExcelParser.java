@@ -179,6 +179,8 @@ public class ExcelParser {
             if(keys[i].equals("Cultivar")) keys[i] = "cultivar";
             if(keys[i].equals("Source")) keys[i] = "source";
             if(keys[i].equals("Garden  Location")) keys[i] = "gardenLocation";
+            if(keys[i].equals("Not Included")) keys[i] = "notIncluded";
+            if(keys[i].equals("not included")) keys[i] = "notIncluded";
             if(keys[i].contains(" ")) keys[i] = keys[i].replace(" ","");
             if(keys[i].contains("=")) keys[i] = keys[i].replace("=", "");
             //if(keys[i].contains((UTF16.valueOf(0x00AE)))) keys[i].replaceAll(UTF16.valueOf(0x00AE), "");
