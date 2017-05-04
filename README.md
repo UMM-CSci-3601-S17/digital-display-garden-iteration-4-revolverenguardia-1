@@ -46,7 +46,7 @@ We have an entire folder full of thorough documentation!
 * [Garden Pamphlet](/Documentation/Pamphlet.md): A document for Steve to take to any conference to show off details about the Digital Display Garden.
 * [QR Sign Suggestions](/Documentation/QR-Sign-Suggestions.md): Explains perhaps what might be written on the signs that also contain the QR codes.
 * [Development Instructions](/Documentation/Development.md):Explains how to run the project in Development as well as how to simulate running in Production. 
-* [Future TODO's and Known Issues](): Explains future goals for the project as well as bugs known to the developers
+* [Future TODO's and Known Issues](/Documentation/FutureTodosKnownProblems.md): Explains future goals for the project as well as bugs known to the developers
 
 
 ## Libraries used
